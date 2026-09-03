@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — David Craft Ale</title>
+<meta name="description" content="Every way to drink David Craft Ale — the full lineup, six-packs, cans, and where to find them near you.">
+<link rel="stylesheet" href="fonts.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --cream:      #FCE4CD;   /* page canvas (PDF peach-cream)         */
+  --cream-soft: #FDEEDF;   /* raised paper                          */
+  --peach:      #F6D4B4;   /* footer band                           */
+  --paper:      #FFF6EA;   /* active thumbnail card                 */
+  --ink:        #2E1A0E;   /* primary text                          */
+  --cocoa:      #572010;   /* wordmark / announcement bar           */
+  --cocoa-soft: #7A3A1E;
+  --honey:      #FFC24B;   /* Busy-Bee honeycomb band               */
+  --honey-deep: #E8A81E;
+  --teal-star:  #2F8577;   /* PDF active-star teal                  */
+
+  --beer:       #D9A126;   /* live accent — set by JS               */
+  --beer-ink:   #A87409;   /* AA-safe dark variant of accent        */
+  --beer-blob:  #C4890E;   /* deeper blob tone behind the bottle    */
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px;
+
+  --r-tight:10px; --r-std:16px; --r-pill:999px;
+
+  --font-display:'Alfa Slab One', 'Georgia', serif;
+  --font-body:'Hanken Grotesk', 'Segoe UI', sans-serif;
+  --font-mark:'Archivo', 'Arial Black', sans-serif;
+
+  --shadow-card:0 10px 30px rgba(60,25,5,.14);
+  --ease-pop:cubic-bezier(.22,1,.36,1);
+}
+
+/* ============ RESET / BASE ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+/* Lenis drives scroll itself via many small per-frame writes — native CSS
+   smooth-scroll tries to animate each one individually, and the two fight,
+   which is what "broken"/frozen-then-jumpy scrolling was. Once Lenis is
+   active (it stamps this class on <html>), let it own scrolling outright. */
+html.lenis{scroll-behavior:auto!important}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-stopped{overflow:hidden}
+body{
+  font-family:var(--font-body);
+  background:var(--cream);
+  color:var(--ink);
+  font-size:16px;line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cocoa);outline-offset:3px;border-radius:4px}
+
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ============ LOADER ============ */
+#splash{
+  position:fixed;inset:0;z-index:200;background:var(--cream);
+  display:flex;flex-direction:column;gap:26px;align-items:center;justify-content:center;
+}
+#splash .wordmark{transform:scale(.92);opacity:0;animation:splashIn .6s var(--ease-pop) .05s forwards}
+#splash .pour-star{animation:starSpin 2.4s linear infinite}
+#splash .pour-line{font-weight:800;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--cocoa-soft)}
+#splash .pour-pct{font-family:var(--font-display);font-size:34px;color:var(--cocoa)}
+#splash.is-done{animation:splashOut .45s ease .1s forwards}
+@keyframes splashIn{to{transform:scale(1);opacity:1}}
+@keyframes splashOut{to{opacity:0;visibility:hidden}}
+@keyframes starSpin{to{transform:rotate(360deg)}}
+
+/* ============ WORDMARK ============ */
+.wordmark{font-family:var(--font-mark);color:var(--cocoa);text-align:center;line-height:.95;user-select:none}
+.wordmark .big{font-weight:900;font-size:44px;letter-spacing:.02em}
+.wordmark .small{font-weight:600;font-size:19px;letter-spacing:.24em;margin-left:.12em}
+
+/* ============ HEADER ============ */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  background:var(--cream);
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:14px clamp(16px,4vw,40px);
+}
+.hgroup{display:flex;gap:6px}
+.hgroup.right{justify-content:flex-end}
+.icon-btn{
+  width:44px;height:44px;display:grid;place-items:center;
+  border-radius:var(--r-tight);transition:background .2s;
+}
+.icon-btn:hover{background:rgba(87,32,16,.08)}
+.icon-btn svg{width:24px;height:24px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round}
+.logo-star{width:44px;height:44px;display:grid;place-items:center}
+.logo-star svg{width:34px;height:34px}
+.logo-hopper{width:44px;height:44px;display:grid;place-items:center;transition:transform .25s var(--ease-pop)}
+.logo-hopper img{width:38px;height:auto;display:block}
+.logo-hopper:hover{transform:rotate(-6deg) scale(1.06)}
+
+.announce{
+  background:var(--cocoa);color:var(--cream-soft);
+  text-align:center;font-weight:800;font-size:11.5px;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:8px 12px;
+}
+
+/* ============ MENU OVERLAY ============ */
+#menu{
+  position:fixed;inset:0;z-index:150;background:var(--cream);
+  display:flex;flex-direction:column;
+  padding:22px clamp(20px,5vw,48px) 34px;
+  transform:translateY(-102%);transition:transform .45s var(--ease-pop);
+}
+#menu.is-open{transform:translateY(0)}
+#menu .menu-top{display:flex;justify-content:space-between;align-items:center}
+#menu nav{margin-top:clamp(32px,8vh,72px);display:flex;flex-direction:column;gap:clamp(14px,3.5vh,28px)}
+#menu nav a{
+  font-weight:800;font-size:clamp(28px,6vw,40px);letter-spacing:.01em;
+  text-transform:uppercase;text-decoration:none;line-height:1.1;
+  width:fit-content;position:relative;
+}
+#menu nav a::after{
+  content:"";position:absolute;left:0;bottom:-4px;height:4px;width:0;
+  background:var(--honey-deep);transition:width .3s var(--ease-pop);
+}
+#menu nav a:hover::after{width:100%}
+#menu .menu-foot{margin-top:auto;display:flex;flex-direction:column;gap:14px;font-size:14px}
+#menu .menu-foot a{text-decoration:none;opacity:.85}
+
+/* ============ CART DRAWER ============ */
+.cart-backdrop{
+  position:fixed;inset:0;z-index:155;background:rgba(46,26,14,.48);opacity:0;
+  visibility:hidden;pointer-events:none;transition:opacity .45s var(--ease-pop),visibility 0s linear .45s;
+}
+.cart-backdrop.is-open{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.cart-drawer{
+  position:fixed;inset:0 0 0 auto;z-index:160;width:min(100%,480px);background:var(--cream);
+  display:flex;flex-direction:column;padding:22px clamp(20px,5vw,42px) 28px;
+  transform:translateX(102%);visibility:hidden;
+  transition:transform .45s var(--ease-pop),visibility 0s linear .45s;
+  box-shadow:-18px 0 48px rgba(46,26,14,.22);
+}
+.cart-drawer.is-open{transform:translateX(0);visibility:visible;transition-delay:0s}
+.cart-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:20px;border-bottom:2px solid rgba(87,32,16,.14)}
+.cart-drawer-title{font-family:var(--font-display);font-size:clamp(28px,6vw,42px);font-weight:400;line-height:.95;text-transform:uppercase}
+.cart-items{display:flex;flex:1;flex-direction:column;gap:14px;overflow-y:auto;padding:24px 2px}
+.cart-empty{margin:auto;text-align:center;color:var(--cocoa-soft);font-size:14px;line-height:1.55;max-width:28ch}
+.cart-empty strong{display:block;margin-bottom:8px;color:var(--cocoa);font-family:var(--font-display);font-size:24px;font-weight:400;text-transform:uppercase}
+.cart-item{display:grid;grid-template-columns:82px 1fr auto;align-items:center;gap:14px;padding:12px;border-radius:18px;background:rgba(87,32,16,.055)}
+.cart-item-photo{width:82px;height:92px;border-radius:13px;display:grid;place-items:center;background:rgba(87,32,16,.055);overflow:hidden}
+.cart-item-photo img{width:72%;height:84%;object-fit:contain;filter:drop-shadow(0 8px 9px rgba(40,16,4,.2))}
+.cart-item-name{font-family:var(--font-display);font-size:17px;font-weight:400;line-height:1;text-transform:uppercase}
+.cart-item-package{display:block;margin-top:6px;color:var(--cocoa-soft);font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.cart-item-price{margin-top:8px;font-size:13px;font-weight:900;letter-spacing:.08em}
+.cart-item-quantity{
+  display:inline-grid;grid-template-columns:32px minmax(28px,auto) 32px;align-items:center;
+  margin-top:10px;border:1.5px solid rgba(87,32,16,.24);border-radius:999px;overflow:hidden;
+}
+main{position:relative;z-index:2;background:var(--cream)}
+.cart-quantity-button{width:32px;height:32px;display:grid;place-items:center;font-size:18px;font-weight:900;cursor:pointer}
+.cart-quantity-button:hover{background:rgba(87,32,16,.09)}
+.cart-quantity-button:focus-visible{outline:3px solid var(--honey-deep);outline-offset:-3px}
+.cart-quantity-value{min-width:28px;text-align:center;font-size:12px;font-weight:900}
+.cart-remove{min-width:44px;min-height:44px;border:0;background:transparent;color:var(--cocoa-soft);font-size:20px;cursor:pointer;border-radius:50%}
+.cart-remove:hover{background:rgba(87,32,16,.08);color:var(--cocoa)}
+.cart-remove:focus-visible{outline:3px solid var(--honey-deep);outline-offset:2px}
+.cart-drawer-foot{padding-top:20px;border-top:2px solid rgba(87,32,16,.14)}
+.cart-total{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.cart-total strong{font-family:var(--font-display);font-size:25px;font-weight:400;letter-spacing:.02em}
+.cart-drawer-foot .btn{width:100%;min-height:48px}
+.cart-note{margin-top:10px;text-align:center;color:var(--cocoa-soft);font-size:10px;letter-spacing:.08em}
+@media(max-width:520px){
+  .cart-drawer{width:100%}
+  .cart-item{grid-template-columns:70px 1fr auto}
+  .cart-item-photo{width:70px;height:82px}
+}
+
+/* ============ PRODUCT QUICK VIEW ============ */
+.quick-view{position:fixed;inset:0;z-index:175;display:grid;place-items:center;padding:clamp(18px,4vw,52px);visibility:hidden;opacity:0;pointer-events:none;background:rgba(46,26,14,.42);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);transition:opacity .48s var(--ease-pop),visibility 0s linear .48s,backdrop-filter .48s var(--ease-pop),-webkit-backdrop-filter .48s var(--ease-pop)}
+.quick-view.is-open{visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s;backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)}
+.quick-view-dialog{position:relative;width:min(1180px,100%);max-height:min(820px,calc(100vh - 36px));display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:clamp(28px,5vw,72px);align-items:center;overflow:visible;background:transparent;transform:translateY(28px) scale(.965);opacity:0;transition:transform .52s var(--ease-pop),opacity .38s ease}
+.quick-view.is-open .quick-view-dialog{transform:translateY(0) scale(1);opacity:1}
+.quick-view-close{position:absolute;z-index:8;top:-18px;right:-18px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--cream-soft);color:var(--cocoa);box-shadow:0 10px 28px rgba(46,26,14,.24);transition:transform .25s var(--ease-pop),background .2s}
+.quick-view-close:hover{transform:rotate(7deg) scale(1.06);background:var(--honey)}
+.quick-view-close svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round}
+.quick-view-stage{position:relative;isolation:isolate;height:clamp(430px,55vw,650px);min-height:0;overflow:hidden;display:grid;place-items:center;border:1.5px solid rgba(87,32,16,.30);border-radius:32px;background:linear-gradient(145deg,rgba(255,246,234,.54),rgba(255,194,75,.25));box-shadow:inset 0 0 0 10px rgba(255,246,234,.10),inset 0 1px 0 rgba(255,255,255,.72),0 28px 70px rgba(46,26,14,.18)}
+.quick-view-stage::after{content:"";position:absolute;inset:18px;border:1px solid rgba(87,32,16,.18);border-radius:23px;pointer-events:none}
+.quick-view-glow{position:absolute;z-index:-2;left:50%;top:51%;width:min(67%,430px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,246,234,.92) 0,rgba(255,194,75,.35) 54%,transparent 72%)}
+.quick-view-ring{position:absolute;z-index:-1;left:50%;top:51%;width:min(76%,490px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);border:2px dashed rgba(87,32,16,.27);animation:quickViewSpin 26s linear infinite}
+.quick-view-star{position:absolute;z-index:4;color:var(--cocoa);animation:quickViewTwinkle 3.6s ease-in-out infinite}
+/* ambient sparkle: one per module (see design-system.md). This module carried four, one per corner, and the top-left one was cocoa - the identity colour. */.quick-view-star.qs-4{bottom:32px;right:36px;animation-delay:1.6s}
+.quick-view-product-frame{position:absolute;left:11%;top:11%;width:78%;height:78%;display:grid;place-items:center;animation:quickViewBob 4.2s ease-in-out infinite}
+.quick-view-product{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none;max-height:none;object-fit:contain;object-position:center;filter:drop-shadow(0 24px 26px rgba(46,26,14,.24));user-select:none;-webkit-user-drag:none}
+.quick-view.is-individual-bottle .quick-view-product-frame{left:24%;top:14%;width:52%;height:72%}
+.quick-view-copy{color:var(--cream-soft);text-align:left;min-width:0;text-shadow:0 2px 16px rgba(46,26,14,.30)}
+.quick-view-kicker{font-size:11px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:var(--honey)}
+.quick-view-title{margin-top:14px;font-family:var(--font-display);font-size:clamp(42px,6vw,82px);font-weight:400;line-height:.9;text-transform:uppercase;overflow-wrap:anywhere}
+.quick-view-description{max-width:42ch;margin-top:22px;font-size:clamp(16px,1.5vw,19px);line-height:1.55}
+.quick-view-meta{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px 16px;margin-top:26px;text-transform:uppercase}
+.quick-view-price{font-family:var(--font-display);font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:.02em}.quick-view-package{font-size:10px;font-weight:900;letter-spacing:.16em;color:rgba(253,238,223,.78)}
+.quick-view-add{margin-top:28px;min-height:52px;padding-inline:30px;background:var(--honey);color:var(--cocoa)}
+@keyframes quickViewBob{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-12px) rotate(.4deg)}}
+@keyframes quickViewSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes quickViewTwinkle{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.18);opacity:1}}
+@media(max-width:760px){.quick-view{padding:14px;overflow-y:auto;align-items:start}.quick-view-dialog{grid-template-columns:1fr;gap:22px;max-height:none;margin:auto;padding:34px 0 20px}.quick-view-close{position:fixed;top:14px;right:14px}.quick-view-stage{height:clamp(300px,82vw,380px);border-radius:25px}.quick-view-stage::after{inset:12px;border-radius:18px}.quick-view-product-frame{left:14%;top:14%;width:72%;height:72%}.quick-view.is-individual-bottle .quick-view-product-frame{left:25%;top:15%;width:50%;height:70%}.quick-view-copy{text-align:center;padding:0 8px 16px}.quick-view-kicker{font-size:10px}.quick-view-title{font-size:clamp(34px,11vw,54px)}.quick-view-description{margin-inline:auto;margin-top:15px}.quick-view-meta{justify-content:center;margin-top:18px}.quick-view-add{width:100%;margin-top:20px}}
+@media(prefers-reduced-motion:reduce){.quick-view,.quick-view-dialog{transition-duration:0s!important}.quick-view-ring,.quick-view-star,.quick-view-product-frame{animation:none!important}}
+
+/* ============ HERO ============ */
+.hero-band{
+  position:relative;background:var(--honey);overflow:hidden;
+  padding:clamp(16px,2.5vw,30px) 0 0;
+}
+.corner-tags{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 clamp(14px,3vw,36px) 8px;
+  font-weight:800;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cocoa);
+}
+/* one autoplaying loop early on the page — busybeehoney runs theirs right after the
+   hero, ours mirrors that instead of waiting until the Story section.
+   Normal flex flow beside the CTA button, not absolute — an absolutely-positioned
+   badge measured against one headline length breaks the moment the headline wraps
+   differently (same lesson as the original hero-mascot fix). */
+.hero-mug-badge{
+  flex:none;width:clamp(56px,6.6vw,84px);aspect-ratio:1;border-radius:50%;overflow:hidden;
+  border:3px solid var(--cream-soft);box-shadow:0 10px 22px rgba(87,32,16,.24);
+}
+.hero-mug-badge video{width:100%;height:100%;object-fit:cover;display:block}
+.hero-title{
+  position:relative;z-index:2;
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  text-align:center;color:var(--cocoa);
+  font-size:clamp(30px,8.8vw,134px);line-height:.94;letter-spacing:-.005em;
+  padding:2px clamp(10px,1.4vw,20px) 0;
+  display:flex;flex-direction:column;align-items:center;
+}
+/* each line scaled so both run flush to the gutters */
+.hero-title .l1{font-size:1.26em;display:block}
+.hero-title .l2{font-size:1em;display:block}
+.hero-cta{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(6px,1.6vw,16px);
+  padding:clamp(30px,4.2vw,56px) 16px clamp(4px,1vw,10px);
+}
+/* Mobile/no-JS fallback: Hopper sits in the same flex row as the CTA pill —
+   never overlaps the headline above (separated by this row) or the button's
+   own text (adjacent, not stacked). .hero-cta is deliberately NOT a
+   positioned ancestor, so when JS switches Hopper to position:absolute for
+   the desktop chase, he still resolves against .hero-band, not this row. */
+.hero-cta .hover-hopper{
+  margin:0;flex:none;pointer-events:none;
+  width:clamp(96px,10vw,144px); /* hard floor of 96px — always anchor-scale, every viewport */
+  transform:rotate(-9deg);
+}
+/* Desktop: JS takes Hopper out of flow and lets him roam/chase the cursor
+   across the whole hero band (clamped in JS to hero-band's own box, so he
+   can never wander into another section). Position + bob both become
+   JS-driven every frame, so the CSS versions of both have to step aside. */
+.hero-band .hover-hopper.hopper-roam{
+  position:absolute;z-index:5;top:0;left:0;margin:0;animation:none;
+  will-change:transform;
+}
+.hero-title .pop{color:#B23A27}
+.hero-band .ghost{
+  position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;
+  font-family:var(--font-display);color:rgba(253,238,223,.5);
+  font-size:clamp(90px,17vw,240px);line-height:.9;letter-spacing:.01em;
+  pointer-events:none;user-select:none;white-space:nowrap;
+  transform:translateY(-6%);
+}
+.lineup{
+  position:relative;display:flex;justify-content:center;align-items:flex-end;
+  gap:clamp(4px,4.4vw,86px);padding:0 clamp(12px,3vw,52px) clamp(20px,3vw,36px);
+  /* full bottle height + real bottom padding — nothing clipped by the section's overflow:hidden */
+}
+.lineup button{transition:transform .35s var(--ease-pop);border-radius:12px}
+.lineup button:hover{transform:translateY(-10px)}
+.lineup .bottle-photo{
+  height:clamp(230px,34vw,420px);width:auto;display:block;
+  filter:drop-shadow(0 3px 6px rgba(40,16,4,.28));
+  animation:bottleBob 4.6s ease-in-out infinite;
+}
+.lineup button:nth-child(1) .bottle-photo{animation-delay:0s}
+.lineup button:nth-child(2) .bottle-photo{animation-delay:-1.2s}
+.lineup button:nth-child(3) .bottle-photo{animation-delay:-2.3s}
+.lineup button:nth-child(4) .bottle-photo{animation-delay:-3.4s}
+@keyframes bottleBob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-9px) rotate(-1.1deg)}}
+
+/* ============ MARQUEE ============ */
+.marquee{
+  overflow:hidden;background:var(--cocoa);color:var(--cream-soft);
+  padding:11px 0;position:relative;z-index:6;
+}
+.marquee-track{
+  display:flex;align-items:center;gap:34px;width:max-content;
+  animation:marq 26s linear infinite;
+  font-weight:800;font-size:14px;letter-spacing:.22em;text-transform:uppercase;
+  white-space:nowrap;
+}
+.marquee-track .sep svg{width:15px;height:15px;display:block}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ============ HOPPER ============ */
+.hopper{
+  position:absolute;z-index:4;pointer-events:none;
+  top:var(--h-top,30%);left:0;width:var(--h-size,46px);aspect-ratio:262/241;
+  animation:hopperDrift var(--h-dur,26s) linear var(--h-delay,0s) infinite;
+  will-change:transform;
+}
+.hopper.rtl{animation-name:hopperDriftBack}
+.hopper .bob{
+  width:100%;height:100%;position:relative;
+  animation:hopperBob 2.6s ease-in-out infinite;
+}
+.hopper img{position:absolute;inset:0;width:100%}
+.hopper img.f2{animation:flapSwap .34s steps(1) infinite}
+.hopper img.f1{animation:flapSwap .34s steps(1) .17s infinite}
+@keyframes flapSwap{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes hopperBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+@keyframes hopperDrift{from{transform:translateX(-70px)}to{transform:translateX(calc(100vw + 70px))}}
+@keyframes hopperDriftBack{from{transform:translateX(calc(100vw + 70px)) scaleX(-1)}to{transform:translateX(-70px) scaleX(-1)}}
+
+/* ============ SCROLL REVEALS ============ */
+.reveal{opacity:0;transform:translateY(28px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .6s var(--ease-pop),transform .6s var(--ease-pop)}
+.reveal.d1.in{transition-delay:.08s}
+.reveal.d2.in{transition-delay:.16s}
+.reveal.d3.in{transition-delay:.24s}
+
+.kicker{
+  font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--cocoa-soft);margin-bottom:16px;
+}
+.badge-spin{
+  position:absolute;top:clamp(28px,4vw,34px);right:clamp(20px,7vw,80px);
+  width:clamp(64px,9vw,104px);aspect-ratio:1;
+  pointer-events:none;z-index:3;
+}
+.badge-spin svg{width:100%;height:100%;animation:badgeSpin 16s linear infinite}
+@keyframes badgeSpin{to{transform:rotate(360deg)}}
+
+/* shared display heading for content bands */
+.section-head{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(32px,6.4vw,68px);line-height:.88;letter-spacing:.005em;
+  color:var(--cocoa);
+  margin:0 0 22px;
+}
+
+/* stationary hovering mascot (Busy Bee places one just above its CTAs) */
+.hover-hopper{
+  display:block;width:var(--hh,54px);aspect-ratio:262/241;
+  margin:0 auto 10px;position:relative;
+  animation:hopperBob 2.8s ease-in-out infinite;
+}
+.hover-hopper img{position:absolute;inset:0;width:100%}
+.hover-hopper img.f2{animation:flapSwap .34s steps(1) infinite}
+.hover-hopper img.f1{animation:flapSwap .34s steps(1) .17s infinite}
+.btn{
+  display:inline-block;background:var(--cocoa);color:var(--cream-soft);
+  font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;
+  padding:15px 30px;border-radius:var(--r-pill);text-decoration:none;
+  transition:background .2s,transform .2s;min-height:44px;
+}
+.btn:hover{background:#41170a;transform:translateY(-2px)}
+.btn.on-dark{background:var(--cream-soft);color:var(--cocoa)}
+.btn.on-dark:hover{background:#fff}
+
+/* ============ PRODUCTS ============ */
+section[id]{scroll-margin-top:76px}
+#products{
+  position:relative;overflow:hidden;
+  padding:clamp(30px,6vw,64px) 0 clamp(48px,7vw,84px);
+}
+.blob{
+  position:absolute;top:52%;left:50%;translate:-50% -50%;
+  width:94%;height:90%;
+  z-index:0;pointer-events:none;
+}
+.blob path{fill:var(--beer-blob);transition:fill .6s ease}
+/* replaces the old ghost-text billboard — a soft spotlight glow + slow dashed
+   ring behind the bottle, reusing the same motif as the plushie stage so the
+   two "hero product" moments on the site read as one family */
+
+.product-stage{
+  position:relative;z-index:2;
+  display:grid;place-items:center;
+  max-width:560px;margin:0 auto;padding:clamp(8px,2vw,24px) 10px 0;
+}
+/* named four-beer selector — the whole range visible at a glance */
+.beer-tabs{
+  position:relative;z-index:3;
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+  max-width:920px;margin:0 auto clamp(22px,3.5vw,40px);padding:0 16px;
+}
+.beer-tab{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 18px 10px 12px;border-radius:var(--r-pill);
+  background:var(--paper);border:2px solid rgba(46,26,14,.14);
+  min-height:44px;transition:background .25s,border-color .25s,transform .25s;
+}
+.beer-tab:hover{transform:translateY(-2px);background:var(--paper)}
+.beer-tab .swatch{
+  width:22px;height:22px;border-radius:50%;flex:none;
+  border:2px solid rgba(46,26,14,.25);
+}
+.beer-tab .tstack{display:flex;flex-direction:column;gap:2px}
+.beer-tab .tname{
+  font-family:var(--font-display);font-size:17px;letter-spacing:.01em;
+  text-transform:uppercase;line-height:1;color:var(--ink);
+}
+.beer-tab .tstyle{font-size:11.5px;font-weight:700;opacity:.7;letter-spacing:.04em;line-height:1.2}
+.beer-tab[aria-selected="true"]{
+  background:var(--paper);border-color:var(--beer-ink);box-shadow:var(--shadow-card);
+}
+.beer-tab[aria-selected="true"] .tname{color:var(--beer-ink)}
+.bottle-stage{
+  position:relative;z-index:2;
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:clamp(6px,1.6vw,26px);min-height:clamp(330px,58vw,470px);
+}
+.bottle-stage .bottle-photo{
+  height:clamp(340px,58vw,480px);width:auto;flex:none;display:block;
+  filter:drop-shadow(0 22px 18px rgba(40,16,4,.30));
+}
+.swap-in{animation:swapIn .5s var(--ease-pop)}
+@keyframes swapIn{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.stage-next{justify-self:end}
+.arrow-btn{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,246,234,.75);box-shadow:var(--shadow-card);
+  transition:transform .2s,background .2s;
+}
+.arrow-btn:hover{transform:scale(1.08);background:var(--paper)}
+.arrow-btn svg{width:20px;height:20px;stroke:var(--cocoa);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+.product-info{position:relative;z-index:2;text-align:center;padding:10px 24px 0;max-width:620px;margin:0 auto}
+.stars{display:flex;justify-content:center;gap:16px;margin:18px 0 10px}
+.stars svg{width:20px;height:20px}
+.stars .p{fill:var(--ink);transition:fill .4s}
+.stars .active .p{fill:var(--beer-ink);transition:fill .5s}
+.beer-name{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(46px,13vw,84px);line-height:1;letter-spacing:.01em;
+  color:var(--beer-ink);transition:color .5s;
+}
+.beer-style{font-style:italic;font-weight:600;font-size:18px;margin:6px 0 18px}
+.beer-desc{font-size:15.5px;max-width:46ch;margin:0 auto 22px}
+.beer-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.beer-meta span{
+  border:1.5px solid rgba(46,26,14,.35);border-radius:var(--r-pill);
+  font-weight:700;font-size:12.5px;letter-spacing:.06em;padding:7px 14px;
+}
+
+/* desktop: product art and detail sit side by side, no dead half */
+@media (min-width:1100px){
+  .product-spotlight{width:min(46vw,440px)}
+  .blob{width:168%;height:158%}
+  .product-columns{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,460px);
+    align-items:center;gap:clamp(20px,4vw,64px);
+    max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,56px);
+  }
+  .product-columns .product-info{text-align:left;margin:0;padding:0}
+  .product-columns .product-info .stars,
+  .product-columns .product-info .beer-meta{justify-content:flex-start}
+  .product-columns .product-info .beer-desc{margin-left:0}
+  .product-columns .product-stage{max-width:none}
+}
+
+/* ============ STORY ============ */
+#story{padding-top:0}
+.sunset{position:relative;overflow:hidden}
+.sunset > svg{width:100%;height:clamp(340px,54vw,860px)}
+.sunset video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+  transform:scale(1.06); /* crop the paper border baked into the artwork */
+}
+
+/* ============ MEDIA CHIP ============ */
+.media-chip{
+  width:min(196px,38%);margin:0 auto clamp(18px,2.6vw,28px);
+  border-radius:22px;overflow:hidden;position:relative;
+}
+.media-chip video,.media-chip img{width:100%;display:block}
+.story-copy{text-align:center;padding:clamp(36px,6vw,64px) 24px;position:relative}
+.story-copy .stars{margin-bottom:26px}
+.story-copy .stars .p{fill:var(--cocoa)}
+.story-copy p{max-width:56ch;margin:0 auto;font-size:15.5px}
+.story-facts{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin:24px auto 0;max-width:56ch;
+}
+.story-facts span{
+  border:1.5px solid rgba(46,26,14,.35);border-radius:var(--r-pill);
+  font-weight:700;font-size:12.5px;letter-spacing:.06em;padding:7px 14px;
+}
+
+/* ============ PLUSHIE — reimagined collector feature ============ */
+#plushie{
+  background:#FFC24B;
+  position:relative;overflow:hidden;isolation:isolate;
+  padding:clamp(34px,5vw,60px) clamp(14px,3vw,30px) clamp(24px,4vw,34px);
+}
+#plushie::before,
+#plushie::after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;filter:blur(8px);opacity:.55;
+}
+#plushie::before{
+  width:min(56vw,620px);aspect-ratio:1;left:-12%;top:10%;
+  background:radial-gradient(circle,rgba(255,248,231,.78) 0%,rgba(255,248,231,.2) 44%,rgba(255,194,75,0) 72%);
+}
+#plushie::after{
+  width:min(42vw,440px);aspect-ratio:1;right:-6%;bottom:6%;
+  background:radial-gradient(circle,rgba(178,58,39,.18) 0%,rgba(178,58,39,0) 70%);
+}
+.plushie-shell{position:relative;z-index:1;max-width:1320px;margin:0 auto}
+.plushie-cloud{
+  position:absolute;right:0;top:-8px;z-index:0;pointer-events:none;user-select:none;
+  font-family:var(--font-display);font-size:clamp(90px,18vw,250px);line-height:.82;text-transform:uppercase;
+  color:rgba(255,246,234,.28);letter-spacing:.02em;
+}
+.plushie-grid{
+  position:relative;z-index:1;
+  display:grid;gap:clamp(24px,4vw,54px);align-items:center;
+}
+.plushie-stage{
+  position:relative;min-height:clamp(420px,60vw,680px);overflow:hidden;
+  border:2px solid rgba(87,32,16,.16);border-radius:34px;
+  padding:clamp(20px,4vw,34px);
+  background:linear-gradient(180deg,rgba(255,244,224,.68),rgba(255,202,103,.16));
+  box-shadow:0 22px 40px rgba(87,32,16,.12), inset 0 0 0 1px rgba(255,248,231,.38);
+}
+.plushie-stage::before{
+  content:"";position:absolute;inset:18px;border:1px solid rgba(87,32,16,.18);border-radius:24px;pointer-events:none;
+}
+.plushie-star{position:absolute;z-index:4;animation:plushieTwinkle 3.6s ease-in-out infinite}
+.plushie-star.ps-1{top:26px;left:26px}
+.plushie-star.ps-2{top:28px;right:30px;animation-delay:.5s}
+.plushie-star.ps-3{bottom:28px;left:38px;animation-delay:1.1s}
+.plushie-star.ps-4{bottom:30px;right:34px;animation-delay:1.6s}
+.plushie-sun{
+  position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+  width:min(58vw,450px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,247,231,.98) 0%,rgba(255,232,170,.95) 26%,rgba(255,194,75,.86) 52%,rgba(255,194,75,0) 72%);
+  filter:blur(2px);z-index:0;
+}
+.plushie-ring{
+  position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+  width:min(64vw,520px);aspect-ratio:1;border-radius:50%;
+  border:2px dashed rgba(87,32,16,.22);z-index:0;animation:plushieSpin 26s linear infinite;
+}
+.plushie-badge-new{
+  position:absolute;left:clamp(18px,3vw,28px);top:clamp(18px,3vw,28px);z-index:5;
+  display:flex;flex-direction:column;gap:4px;align-items:flex-start;
+  background:rgba(255,246,234,.88);backdrop-filter:blur(6px);
+  border:1px solid rgba(87,32,16,.18);box-shadow:0 10px 18px rgba(87,32,16,.08);
+  border-radius:18px;padding:12px 14px 11px;max-width:170px;
+}
+.plushie-badge-new .kicker{font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#B23A27}
+.plushie-badge-new strong{font-family:var(--font-display);font-size:26px;line-height:.92;color:var(--cocoa);font-weight:400;text-transform:uppercase}
+.plushie-badge-new small{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--cocoa-soft)}
+.plushie-chip{
+  position:absolute;z-index:4;display:flex;align-items:center;gap:8px;
+  background:rgba(255,246,234,.92);backdrop-filter:blur(6px);
+  border:1px solid rgba(87,32,16,.14);box-shadow:0 14px 24px rgba(87,32,16,.08);
+  color:var(--cocoa);border-radius:999px;padding:10px 14px;
+  font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+}
+.plushie-chip span{flex:none}
+.plushie-chip.a{right:clamp(18px,4vw,42px);top:clamp(112px,14vw,144px);animation:chipFloatA 4s ease-in-out infinite}
+.plushie-chip.b{left:clamp(16px,4vw,28px);bottom:clamp(120px,15vw,154px);animation:chipFloatB 4.4s ease-in-out infinite}
+.plushie-chip.c{right:clamp(16px,4vw,26px);bottom:clamp(72px,9vw,96px);animation:chipFloatA 4.8s ease-in-out infinite .3s}
+.plushie-asset-wrap{
+  /* centered on the same point as .plushie-sun/.plushie-ring (left:50%,top:52%) —
+     it was a normal-flow child before, so its box had no reason to land on that
+     point and drifted low on mobile once the stage's height changed at the breakpoint */
+  position:absolute;z-index:2;left:50%;top:52%;width:min(100%,510px);
+  filter:drop-shadow(0 30px 24px rgba(65,31,10,.22));
+  animation:plushieBob 4.2s ease-in-out infinite;
+}
+.plushie-photo-wide{width:100%;height:auto}
+.plushie-copy-wide{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+.plushie-kicker{
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:12px;
+  font-size:12px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:#8B351D;
+}
+.plushie-kicker::before,.plushie-kicker::after{content:"";width:30px;height:2px;background:rgba(87,32,16,.6)}
+.plushie-headline{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  color:var(--cocoa);line-height:.9;letter-spacing:.005em;
+  font-size:clamp(40px,6vw,84px);margin:0 0 16px;
+}
+.plushie-headline .pop{display:block;color:#B23A27}
+.plushie-description{
+  max-width:48ch;font-size:clamp(15px,1.4vw,18px);line-height:1.6;
+  margin-bottom:24px;color:rgba(46,26,14,.92);
+}
+
+.plushie-feature{
+  background:rgba(255,246,234,.66);border:1px solid rgba(87,32,16,.14);
+  border-radius:18px;padding:14px 14px 13px;box-shadow:0 10px 22px rgba(87,32,16,.06);
+}
+.plushie-feature strong{display:block;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#8B351D;margin-bottom:6px}
+.plushie-feature p{font-size:14px;line-height:1.45;color:var(--ink)}
+.plushie-buy-panel{
+  width:100%;max-width:440px;background:rgba(255,246,234,.78);border:1px solid rgba(87,32,16,.14);
+  border-radius:24px;padding:18px;box-shadow:0 14px 26px rgba(87,32,16,.08);
+}
+.plushie-price-line{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cocoa)
+}
+.plushie-price-line .dot{width:6px;height:6px;border-radius:50%;background:#B23A27}
+.plushie-price-line .focus{color:#B23A27}
+.plushie-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.plushie-actions .btn{flex:none}
+.plushie-link{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cocoa)
+}
+.plushie-link:hover{color:#B23A27}
+.plushie-marquee{
+  margin-top:clamp(18px,3vw,28px);overflow:hidden;border-top:1px solid rgba(87,32,16,.14);border-bottom:1px solid rgba(87,32,16,.14);
+  background:rgba(255,246,234,.24)
+}
+.plushie-marquee-track{
+  display:flex;gap:28px;width:max-content;padding:11px 0;
+  animation:plushieMarquee 26s linear infinite;
+}
+.plushie-marquee-track span{
+  display:flex;align-items:center;gap:14px;
+  font-size:12px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:var(--cocoa);
+}
+.plushie-marquee-track i{width:8px;height:8px;border-radius:50%;background:#B23A27;display:block}
+@keyframes plushieBob{
+  0%,100%{transform:translate(-50%,-50%) translateY(0) rotate(-2deg)}
+  50%{transform:translate(-50%,-50%) translateY(-14px) rotate(2deg)}
+}
+@keyframes plushieSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes plushieTwinkle{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+
+/* ============ AMBIENT ICONS — leaf/hop/drop/star family, generated to match ============
+   Hopper's own leaf-wing style, filling in ambient motion the way busybeehoney's bee
+   does — without adding another Hopper instance in sections he's been deliberately
+   pulled from. */
+.ambient-icon{position:absolute;pointer-events:none;z-index:2;aspect-ratio:1}
+.ambient-icon img{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 10px rgba(40,16,4,.16))}
+.ambient-icon svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 7px rgba(40,16,4,.18))}
+.ambient-icon.sway{animation:iconSway 5.6s ease-in-out infinite}
+.ambient-icon.bob{animation:iconBob 4.4s ease-in-out infinite}
+.ambient-icon.spin-soft{animation:iconSpinSoft 8.5s ease-in-out infinite}
+@keyframes iconSway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes iconBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes iconSpinSoft{0%,100%{transform:rotate(-11deg) scale(1)}50%{transform:rotate(11deg) scale(1.08)}}
+.ambient-icon.twinkle{animation:iconTwinkle 3.2s ease-in-out infinite}
+@keyframes iconTwinkle{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.16) rotate(8deg)}}
+/* one star per section, each tucked into a different spot rather than a repeated corner formula */
+.icon-hero-star{bottom:clamp(26px,4.5vw,44px);left:clamp(4px,2.4vw,20px);width:clamp(26px,3vw,38px)}
+.icon-story-star{top:clamp(12px,2.4vw,22px);right:clamp(10px,3vw,28px);width:clamp(26px,3vw,36px)}
+.icon-reviews-star{bottom:clamp(14px,2.4vw,26px);right:clamp(14px,3vw,30px);width:clamp(26px,3vw,36px)}
+.icon-affiliate-star{bottom:clamp(58px,8vw,92px);right:clamp(16px,4vw,40px);width:clamp(24px,2.8vw,34px)}
+@keyframes chipFloatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes chipFloatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@keyframes plushieMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (min-width:960px){
+  .brew-orn{display:inline-flex;}
+  .plushie-grid{grid-template-columns:minmax(0,1.06fr) minmax(380px,.94fr)}
+}
+@media (max-width:959px){
+  .brew-orn{display:inline-flex;}
+  .plushie-cloud{top:4px;right:12px;font-size:clamp(64px,20vw,140px)}
+  .plushie-copy-wide{align-items:center;text-align:center}
+  .plushie-kicker{justify-content:center}
+  .plushie-description{max-width:40ch}
+  .plushie-actions{justify-content:center}
+  .plushie-badge-new{max-width:156px}
+}
+@media (max-width:640px){
+  /* #products-scoped to reliably beat the plain .brew-heading base rule —
+     that rule sits later in the file, and at equal specificity source order
+     wins, which was silently cancelling this override before */
+  #products .brew-heading{font-size:24px}
+  .brew-orn{display: none;}
+  .plushie-stage{min-height:480px;padding:18px}
+  .plushie-chip{padding:9px 12px;font-size:10px;letter-spacing:.1em}
+  .plushie-chip.a{top:auto;right:16px;bottom:360px}
+  .plushie-chip.b{left:14px;bottom:76px}
+  .plushie-chip.c{right:14px;bottom:24px}
+  .plushie-sun{width:min(84vw,360px)}
+  .plushie-ring{width:min(92vw,410px)}
+  .plushie-headline{font-size:clamp(34px,12vw,56px)}
+}
+
+
+/* ============ AFFILIATE ============ */
+#affiliate{
+  background:#B23A27;color:var(--cream-soft);
+  text-align:center;padding:clamp(48px,7vw,84px) 24px;
+  position:relative;overflow:hidden;
+}
+#affiliate .ghost{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);color:rgba(253,238,223,.12);
+  font-size:clamp(80px,16vw,190px);white-space:nowrap;pointer-events:none;user-select:none;
+}
+#affiliate h2{
+  position:relative;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(40px,8.4vw,104px);line-height:.86;margin-bottom:16px;text-transform:uppercase;
+}
+#affiliate p{position:relative;max-width:58ch;margin:0 auto 24px;font-size:16.5px}
+.deal-list{
+  position:relative;list-style:none;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:10px;max-width:760px;margin:0 auto 26px;
+}
+.deal-list li{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  text-align:center;
+  background:var(--cream-soft);color:var(--cocoa);border:none;
+  border-radius:var(--r-pill);padding:11px 22px;
+  font-size:13px;line-height:1.3;font-weight:700;
+}
+.deal-list strong{font-family:var(--font-display);font-weight:400;font-size:19px;letter-spacing:.01em}
+.affiliate-proof{
+  font-style:italic;font-size:14px;line-height:1.5;
+  max-width:44ch;margin:0 auto clamp(24px,4vw,34px);opacity:.86;
+}
+.affiliate-proof span{display:block;font-style:normal;font-weight:800;font-size:12px;
+  letter-spacing:.04em;margin-top:6px;opacity:.85}
+#affiliate .btn{position:relative}
+
+/* ============ FOOTER ============ */
+.site-footer{
+  position:sticky;bottom:0;z-index:1;
+  background:var(--peach);text-align:center;padding:clamp(40px,6vw,56px) 24px 30px;overflow:hidden;
+}
+.retail-band{
+  position:relative;z-index:3;
+  box-shadow:0 28px 56px rgba(46,26,14,.22);
+}
+@media(max-width:760px){
+  .retail-band{box-shadow:0 20px 38px rgba(46,26,14,.2)}
+}
+.foot-nav{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(16px,4vw,40px);
+  font-weight:800;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cocoa-soft);margin-bottom:clamp(28px,5vw,48px);
+}
+.foot-nav a{color:inherit;text-decoration:none;opacity:.85}
+.foot-nav a:hover{opacity:1;text-decoration:underline}
+/* billboard-scale sign-off in the display face, matching the headline scale
+   used elsewhere rather than the small Archivo wordmark lockup. Sized down
+   from the old single-word "DAVID" treatment since the full name is 3x the
+   characters — same visual weight, not the same point size. */
+.foot-wordmark{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  color:var(--cocoa);font-size:clamp(40px,10vw,140px);line-height:.9;
+  letter-spacing:.01em;margin:0 0 clamp(28px,5vw,40px);
+}
+.foot-links{
+  display:flex;justify-content:center;gap:clamp(20px,6vw,64px);
+  flex-wrap:wrap;margin:0 0 26px;font-size:13.5px;
+}
+.foot-links a,.foot-links span{
+  color:var(--ink);text-decoration:none;opacity:.85;padding:6px 0;line-height:1.4;
+}
+.foot-links a:hover{opacity:1;text-decoration:underline}
+.foot-star{display:flex;justify-content:center;margin-bottom:14px}
+.foot-star svg{width:26px;height:26px}
+.foot-note{font-size:12.5px;opacity:.7}
+
+/* ============ TOAST ============ */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);
+  background:var(--cocoa);color:var(--cream-soft);font-weight:700;font-size:14px;
+  padding:13px 24px;border-radius:var(--r-pill);z-index:180;
+  transition:transform .4s var(--ease-pop);pointer-events:none;box-shadow:var(--shadow-card);
+}
+#toast.show{transform:translate(-50%,0)}
+
+/* ============ SECTION HEADINGS ============ */
+.brew-heading{
+  position:relative;z-index:3;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:clamp(10px,2.2vw,20px);row-gap:8px;
+  padding-top:clamp(34px,5vw,56px);margin-bottom:clamp(18px,3vw,28px);
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;text-align:center;
+  color:var(--cocoa);font-size:clamp(26px,9vw,52px);line-height:1;letter-spacing:.01em;
+}
+.brew-orn{align-items:center;gap:10px}
+.brew-orn i{width:clamp(18px,4vw,54px);height:2px;background:rgba(87,32,16,.5);display:block}
+.brew-orn .star{width:16px;height:16px;flex:none}
+
+/* below the two-column breakpoint the blob drops behind the bottle,
+   so it never sits under the selector */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+
+/* ============ PRODUCTS PAGE ============ */
+
+.products-hero{
+  position:relative;overflow:hidden;min-height:clamp(420px,62vw,640px);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.products-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55) saturate(1.05)}
+.products-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(46,26,14,.35) 0%,rgba(46,26,14,.15) 40%,rgba(46,26,14,.55) 100%);
+}
+.products-hero-content{position:relative;z-index:1;padding:0 24px;color:var(--cream-soft)}
+.products-hero-title{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(38px,7.2vw,96px);line-height:.92;letter-spacing:.005em;
+  text-shadow:0 4px 18px rgba(0,0,0,.35);
+}
+.products-hero-caption{
+  margin-top:16px;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--cream-soft);opacity:.9;
+}
+
+.carousel-section{padding:clamp(48px,7vw,84px) 0 clamp(40px,6vw,64px);text-align:center;overflow:hidden}
+.carousel-section.light{background:var(--cream)}
+.carousel-section.dark{background:var(--cocoa);color:var(--cream-soft)}
+.carousel-section .kicker{color:var(--cocoa-soft)}
+.carousel-section.dark .kicker{color:rgba(253,238,223,.75)}
+.carousel-section .section-head{color:var(--cocoa);margin-bottom:8px}
+.carousel-section.dark .section-head{color:var(--cream-soft)}
+.carousel-badge{
+  position: absolute;
+  width:clamp(64px, 9vw, 104px);aspect-ratio:1;border-radius:50%;margin:0 auto;
+  right: clamp(20px, 7vw, 80px);top:clamp(128px, 8vw, 34px);
+  display:grid;place-items:center;
+}
+.carousel-badge svg{
+  animation: badgeSpin 16s linear infinite;
+  width:100%;height:100%
+}
+
+.prod-carousel{
+  display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x proximity;
+  padding:clamp(32px,4.5vw,48px) clamp(16px,6vw,80px) 14px;
+  margin:0 auto; max-width: 1320px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.prod-carousel::-webkit-scrollbar{display:none}
+.prod-card{
+  flex:none;scroll-snap-align:start;width:clamp(220px,26vw,278px);
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.prod-card-photo{
+  width:100%;height:clamp(220px,26vw,278px);border-radius:24px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:rgba(87,32,16,.05);
+}
+.carousel-section.dark .prod-card-photo{background:rgba(253,238,223,.07)}
+.prod-card-photo img{max-width:82%;max-height:88%;object-fit:contain;filter:drop-shadow(0 14px 18px rgba(40,16,4,.22))}
+.prod-card-name{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:19px;letter-spacing:.01em}
+.prod-card-copy{display:flex;min-height:74px;flex-direction:column;align-items:center;justify-content:flex-start;gap:7px}
+.prod-card-price{
+  color:var(--cocoa);font-size:15px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+}
+.carousel-section.dark .prod-card-price{color:var(--cream-soft)}
+.prod-card-price small{display:block;margin-top:3px;font-size:9px;letter-spacing:.16em;color:rgba(253,238,223,.68)}
+.prod-card .btn{min-height:44px}
+.prod-card .btn{font-size:12.5px;padding:11px 22px}
+.cart-button{position:relative}
+.cart-count{
+  position:absolute;right:-5px;top:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;
+  display:none;place-items:center;background:var(--brick);color:var(--cream-soft);
+  font-size:10px;font-weight:900;line-height:1;
+}
+.cart-count.has-items{display:grid}
+
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:6px}
+.carousel-dots i{width:7px;height:7px;border-radius:50%;background:rgba(87,32,16,.25);display:block;transition:background .25s,transform .25s}
+.carousel-section.dark .carousel-dots i{background:rgba(253,238,223,.3)}
+.carousel-dots i.is-active{background:var(--cocoa);transform:scale(1.35)}
+.carousel-section.dark .carousel-dots i.is-active{background:var(--cream-soft)}
+
+/* Full Lineup is a scan-first catalog, not a carousel. The band stays full-bleed while
+   the cards return to the site's established constrained content frame. */
+.full-lineup-section{position:relative;overflow:hidden}
+.lineup-chaser{
+  display:none;position:absolute;z-index:4;left:0;top:0;width:clamp(52px,5vw,70px);
+  aspect-ratio:262/241;pointer-events:none;opacity:0;will-change:transform;
+  transition:opacity .25s ease;
+}
+.lineup-chaser img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.lineup-chaser img.f2{animation:flapSwap .34s steps(1) infinite}
+.lineup-chaser img.f1{animation:flapSwap .34s steps(1) .17s infinite}
+@media (min-width:861px) and (pointer:fine){
+  .lineup-chaser{display:block}
+}
+@media (prefers-reduced-motion:reduce){
+  .lineup-chaser{display:none!important}
+}
+.full-lineup-grid{
+  --carousel-gap:clamp(14px,1.7vw,24px);--carousel-gutter:clamp(14px,2.4vw,36px);
+  --carousel-peek:clamp(76px,8vw,116px);
+  width:100%;max-width:1320px;margin-inline:auto;display:flex;overflow-x:auto;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;
+  gap:var(--carousel-gap);padding:clamp(10px,1.5vw,18px) var(--carousel-gutter) 6px;
+}
+.full-lineup-grid::-webkit-scrollbar{display:none}
+.full-lineup-grid img{-webkit-user-drag:none;user-select:none}
+.full-lineup-grid:not(.is-at-end){
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 150px),transparent 100%);
+  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 150px),transparent 100%);
+}
+.full-lineup-grid .prod-card{
+  flex:0 0 calc((100% - var(--carousel-gutter) - var(--carousel-gutter) - var(--carousel-gap) - var(--carousel-gap) - var(--carousel-gap) - var(--carousel-gap) - var(--carousel-peek))/4);
+  width:auto;min-width:0;height:auto;scroll-snap-align:start;
+}
+.lineup-group{
+  position:relative;width:100%;max-width:none;
+  margin-top:0;
+  padding:clamp(20px,2.5vw,34px) 0 clamp(24px,3.2vw,42px);overflow:hidden;isolation:isolate;
+}
+.lineup-group:nth-of-type(1){background:var(--cocoa);color:var(--cream-soft)}
+.lineup-group:nth-of-type(2){background:var(--teal-star);color:var(--cream-soft)}
+.lineup-group:nth-of-type(3){background:var(--honey);color:var(--cocoa)}
+.lineup-group-title{
+  position:relative;z-index:2;margin:0 auto clamp(8px,1.2vw,14px);padding:0 20px;
+  color:var(--cream-soft);font-family:var(--font-display);font-size:clamp(32px,6.4vw,68px);
+  font-weight:400;line-height:.88;text-transform:uppercase;text-align:center;
+  writing-mode:horizontal-tb;transform:none;letter-spacing:.005em;
+}
+.lineup-group:nth-of-type(2) .lineup-group-title{color:var(--cream-soft)}
+.lineup-group:nth-of-type(3) .lineup-group-title{color:var(--cocoa)}
+.lineup-group .full-lineup-grid{position:relative;z-index:1}
+.lineup-group:nth-of-type(2) .prod-card-name,
+.lineup-group:nth-of-type(2) .prod-card-price{color:var(--cream-soft)}
+.lineup-group:nth-of-type(2) .prod-card-price small{color:rgba(253,238,223,.78)}
+.lineup-group:nth-of-type(3) .prod-card-name,
+.lineup-group:nth-of-type(3) .prod-card-price{color:var(--cocoa)}
+.lineup-group:nth-of-type(3) .prod-card-price small{color:var(--cocoa-soft)}
+.lineup-group:nth-of-type(3) .btn.on-dark{background:var(--cocoa);color:var(--cream-soft)}
+.lineup-pager{display:flex;justify-content:center;align-items:center;gap:10px;margin:18px auto 0;position:relative;z-index:3}
+.lineup-pager button{width:11px;height:11px;padding:0;border:1.5px solid currentColor;border-radius:50%;background:transparent;color:var(--cream-soft);opacity:.62;transition:width .25s var(--ease-pop),border-radius .25s var(--ease-pop),background .25s,opacity .25s}
+.lineup-pager button.is-active{width:30px;border-radius:999px;background:currentColor;opacity:1}
+.lineup-pager button:focus-visible{outline:3px solid var(--honey);outline-offset:4px}
+.carousel-section.dark .full-lineup-grid .prod-card-photo{
+  position:relative;height:auto;aspect-ratio:4/5;min-height:0;
+  border:0;border-radius:0;background:transparent;overflow:visible;
+}
+.full-lineup-grid .prod-card-photo img{
+  position:absolute;left:50%;bottom:0;width:auto;height:auto;max-width:96%;max-height:98%;
+  object-fit:contain;object-position:center bottom;transform:translate(-50%,var(--asset-bottom,0%));
+}
+/* Hopper's source cutout has ~8% transparent canvas below the visible plushie.
+   Compensate that known asset margin so its visible feet share the product baseline. */
+.full-lineup-grid [data-product-slug="hopper-plushie"] .prod-card-photo img{
+  max-height:100%;
+}
+.full-lineup-grid .prod-card-copy{
+  flex:none;width:100%;min-height:0;grid-template-rows:1.2em auto;
+  align-content:start;justify-items:center;gap:7px;margin-top:8px;text-align:center;
+}
+.full-lineup-grid .prod-card-name{
+  display:flex;align-items:flex-start;justify-content:center;width:100%;min-height:1.2em;margin-inline:auto;text-align:center;
+  font-family:var(--font-display);font-size:clamp(13px,1.15vw,17px);font-weight:400;line-height:1.05;
+  white-space:nowrap;
+}
+.lineup-group>.kicker{position:relative;z-index:2;margin:0 auto 10px;text-align:center;color:rgba(253,238,223,.75)}
+.lineup-group:nth-of-type(3)>.kicker{color:var(--cocoa-soft)}
+.full-lineup-grid .prod-card-price{justify-self:center;align-self:start;width:100%;margin-inline:auto;text-align:center}
+.full-lineup-grid .prod-card-price small{color:rgba(253,238,223,.68)}
+.full-lineup-grid .prod-card .btn{margin-top:auto}
+@media (min-width:861px) and (pointer:fine){
+  .full-lineup-grid{cursor:grab}
+  .full-lineup-grid.is-dragging{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
+  .full-lineup-grid .prod-card{transition:transform .45s var(--ease-pop)}
+  .full-lineup-grid .prod-card-photo img{transition:transform .45s var(--ease-pop)}
+  .full-lineup-grid .prod-card:hover,.full-lineup-grid .prod-card:focus-within{transform:translateY(-6px)}
+  .full-lineup-grid .prod-card:hover .prod-card-photo img,
+  .full-lineup-grid .prod-card:focus-within .prod-card-photo img{transform:translate(-50%,var(--asset-bottom,0%)) scale(1.025)}
+  .full-lineup-grid .prod-card:hover .btn,
+  .full-lineup-grid .prod-card:focus-within .btn{background:var(--honey);color:var(--cocoa)}
+  .full-lineup-grid .prod-card .btn:focus-visible{outline-color:var(--honey);background:var(--honey);color:var(--cocoa)}
+}
+@media (prefers-reduced-motion:reduce){
+  .full-lineup-grid .prod-card{transition:none!important;transform:none!important}
+  .full-lineup-grid .prod-card-photo img{transition:none!important;transform:translate(-50%,var(--asset-bottom,0%))!important}
+}
+@media (max-width:980px){
+  .lineup-group-title{
+    font-size:clamp(32px,6.4vw,68px);line-height:.88;
+  }
+  .full-lineup-grid{--carousel-gutter:clamp(16px,4vw,34px)}
+  .full-lineup-grid .prod-card-photo{aspect-ratio:1/1}
+  .full-lineup-grid .prod-card{flex-basis:calc((100% - var(--carousel-gutter) - var(--carousel-gutter) - var(--carousel-gap) - var(--carousel-gap) - var(--carousel-peek))/2)}
+}
+@media (max-width:560px){
+  .lineup-group{margin-top:0;padding:20px 0 24px}
+  .lineup-group-title{font-size:clamp(32px,10vw,48px);padding-inline:16px}
+  .full-lineup-grid{--carousel-gap:20px;--carousel-gutter:20px;--carousel-peek:72px}
+  .full-lineup-grid .prod-card{flex-basis:calc(100% - var(--carousel-gutter) - var(--carousel-gutter) - var(--carousel-gap) - var(--carousel-peek));max-width:none;width:auto;margin-inline:0}
+  .full-lineup-grid .prod-card-photo{aspect-ratio:4/3}
+}
+
+
+.retail-band{
+  background:var(--teal-star);color:var(--cream-soft);text-align:center;
+  padding:clamp(56px,8vw,96px) 24px;position:relative;overflow:hidden;
+}
+.retail-band h2{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(36px,7vw,84px);line-height:.9;margin:6px 0 26px;
+}
+
+/* ============ REVIEWS ============ */
+#p-reviews{background:var(--cocoa);padding:clamp(48px,7vw,84px) 20px clamp(52px,7vw,92px);position:relative;overflow:hidden}
+#p-reviews .kicker{text-align:center;color:rgba(253,238,223,.8)}
+#p-reviews h2{text-align:center;margin-bottom:clamp(28px,4vw,44px);color:var(--cream-soft)}
+#p-reviews .hover-hopper{margin-bottom:22px;--hh:56px}
+.review-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px;max-width:1180px;margin:0 auto;
+}
+.review-card{
+  border-radius:26px;padding:30px 24px 22px;min-height:230px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:18px;
+  text-align:left;
+}
+.review-card .q::before{content:"\201C"}
+.review-card .q::after{content:"\201D"}
+.review-card .q{
+  font-family:var(--font-display);font-weight:400;font-size:17.5px;
+  line-height:1.3;text-transform:uppercase;letter-spacing:.02em;
+}
+.review-card .who{font-weight:800;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.review-card.c-cocoa{background:var(--cream-soft);color:var(--cocoa)}
+.review-card.c-gold{background:#FFC24B;color:var(--cocoa)}
+.review-card.c-brick{background:#B23A27;color:var(--cream-soft)}
+.review-card.c-teal{background:var(--teal-star);color:var(--cream-soft)} /* 7.0:1 — #2F8577 was 3.9:1 */
+
+/* ============ FULLSCREEN ============ */
+.h-full {
+  height: 100%;
+}
+.w-full {
+  width: 100%;
+}
+
+</style>
+<link rel="stylesheet" href="pour.css"><script>(function(){try{var s=sessionStorage.getItem("dcb-pour");if(!s)return;sessionStorage.removeItem("dcb-pour");if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;var d=document.documentElement;d.setAttribute("data-pour","in");window.__pour=JSON.parse(s);setTimeout(function(){d.removeAttribute("data-pour")},1800)}catch(e){}})();</script><script src="pour.js" defer></script><link rel="stylesheet" href="shop.css"><script src="shop.js" defer></script></head>
+<body>
+<!-- MENU -->
+<div id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu-top">
+    <span class="logo-star" data-star="26" data-fill="#572010"></span>
+    <button class="icon-btn" id="menu-close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="index.html#top" data-menu-link>Home</a>
+    <a href="products.html" data-menu-link>Products</a>
+    <a href="affiliate.html" data-menu-link>Become an Affiliate</a>
+    <a href="story.html" data-menu-link>Our Story</a>
+  </nav>
+  <div class="menu-foot">
+    <img src="assets/hopper-hero.png" alt="Hopper, the David Craft Ale hop mascot, hugging a bottle" style="width:92px;height:auto" onerror="this.remove()">
+    <span class="logo-star" data-star="22" data-fill="#572010"></span>
+    <a href="terms.html" data-menu-link>Terms and conditions</a>
+    <a href="privacy.html" data-menu-link>Cookies and Privacy Policy</a>
+    <span>Drink Responsibly</span>
+  </div>
+</div>
+
+
+<!-- PRODUCT QUICK VIEW — transparent composition over a blurred page backdrop -->
+<div class="quick-view" id="quick-view" aria-hidden="true">
+  <section class="quick-view-dialog" role="dialog" aria-modal="true" aria-labelledby="quick-view-title" aria-describedby="quick-view-description">
+    <button class="quick-view-close" id="quick-view-close" type="button" aria-label="Close product details">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+    <div class="quick-view-stage" aria-hidden="true">
+      <span class="quick-view-star qs-4" data-sparkle="26" data-fill="#E8A81E"></span>
+      <span class="quick-view-glow"></span><span class="quick-view-ring"></span>
+      <div class="quick-view-product-frame"><img class="quick-view-product" id="quick-view-image" src="" alt=""></div>
+    </div>
+    <div class="quick-view-copy">
+      <p class="quick-view-kicker">Meet the lineup</p>
+      <h2 class="quick-view-title" id="quick-view-title"></h2>
+      <p class="quick-view-description" id="quick-view-description"></p>
+      <div class="quick-view-meta"><strong class="quick-view-price" id="quick-view-price"></strong><span class="quick-view-package" id="quick-view-package"></span></div>
+      <button class="btn quick-view-add" id="quick-view-add" type="button">Add to cart <span aria-hidden="true">→</span></button>
+    </div>
+  </section>
+</div>
+
+<!-- HEADER -->
+<header class="site-header" id="top">
+  <div class="hgroup">
+    <button class="icon-btn" id="menu-open" aria-label="Open menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <button class="icon-btn" type="button" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+    </button>
+  </div>
+  <a href="index.html#top" class="logo-hopper" aria-label="David Craft Ale — home">
+    <img src="assets/hopper-hero.png" alt="" onerror="this.remove()">
+  </a>
+  <div class="hgroup right">
+    <button class="icon-btn" data-toast="Accounts open with the taproom. Stay tuned!" aria-label="Account">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+    </button>
+    <button class="icon-btn cart-button" id="cart-button" aria-label="Cart, empty" aria-controls="dcb-cart-drawer" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.6 12.5a1.8 1.8 0 0 0 1.8 1.5h7.9a1.8 1.8 0 0 0 1.8-1.4L21 8H6"/></svg>
+      <span class="cart-count" id="cart-count" aria-hidden="true">0</span>
+    </button>
+  </div>
+</header>
+<div class="announce">Free shipping on orders over $55 · Drink responsibly</div>
+
+<main>
+  <!-- HERO — atmospheric mood shot, no product shown yet -->
+  <section class="products-hero w-full h-full" aria-label="Our products">
+    <video class="products-hero-bg" src="assets/story-loop.mp4" poster="assets/story-poster.png" autoplay muted loop playsinline aria-hidden="true"></video>
+    <div class="products-hero-overlay" aria-hidden="true"></div>
+    <div class="products-hero-content">
+      <h1 class="products-hero-title">Trace Every Pour<br>Back to the Batch</h1>
+      <p class="products-hero-caption">David Craft Ale — Small Batch, Big Personality</p>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee-track-products"></div></div>
+
+  <!-- CAROUSEL 1 — the core beer range (light band) -->
+  <section class="carousel-section light" aria-label="The four brews">
+    <p class="kicker reveal">From our brewhouse to yours</p>
+    <h2 class="section-head reveal d1">The Four Brews</h2>
+    <span class="carousel-badge" id="badge-lineup" aria-hidden="true"></span>
+    <div class="prod-carousel" id="carousel-lineup">
+      <article class="prod-card">
+        <div class="prod-card-photo"><img src="assets/bottle-blonde.png" alt="David Craft Ale Blonde Ale bottle" loading="lazy"></div>
+        <h3 class="prod-card-name">Blonde Ale</h3>
+        <button class="btn" data-toast="Cheers! Online orders open with the taproom.">Learn More <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card">
+        <div class="prod-card-photo"><img src="assets/bottle-amber.png" alt="David Craft Ale Amber Pale Ale bottle" loading="lazy"></div>
+        <h3 class="prod-card-name">Amber Pale Ale</h3>
+        <button class="btn" data-toast="Cheers! Online orders open with the taproom.">Learn More <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card">
+        <div class="prod-card-photo"><img src="assets/bottle-ipa.png" alt="David Craft Ale IPA bottle" loading="lazy"></div>
+        <h3 class="prod-card-name">IPA</h3>
+        <button class="btn" data-toast="Cheers! Online orders open with the taproom.">Learn More <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card">
+        <div class="prod-card-photo"><img src="assets/bottle-dark.png" alt="David Craft Ale Dark Lager bottle" loading="lazy"></div>
+        <h3 class="prod-card-name">Dark Lager</h3>
+        <button class="btn" data-toast="Cheers! Online orders open with the taproom.">Learn More <span aria-hidden="true">→</span></button>
+      </article>
+    </div>
+  </section>
+
+  <!-- FULL LINEUP — every product/SKU currently defined by the project -->
+  <section class="carousel-section dark full-lineup-section" aria-labelledby="full-lineup-title">
+    <p class="kicker reveal">Every brew and one fuzzy friend</p>
+    <h2 class="section-head reveal d1" id="full-lineup-title">Bottles</h2>
+    <span class="lineup-chaser" id="lineup-chaser" aria-hidden="true">
+      <img class="f1" src="assets/hopper-up.png" alt="">
+      <img class="f2" src="assets/hopper-down.png" alt="">
+    </span>
+    <section class="lineup-group" aria-label="Bottles products">
+    <div class="full-lineup-grid" id="full-lineup-grid" role="region" aria-label="Bottles products" tabindex="0">
+      <article class="prod-card reveal" style="--asset-bottom:.3%" data-product-slug="blonde-ale-bottle" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img src="assets/bottle-blonde.png" alt="David Craft Ale Blonde Ale bottle" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Blonde Ale Bottle">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d1" style="--asset-bottom:.3%" data-product-slug="amber-pale-ale-bottle" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img src="assets/bottle-amber.png" alt="David Craft Ale Amber Pale Ale bottle" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Bottle">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d2" style="--asset-bottom:.4%" data-product-slug="ipa-bottle" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img src="assets/bottle-ipa.png" alt="David Craft Ale IPA bottle" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="IPA Bottle">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d3" style="--asset-bottom:1.8%" data-product-slug="dark-lager-bottle" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img src="assets/bottle-dark.png" alt="David Craft Ale Dark Lager bottle" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Dark Lager Bottle">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal" style="--asset-bottom:3%" data-product-slug="blonde-ale-bottle-six-pack" data-product-package="Bottle six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-bottles-blonde.png" alt="Blonde Ale bottle six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Blonde Ale Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d1" style="--asset-bottom:2.7%" data-product-slug="amber-pale-ale-bottle-six-pack" data-product-package="Bottle six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-bottles-amber.png" alt="Amber Pale Ale bottle six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d2" style="--asset-bottom:3.7%" data-product-slug="ipa-bottle-six-pack" data-product-package="Bottle six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-bottles-ipa.png" alt="IPA bottle six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="IPA Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d3" style="--asset-bottom:3%" data-product-slug="dark-lager-bottle-six-pack" data-product-package="Bottle six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-bottles-dark.png" alt="Dark Lager bottle six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Dark Lager Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+    </div>
+    <nav class="lineup-pager" aria-label="Bottles carousel pages" data-carousel-pager="full-lineup-grid">
+      <button class="is-active" type="button" aria-label="Show individual bottles" aria-current="true"></button>
+      <button type="button" aria-label="Show bottle six-packs" aria-current="false"></button>
+    </nav>
+    </section>
+    <section class="lineup-group" aria-labelledby="lineup-cans-title">
+    <p class="kicker reveal">Crack open the lineup</p>
+    <h3 class="lineup-group-title" id="lineup-cans-title">Cans</h3>
+    <div class="full-lineup-grid" id="full-lineup-cans-grid" role="region" aria-label="Cans products" tabindex="0">
+      <article class="prod-card reveal" style="--asset-bottom:2.5%" data-product-slug="blonde-ale-can" data-product-package="Individual can">
+        <div class="prod-card-photo"><img src="assets/can-blonde.png" alt="Blonde Ale can" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Blonde Ale Can">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d1" style="--asset-bottom:2.4%" data-product-slug="amber-pale-ale-can" data-product-package="Individual can">
+        <div class="prod-card-photo"><img src="assets/can-amber.png" alt="Amber Pale Ale can" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Can">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d2" style="--asset-bottom:2.4%" data-product-slug="ipa-can" data-product-package="Individual can">
+        <div class="prod-card-photo"><img src="assets/can-ipa.png" alt="IPA can" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="IPA Can">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d3" style="--asset-bottom:2.4%" data-product-slug="dark-lager-can" data-product-package="Individual can">
+        <div class="prod-card-photo"><img src="assets/can-dark.png" alt="Dark Lager can" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Dark Lager Can">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal" style="--asset-bottom:2.4%" data-product-slug="blonde-ale-can-six-pack" data-product-package="Can six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-cans-blonde.png" alt="Blonde Ale can six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Blonde Ale Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d1" style="--asset-bottom:2.4%" data-product-slug="amber-pale-ale-can-six-pack" data-product-package="Can six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-cans-amber.png" alt="Amber Pale Ale can six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d2" style="--asset-bottom:.8%" data-product-slug="ipa-can-six-pack" data-product-package="Can six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-cans-ipa.png" alt="IPA can six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="IPA Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d3" style="--asset-bottom:2.4%" data-product-slug="dark-lager-can-six-pack" data-product-package="Can six-pack">
+        <div class="prod-card-photo"><img src="assets/sixpack-cans-dark.png" alt="Dark Lager can six-pack" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Dark Lager Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+    </div>
+    <nav class="lineup-pager" aria-label="Cans carousel pages" data-carousel-pager="full-lineup-cans-grid">
+      <button class="is-active" type="button" aria-label="Show individual cans" aria-current="true"></button>
+      <button type="button" aria-label="Show can six-packs" aria-current="false"></button>
+    </nav>
+    </section>
+    <section class="lineup-group" aria-labelledby="lineup-accessories-title">
+    <p class="kicker reveal">A little more David Craft Ale</p>
+    <h3 class="lineup-group-title" id="lineup-accessories-title">Accessories</h3>
+    <div class="full-lineup-grid" id="full-lineup-accessories-grid" role="region" aria-label="Accessories products" tabindex="0">
+      <article class="prod-card reveal" style="--asset-bottom:7.8%" data-product-slug="hopper-plushie" data-product-package="Limited plushie" data-product-price="29.99">
+        <div class="prod-card-photo"><img src="assets/Plushie_nobg.png" alt="Hopper plushie" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Hopper Plushie</h3><p class="prod-card-price">29.99 USD<small>1 plushie</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Hopper Plushie">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d1" data-product-slug="hopper-beer-mats" data-product-package="Set of four beer mats" data-product-price="9.99">
+        <div class="prod-card-photo"><img src="assets/hopper-beer-mats.png" alt="Set of four Hopper beer mats" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Hopper Beer Mats</h3><p class="prod-card-price">9.99 USD<small>Set of 4</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Hopper Beer Mats">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d2" data-product-slug="hopper-bottle-opener" data-product-package="Metal bottle opener" data-product-price="6.99">
+        <div class="prod-card-photo"><img src="assets/hopper-bottle-opener.png" alt="Hopper metal bottle opener" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Hopper Bottle Opener</h3><p class="prod-card-price">6.99 USD<small>1 opener</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Hopper Bottle Opener">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+      <article class="prod-card reveal d3" data-product-slug="hopper-pint-glass" data-product-package="16 oz pint glass" data-product-price="8.99">
+        <div class="prod-card-photo"><img src="assets/hopper-pint-glass.png" alt="Hopper 16 ounce pint glass" loading="lazy"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Hopper Pint Glass</h3><p class="prod-card-price">8.99 USD<small>16 oz</small></p></div>
+        <button class="btn on-dark" data-add-to-cart="Hopper Pint Glass">Add to cart <span aria-hidden="true">→</span></button>
+      </article>
+    </div>
+    </section>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="p-reviews" aria-label="Reviews">
+    <p class="kicker reveal">Straight from the taproom</p>
+    <h2 class="section-head reveal d1">Real Honest Pours</h2>
+    <div class="review-grid">
+      <figure class="review-card c-cocoa reveal">
+        <blockquote class="q">Six-pack didn't survive the drive home. Worth it.</blockquote>
+        <figcaption class="who">Theo · Backyard BBQ Regular</figcaption>
+      </figure>
+      <figure class="review-card c-gold reveal d1">
+        <blockquote class="q">Cans travel better than my last three relationships.</blockquote>
+        <figcaption class="who">Marisol · Camping Trip Organizer</figcaption>
+      </figure>
+      <figure class="review-card c-brick reveal d2">
+        <blockquote class="q">Ordered one six-pack. Now it's a standing order.</blockquote>
+        <figcaption class="who">Dev · Bottle Shop Regular</figcaption>
+      </figure>
+      <figure class="review-card c-teal reveal d3">
+        <blockquote class="q">The Hopper can art alone gets it picked off the shelf.</blockquote>
+        <figcaption class="who">Anaya · First-Time Buyer</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- RETAIL AVAILABILITY BAND -->
+  <section class="retail-band" aria-label="Where to find David Craft Ale">
+    <p class="kicker reveal" style="color:var(--cream-soft)">Available at select taprooms &amp; bottle shops</p>
+    <h2 class="reveal d1">Real Beer,<br>Real Close By</h2>
+    <button class="btn on-dark reveal d2" data-toast="The store locator opens with the taproom. Check back soon!">Find a Taproom <span aria-hidden="true">→</span></button>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <nav class="foot-nav" aria-label="Footer">
+    <a href="index.html#top">Home</a>
+    <a href="products.html">Products</a>
+    <a href="hopper.html">Hopper Plushie</a>
+    <a href="story.html">Our Story</a>
+    <a href="index.html#reviews">Reviews</a>
+    <a href="affiliate.html">Become an Affiliate</a>
+  </nav>
+  <div class="foot-wordmark" aria-hidden="true">David Craft Ale</div>
+  <div class="foot-links">
+    <a href="terms.html">Terms and conditions</a>
+    <a href="privacy.html">Cookies and Privacy Policy</a>
+    <span>Drink Responsibly</span>
+  </div>
+  <div class="foot-star" data-star="26" data-fill="#572010"></div>
+  <p class="foot-note">© 2026 David Craft Ale · Brewed with meticulous attention &amp; questionable puns · 18+</p>
+</footer>
+
+<div id="toast" role="status"></div>
+<script>var k="1.1.18";function w(r,t,e){return Math.max(r,Math.min(t,e))}function W(r,t,e){return(1-e)*r+e*t}function z(r,t,e,i){return W(r,t,1-Math.exp(-e*i))}function x(r,t){return(r%t+t)%t}var y=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(t){if(!this.isRunning)return;let e=!1;if(this.duration&&this.easing){this.currentTime+=t;let i=w(0,this.currentTime/this.duration,1);e=i>=1;let s=e?1:this.easing(i);this.value=this.from+(this.to-this.from)*s}else this.lerp?(this.value=z(this.value,this.to,this.lerp*60,t),Math.round(this.value)===this.to&&(this.value=this.to,e=!0)):(this.value=this.to,e=!0);e&&this.stop(),this.onUpdate?.(this.value,e)}stop(){this.isRunning=!1}fromTo(t,e,{lerp:i,duration:s,easing:o,onStart:l,onUpdate:h}){this.from=this.value=t,this.to=e,this.lerp=i,this.duration=s,this.easing=o,this.currentTime=0,this.isRunning=!0,l?.(),this.onUpdate=h}};function R(r,t){let e;return function(...i){let s=this;clearTimeout(e),e=setTimeout(()=>{e=void 0,r.apply(s,i)},t)}}var E=class{constructor(t,e,{autoResize:i=!0,debounce:s=250}={}){this.wrapper=t;this.content=e;i&&(this.debouncedResize=R(this.resize,s),this.wrapper instanceof Window?window.addEventListener("resize",this.debouncedResize,!1):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener("resize",this.debouncedResize,!1)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}};var f=class{events={};emit(t,...e){let i=this.events[t]||[];for(let s=0,o=i.length;s<o;s++)i[s]?.(...e)}on(t,e){return this.events[t]?.push(e)||(this.events[t]=[e]),()=>{this.events[t]=this.events[t]?.filter(i=>e!==i)}}off(t,e){this.events[t]=this.events[t]?.filter(i=>e!==i)}destroy(){this.events={}}};var _=100/6,u={passive:!1},T=class{constructor(t,e={wheelMultiplier:1,touchMultiplier:1}){this.element=t;this.options=e;window.addEventListener("resize",this.onWindowResize,!1),this.onWindowResize(),this.element.addEventListener("wheel",this.onWheel,u),this.element.addEventListener("touchstart",this.onTouchStart,u),this.element.addEventListener("touchmove",this.onTouchMove,u),this.element.addEventListener("touchend",this.onTouchEnd,u)}touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new f;on(t,e){return this.emitter.on(t,e)}destroy(){this.emitter.destroy(),window.removeEventListener("resize",this.onWindowResize,!1),this.element.removeEventListener("wheel",this.onWheel,u),this.element.removeEventListener("touchstart",this.onTouchStart,u),this.element.removeEventListener("touchmove",this.onTouchMove,u),this.element.removeEventListener("touchend",this.onTouchEnd,u)}onTouchStart=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:0,y:0},this.emitter.emit("scroll",{deltaX:0,deltaY:0,event:t})};onTouchMove=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t,s=-(e-this.touchStart.x)*this.options.touchMultiplier,o=-(i-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:s,y:o},this.emitter.emit("scroll",{deltaX:s,deltaY:o,event:t})};onTouchEnd=t=>{this.emitter.emit("scroll",{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:t})};onWheel=t=>{let{deltaX:e,deltaY:i,deltaMode:s}=t,o=s===1?_:s===2?this.window.width:1,l=s===1?_:s===2?this.window.height:1;e*=o,i*=l,e*=this.options.wheelMultiplier,i*=this.options.wheelMultiplier,this.emitter.emit("scroll",{deltaX:e,deltaY:i,event:t})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};var L=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;__rafID=null;isTouching;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new y;emitter=new f;dimensions;virtualScroll;constructor({wrapper:t=window,content:e=document.documentElement,eventsTarget:i=t,smoothWheel:s=!0,syncTouch:o=!1,syncTouchLerp:l=.075,touchInertiaMultiplier:h=35,duration:S,easing:d=H=>Math.min(1,1.001-Math.pow(2,-10*H)),lerp:c=.1,infinite:p=!1,orientation:b="vertical",gestureOrientation:n="vertical",touchMultiplier:a=1,wheelMultiplier:v=1,autoResize:g=!0,prevent:m,virtualScroll:N,overscroll:M=!0,autoRaf:O=!1,__experimental__naiveDimensions:D=!1}={}){window.lenisVersion=k,(!t||t===document.documentElement||t===document.body)&&(t=window),this.options={wrapper:t,content:e,eventsTarget:i,smoothWheel:s,syncTouch:o,syncTouchLerp:l,touchInertiaMultiplier:h,duration:S,easing:d,lerp:c,infinite:p,gestureOrientation:n,orientation:b,touchMultiplier:a,wheelMultiplier:v,autoResize:g,prevent:m,virtualScroll:N,overscroll:M,autoRaf:O,__experimental__naiveDimensions:D},this.dimensions=new E(t,e,{autoResize:g}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.addEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll=new T(i,{touchMultiplier:a,wheelMultiplier:v}),this.virtualScroll.on("scroll",this.onVirtualScroll),this.options.autoRaf&&(this.__rafID=requestAnimationFrame(this.raf))}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.removeEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName(),this.__rafID&&cancelAnimationFrame(this.__rafID)}on(t,e){return this.emitter.on(t,e)}off(t,e){return this.emitter.off(t,e)}setScroll(t){this.isHorizontal?this.rootElement.scrollLeft=t:this.rootElement.scrollTop=t}onPointerDown=t=>{t.button===1&&this.reset()};onVirtualScroll=t=>{if(typeof this.options.virtualScroll=="function"&&this.options.virtualScroll(t)===!1)return;let{deltaX:e,deltaY:i,event:s}=t;if(this.emitter.emit("virtual-scroll",{deltaX:e,deltaY:i,event:s}),s.ctrlKey||s.lenisStopPropagation)return;let o=s.type.includes("touch"),l=s.type.includes("wheel");this.isTouching=s.type==="touchstart"||s.type==="touchmove";let h=e===0&&i===0;if(this.options.syncTouch&&o&&s.type==="touchstart"&&h&&!this.isStopped&&!this.isLocked){this.reset();return}let d=this.options.gestureOrientation==="vertical"&&i===0||this.options.gestureOrientation==="horizontal"&&e===0;if(h||d)return;let c=s.composedPath();c=c.slice(0,c.indexOf(this.rootElement));let p=this.options.prevent;if(c.find(m=>m instanceof HTMLElement&&(typeof p=="function"&&p?.(m)||m.hasAttribute?.("data-lenis-prevent")||o&&m.hasAttribute?.("data-lenis-prevent-touch")||l&&m.hasAttribute?.("data-lenis-prevent-wheel"))))return;if(this.isStopped||this.isLocked){s.preventDefault();return}if(!(this.options.syncTouch&&o||this.options.smoothWheel&&l)){this.isScrolling="native",this.animate.stop(),s.lenisStopPropagation=!0;return}let n=i;this.options.gestureOrientation==="both"?n=Math.abs(i)>Math.abs(e)?i:e:this.options.gestureOrientation==="horizontal"&&(n=e),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&i>0||this.animatedScroll===this.limit&&i<0))&&(s.lenisStopPropagation=!0),s.preventDefault();let a=o&&this.options.syncTouch,g=o&&s.type==="touchend"&&Math.abs(n)>5;g&&(n=this.velocity*this.options.touchInertiaMultiplier),this.scrollTo(this.targetScroll+n,{programmatic:!1,...a?{lerp:g?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit("scroll",this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling==="native"){let t=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-t,this.direction=Math.sign(this.animatedScroll-t),this.isStopped||(this.isScrolling="native"),this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){this.isStopped&&(this.reset(),this.isStopped=!1)}stop(){this.isStopped||(this.reset(),this.isStopped=!0)}raf=t=>{let e=t-(this.time||t);this.time=t,this.animate.advance(e*.001),this.options.autoRaf&&(this.__rafID=requestAnimationFrame(this.raf))};scrollTo(t,{offset:e=0,immediate:i=!1,lock:s=!1,duration:o=this.options.duration,easing:l=this.options.easing,lerp:h=this.options.lerp,onStart:S,onComplete:d,force:c=!1,programmatic:p=!0,userData:b}={}){if(!((this.isStopped||this.isLocked)&&!c)){if(typeof t=="string"&&["top","left","start"].includes(t))t=0;else if(typeof t=="string"&&["bottom","right","end"].includes(t))t=this.limit;else{let n;if(typeof t=="string"?n=document.querySelector(t):t instanceof HTMLElement&&t?.nodeType&&(n=t),n){if(this.options.wrapper!==window){let v=this.rootElement.getBoundingClientRect();e-=this.isHorizontal?v.left:v.top}let a=n.getBoundingClientRect();t=(this.isHorizontal?a.left:a.top)+this.animatedScroll}}if(typeof t=="number"){if(t+=e,t=Math.round(t),this.options.infinite?p&&(this.targetScroll=this.animatedScroll=this.scroll):t=w(0,t,this.limit),t===this.targetScroll){S?.(this),d?.(this);return}if(this.userData=b??{},i){this.animatedScroll=this.targetScroll=t,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),d?.(this),this.userData={};return}p||(this.targetScroll=t),this.animate.fromTo(this.animatedScroll,t,{duration:o,easing:l,lerp:h,onStart:()=>{s&&(this.isLocked=!0),this.isScrolling="smooth",S?.(this)},onUpdate:(n,a)=>{this.isScrolling="smooth",this.lastVelocity=this.velocity,this.velocity=n-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=n,this.setScroll(this.scroll),p&&(this.targetScroll=n),a||this.emit(),a&&(this.reset(),this.emit(),d?.(this),this.userData={},this.preventNextNativeScrollEvent())}})}}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.__experimental__naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?"x":"y"]}get isHorizontal(){return this.options.orientation==="horizontal"}get actualScroll(){return this.isHorizontal?this.rootElement.scrollLeft:this.rootElement.scrollTop}get scroll(){return this.options.infinite?x(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(t){this._isScrolling!==t&&(this._isScrolling=t,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(t){this._isStopped!==t&&(this._isStopped=t,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(t){this._isLocked!==t&&(this._isLocked=t,this.updateClassName())}get isSmooth(){return this.isScrolling==="smooth"}get className(){let t="lenis";return this.isStopped&&(t+=" lenis-stopped"),this.isLocked&&(t+=" lenis-locked"),this.isScrolling&&(t+=" lenis-scrolling"),this.isScrolling==="smooth"&&(t+=" lenis-smooth"),t}updateClassName(){this.cleanUpClassName(),this.rootElement.className=`${this.rootElement.className} ${this.className}`.trim()}cleanUpClassName(){this.rootElement.className=this.rootElement.className.replace(/lenis(-\w+)?/g,"").trim()}};globalThis.Lenis=L;</script>
+<script>
+const $ = s => document.querySelector(s);
+
+/* ================= STARS ================= */
+function starPath(cx, cy, R, points = 8, innerRatio = 0.42){
+  const r = R * innerRatio, step = Math.PI / points;
+  let d = '';
+  for(let i = 0; i < points * 2; i++){
+    const rad = i % 2 === 0 ? R : r;
+    const a = i * step - Math.PI / 2;
+    d += (i === 0 ? 'M' : 'L') + (cx + rad * Math.cos(a)).toFixed(2) + ' ' + (cy + rad * Math.sin(a)).toFixed(2);
+  }
+  return d + 'Z';
+}
+function starSVG(size, fill){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path class="p" fill="${fill}" d="${starPath(12,12,11)}"/></svg>`;
+}
+function sparkleSVG(size, fill){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path class="p" fill="${fill}" d="${starPath(12,12,11,4,0.2)}"/></svg>`;
+}
+document.querySelectorAll('[data-star]').forEach(el=>{
+  el.innerHTML = starSVG(+el.dataset.star, el.dataset.fill || '#2E1A0E');
+});
+document.querySelectorAll('[data-sparkle]').forEach(el=>{
+  el.innerHTML = sparkleSVG(+el.dataset.sparkle, el.dataset.fill || '#2E1A0E');
+});
+
+/* ================= MENU ================= */
+const menu = $('#menu');
+function syncBodyScrollLock(){
+  const overlayOpen = menu.classList.contains('is-open') ||
+    document.querySelector('#cart-drawer')?.classList.contains('is-open') ||
+    document.querySelector('#quick-view')?.classList.contains('is-open');
+  document.body.style.overflow = overlayOpen ? 'hidden' : '';
+}
+$('#menu-open').addEventListener('click', ()=>{menu.classList.add('is-open');syncBodyScrollLock();});
+function closeMenu(){menu.classList.remove('is-open');syncBodyScrollLock();}
+$('#menu-close').addEventListener('click', closeMenu);
+document.querySelectorAll('[data-menu-link]').forEach(a=>a.addEventListener('click', closeMenu));
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
+
+/* ================= TOAST ================= */
+let toastTimer;
+function showToast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+document.addEventListener('click', e=>{
+  const toastBtn = e.target.closest('[data-toast]');
+  if(toastBtn){ e.preventDefault(); showToast(toastBtn.dataset.toast); }
+});
+
+/* Cart state and the drawer live in shop.js now, shared by every page.
+   This only turns a product card into an item and hands it over. */
+function addCardToCart(card,addButton){
+  if(!card || !addButton) return;
+  const slug = card.dataset.productSlug;
+  const productName = addButton.dataset.addToCart || card.querySelector('.prod-card-name')?.textContent.trim() || 'Product';
+  window.DCB?.cart.add({
+    slug,
+    name: productName,
+    price: card.dataset.productPrice || '3.99',
+    currency: 'USD',
+    package: card.dataset.productPackage || 'Product',
+    image: card.querySelector('.prod-card-photo img').getAttribute('src')
+  });
+  showToast(`${productName} added to cart.`);
+
+  const labelNode = addButton.firstChild;
+  if(labelNode?.nodeType === Node.TEXT_NODE){
+    labelNode.textContent = 'Added ';
+    window.setTimeout(()=>{ labelNode.textContent = 'Add to cart '; },1200);
+  }
+}
+
+document.addEventListener('click', e=>{
+  const addButton = e.target.closest('[data-add-to-cart]');
+  if(!addButton) return;
+  addCardToCart(addButton.closest('[data-product-slug]'),addButton);
+});
+
+
+/* ================= SMOOTH SCROLL (Lenis) ================= */
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lenis = null;
+if(!reduceMotion && window.Lenis){
+  lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
+  (function raf(time){ lenis.raf(time); requestAnimationFrame(raf); })();
+}
+
+/* ================= PRODUCT QUICK VIEW ================= */
+const quickView = $('#quick-view');
+const quickViewDialog = quickView.querySelector('.quick-view-dialog');
+const quickViewClose = $('#quick-view-close');
+const quickViewImage = $('#quick-view-image');
+const quickViewTitle = $('#quick-view-title');
+const quickViewDescription = $('#quick-view-description');
+const quickViewPrice = $('#quick-view-price');
+const quickViewPackage = $('#quick-view-package');
+const quickViewAdd = $('#quick-view-add');
+let quickViewCard = null;
+let quickViewReturnFocus = null;
+
+const productDescriptions = {
+  'blonde-ale-bottle':'The bright, easygoing member of the David Craft Ale family, presented in the classic individual bottle.',
+  'amber-pale-ale-bottle':'A characterful amber pour with a warm personality, ready in the classic individual bottle.',
+  'ipa-bottle':'David Craft Ale IPA brings the lineup’s bold, hop-forward attitude to the classic individual bottle.',
+  'dark-lager-bottle':'The deeper, darker side of the Four Brews, presented in the classic individual bottle.',
+  'blonde-ale-bottle-six-pack':'Six Blonde Ale bottles gathered in one share-ready carrier for the fridge, table or next get-together.',
+  'amber-pale-ale-bottle-six-pack':'Six Amber Pale Ale bottles in a characterful carrier made for sharing a warmer David Craft Ale pour.',
+  'ipa-bottle-six-pack':'Six IPA bottles packed together when one bold, hop-forward David Craft Ale is simply not enough.',
+  'dark-lager-bottle-six-pack':'Six Dark Lager bottles in one carrier for keeping the deeper David Craft Ale pour close at hand.',
+  'blonde-ale-can':'The bright, easygoing Blonde Ale in a portable individual can that is ready to travel.',
+  'amber-pale-ale-can':'Amber Pale Ale’s warm character in a colorful individual can made for easy carrying.',
+  'ipa-can':'The bold, hop-forward member of the family in a portable individual can.',
+  'dark-lager-can':'The deeper, darker David Craft Ale pour in a portable individual can with plenty of personality.',
+  'blonde-ale-can-six-pack':'Six portable Blonde Ale cans packed together for picnics, parties and a well-stocked fridge.',
+  'amber-pale-ale-can-six-pack':'Six Amber Pale Ale cans gathered into one easy-carry pack for sharing.',
+  'ipa-can-six-pack':'Six bold IPA cans in one portable pack, ready for wherever good company gathers.',
+  'dark-lager-can-six-pack':'Six Dark Lager cans packed together for taking the deeper David Craft Ale pour along.',
+  'hopper-plushie':'Soft, squishy and full of personality. Give David Craft Ale’s favorite winged sidekick a permanent place on your shelf, sofa or bar cart.',
+  'hopper-beer-mats':'A set of four Hopper beer mats that brings the David Craft Ale mascot to every pour while helping protect the table.',
+  'hopper-bottle-opener':'A compact metal bottle opener featuring Hopper, made to stay close whenever a David Craft Ale bottle needs opening.',
+  'hopper-pint-glass':'A David Craft Ale pint glass featuring Hopper, ready to give the pour a proper home and the shelf more personality.'
+};
+
+function openQuickView(card){
+  if(!card) return;
+  const productImage = card.querySelector('.prod-card-photo img');
+  const productName = card.querySelector('.prod-card-name')?.textContent.trim() || 'David Craft Ale product';
+  const productPrice = card.querySelector('.prod-card-price');
+  const quantity = productPrice?.querySelector('small')?.textContent.trim();
+  const originalAdd = card.querySelector('[data-add-to-cart]');
+  quickViewCard = card;
+  quickViewReturnFocus = card;
+  quickView.classList.toggle('is-individual-bottle',[
+    'blonde-ale-bottle','amber-pale-ale-bottle','ipa-bottle','dark-lager-bottle'
+  ].includes(card.dataset.productSlug));
+  quickViewImage.src = productImage?.getAttribute('src') || '';
+  quickViewImage.alt = productImage?.alt || productName;
+  quickViewTitle.textContent = productName;
+  quickViewDescription.textContent = productDescriptions[card.dataset.productSlug] || 'A member of the David Craft Ale lineup, made to bring more character to the moment.';
+  quickViewPrice.textContent = (productPrice?.childNodes[0]?.textContent || `${card.dataset.productPrice || '3.99'} USD`).trim();
+  quickViewPackage.textContent = [card.dataset.productPackage,quantity].filter(Boolean).join(' · ');
+  quickViewAdd.dataset.addToCart = originalAdd?.dataset.addToCart || productName;
+  quickView.classList.add('is-open');
+  quickView.setAttribute('aria-hidden','false');
+  syncBodyScrollLock();
+  window.setTimeout(()=>quickViewClose.focus(),reduceMotion?0:480);
+}
+
+function closeQuickView(){
+  if(!quickView.classList.contains('is-open')) return;
+  quickView.classList.remove('is-open');
+  quickView.setAttribute('aria-hidden','true');
+  syncBodyScrollLock();
+  const returnTarget = quickViewReturnFocus;
+  quickViewCard = null;quickViewReturnFocus = null;
+  quickView.classList.remove('is-individual-bottle');
+  returnTarget?.focus();
+}
+
+document.querySelectorAll('.full-lineup-grid [data-product-slug]').forEach(card=>{
+  const name = card.querySelector('.prod-card-name')?.textContent.trim() || 'product';
+  card.tabIndex = 0;
+  card.setAttribute('aria-haspopup','dialog');
+  card.setAttribute('aria-label',`View ${name} details`);
+  card.addEventListener('click',event=>{
+    if(event.target.closest('button,a,input,select,textarea')) return;
+    openQuickView(card);
+  });
+  card.addEventListener('keydown',event=>{
+    if(event.target !== card || (event.key !== 'Enter' && event.key !== ' ')) return;
+    event.preventDefault();openQuickView(card);
+  });
+});
+
+quickViewClose.addEventListener('click',closeQuickView);
+quickView.addEventListener('pointerdown',event=>{
+  if(event.target === quickView) closeQuickView();
+});
+quickViewAdd.addEventListener('click',()=>{
+  if(!quickViewCard) return;
+  addCardToCart(quickViewCard,quickViewAdd);
+});
+quickViewDialog.addEventListener('keydown',event=>{
+  if(event.key === 'Escape'){
+    event.preventDefault();event.stopPropagation();closeQuickView();return;
+  }
+  if(event.key !== 'Tab') return;
+  const focusable = Array.from(quickViewDialog.querySelectorAll('button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])'));
+  if(!focusable.length) return;
+  const first = focusable[0],last = focusable[focusable.length-1];
+  if(event.shiftKey && document.activeElement === first){event.preventDefault();last.focus();}
+  else if(!event.shiftKey && document.activeElement === last){event.preventDefault();first.focus();}
+});
+document.addEventListener('keydown',event=>{
+  if(event.key === 'Escape' && quickView.classList.contains('is-open')) closeQuickView();
+});
+
+/* ================= FULL LINEUP HOPPER =================
+   Desktop fine-pointer only. Hopper trails the cursor by a small vector derived
+   from pointer delta, then eases toward that target and remains clamped inside the band. */
+(function(){
+  const section = document.querySelector('.full-lineup-section');
+  const hopper = document.querySelector('#lineup-chaser');
+  const pointerMode = matchMedia('(min-width: 861px) and (pointer: fine)');
+  if(!section || !hopper || reduceMotion || !pointerMode.matches) return;
+
+  let currentX = 0, currentY = 0, targetX = 0, targetY = 0;
+  let lastX = 0, lastY = 0, hasPoint = false, rafId = 0;
+  const pad = 14;
+
+  function clampTarget(x,y){
+    const box = section.getBoundingClientRect();
+    const hw = hopper.offsetWidth, hh = hopper.offsetHeight;
+    let nx = Math.max(pad, Math.min(box.width - hw - pad, x));
+    let ny = Math.max(pad, Math.min(box.height - hh - pad, y));
+    const cx = nx + hw/2, cy = ny + hh/2;
+    section.querySelectorAll('[data-add-to-cart]').forEach(button=>{
+      const b = button.getBoundingClientRect();
+      const left = b.left - box.left - 12, right = b.right - box.left + 12;
+      const top = b.top - box.top - 12, bottom = b.bottom - box.top + 12;
+      if(cx > left && cx < right && cy > top && cy < bottom){
+        ny = Math.max(pad, top - hh - 10);
+      }
+    });
+    return [nx,ny];
+  }
+
+  function tick(){
+    currentX += (targetX-currentX)*.14;
+    currentY += (targetY-currentY)*.14;
+    hopper.style.transform = `translate3d(${currentX}px,${currentY}px,0)`;
+    if(Math.abs(targetX-currentX)>.1 || Math.abs(targetY-currentY)>.1) rafId=requestAnimationFrame(tick);
+    else rafId=0;
+  }
+
+  section.addEventListener('pointermove',event=>{
+    const box = section.getBoundingClientRect();
+    const dx = hasPoint ? event.clientX-lastX : 0;
+    const dy = hasPoint ? event.clientY-lastY : 0;
+    const mag = Math.hypot(dx,dy);
+    const trail = mag ? Math.min(36,24+mag*.16) : 0;
+    const trailX = mag ? dx/mag*trail : 0;
+    const trailY = mag ? dy/mag*trail : 0;
+    const point = clampTarget(event.clientX-box.left-hopper.offsetWidth/2-trailX,event.clientY-box.top-hopper.offsetHeight/2-trailY);
+    targetX=point[0]; targetY=point[1];
+    if(!hasPoint){ currentX=targetX; currentY=targetY; }
+    hasPoint=true; lastX=event.clientX; lastY=event.clientY;
+    hopper.style.opacity='1';
+    if(!rafId) rafId=requestAnimationFrame(tick);
+  },{passive:true});
+  section.addEventListener('pointerleave',()=>{hopper.style.opacity='0';hasPoint=false;});
+})();
+
+/* ================= FULL LINEUP CAROUSELS ================= */
+document.querySelectorAll('.full-lineup-grid').forEach(carousel=>{
+  carousel.querySelectorAll('img').forEach(image=>image.draggable=false);
+  carousel.addEventListener('dragstart',event=>event.preventDefault());
+  const pager=document.querySelector(`[data-carousel-pager="${carousel.id}"]`);
+  const pagerButtons=pager?Array.from(pager.querySelectorAll('button')):[];
+  const step=()=>Math.max(1,carousel.clientWidth);
+  const update=()=>{
+    const maxScroll=Math.max(0,carousel.scrollWidth-carousel.clientWidth);
+    carousel.classList.toggle('is-at-end',carousel.scrollLeft>=maxScroll-2);
+    if(pagerButtons.length){
+      const activeIndex=carousel.scrollLeft>=maxScroll/2?1:0;
+      pagerButtons.forEach((button,index)=>{
+        const active=index===activeIndex;
+        button.classList.toggle('is-active',active);
+        button.setAttribute('aria-current',String(active));
+      });
+    }
+  };
+  pagerButtons.forEach((button,index)=>button.addEventListener('click',()=>{
+    const maxScroll=Math.max(0,carousel.scrollWidth-carousel.clientWidth);
+    carousel.scrollTo({left:index===0?0:maxScroll,behavior:reduceMotion?'auto':'smooth'});
+  }));
+  carousel.addEventListener('keydown',event=>{
+    if(event.key!=='ArrowLeft' && event.key!=='ArrowRight') return;
+    event.preventDefault();
+    carousel.scrollBy({left:event.key==='ArrowLeft'?-step():step(),behavior:reduceMotion?'auto':'smooth'});
+  });
+  let pointerId=null,startX=0,startScroll=0,dragged=false;
+  carousel.addEventListener('pointerdown',event=>{
+    if(event.pointerType!=='mouse' || event.button!==0) return;
+    pointerId=event.pointerId;startX=event.clientX;startScroll=carousel.scrollLeft;dragged=false;
+  });
+  carousel.addEventListener('pointermove',event=>{
+    if(event.pointerId!==pointerId) return;
+    const delta=event.clientX-startX;
+    if(!dragged && Math.abs(delta)<6) return;
+    if(!dragged){
+      dragged=true;carousel.classList.add('is-dragging');
+      carousel.setPointerCapture(pointerId);
+    }
+    carousel.scrollLeft=startScroll-delta;
+    event.preventDefault();
+  });
+  const finishDrag=event=>{
+    if(event.pointerId!==pointerId) return;
+    if(carousel.hasPointerCapture(pointerId)) carousel.releasePointerCapture(pointerId);
+    pointerId=null;carousel.classList.remove('is-dragging');update();
+  };
+  carousel.addEventListener('pointerup',finishDrag);
+  carousel.addEventListener('pointercancel',finishDrag);
+  carousel.addEventListener('click',event=>{
+    if(!dragged) return;
+    event.preventDefault();event.stopPropagation();dragged=false;
+  },true);
+  carousel.addEventListener('scroll',update,{passive:true});
+  new ResizeObserver(update).observe(carousel);
+  update();
+});
+
+/* ================= MARQUEE ================= */
+(function(){
+  const items = ['Small batch craft ale','Drink David Craft Ale','Est. 2023','Good beer, good company','Full lineup'];
+  const star = `<span class="sep">${starSVG(15,'#FFC24B')}</span>`;
+  const baseSeq = items.map(t=>`<span>${t}</span>`).join(star) + star;
+  const BASE_DUR = 26;
+
+  const track = $('#marquee-track-products');
+  track.innerHTML = baseSeq;
+  const baseWidth = track.scrollWidth || 1;
+  const targetWidth = Math.max(document.documentElement.clientWidth, screen.width || 0) * 1.25;
+  const repeats = Math.max(1, Math.ceil(targetWidth / baseWidth));
+
+  const half = baseSeq.repeat(repeats);
+  track.innerHTML = half + half;
+  track.style.animationDuration = (BASE_DUR * repeats) + 's';
+})();
+
+/* ================= ROTATING BADGES ================= */
+(function(){
+  const R = 34, C = 46;
+  const svg = `
+  <svg viewBox="0 0 92 92" aria-hidden="true">
+    <defs><path id="badge-arc-p" d="M ${C} ${C} m -${R},0 a ${R},${R} 0 1,1 ${R*2},0 a ${R},${R} 0 1,1 -${R*2},0"/></defs>
+    <circle cx="${C}" cy="${C}" r="45" fill="#FFC24B"/>
+    <path d="${starPath(C, C, 13)}" fill="#572010"/>
+    <text font-family="'Hanken Grotesk'" font-weight="800" font-size="10.5" letter-spacing="2.4" fill="#572010">
+      <textPath href="#badge-arc-p">DAVID CRAFT ALE · EST 2023 ·</textPath>
+    </text>
+  </svg>`;
+  document.querySelectorAll('.carousel-badge').forEach((el,i)=>{
+    el.innerHTML = svg.replace('badge-arc-p', 'badge-arc-p'+i).replace('#badge-arc-p', '#badge-arc-p'+i);
+  });
+})();
+
+/* ================= CAROUSEL DOTS =================
+   Deterministic scroll-position math, not IntersectionObserver — when every
+   card already fits on screen at once (common on wide viewports), an
+   observer fires for all of them near-simultaneously and whichever card is
+   last in DOM order wins arbitrarily, which is what previously left the
+   *last* dot lit at rest instead of the first. */
+document.querySelectorAll('.prod-carousel').forEach(carousel=>{
+  const cards = Array.from(carousel.querySelectorAll('.prod-card'));
+  const dotsEl = document.getElementById('dots-' + carousel.id.replace('carousel-',''));
+  if(!dotsEl || !cards.length) return;
+  dotsEl.innerHTML = cards.map((_,i)=>`<i class="${i===0?'is-active':''}"></i>`).join('');
+  const dots = Array.from(dotsEl.children);
+  let ticking = false;
+  function updateActive(){
+    ticking = false;
+    const mid = carousel.scrollLeft + carousel.clientWidth / 2;
+    let closest = 0, closestDist = Infinity;
+    cards.forEach((c,i)=>{
+      const d = Math.abs((c.offsetLeft + c.offsetWidth/2) - mid);
+      if(d < closestDist){ closestDist = d; closest = i; }
+    });
+    dots.forEach(d=>d.classList.remove('is-active'));
+    dots[closest]?.classList.add('is-active');
+  }
+  carousel.addEventListener('scroll', ()=>{
+    if(!ticking){ ticking = true; requestAnimationFrame(updateActive); }
+  }, {passive:true});
+});
+
+/* ================= SCROLL REVEALS ================= */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if(reduceMotion || !('IntersectionObserver' in window)){
+    els.forEach(el=>el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  },{threshold:.18});
+  els.forEach(el=>io.observe(el));
+})();
+
+/* ================= VIDEO FALLBACKS ================= */
+document.querySelectorAll('.products-hero-bg').forEach(v=>{
+  v.addEventListener('error', ()=>{ v.remove(); }, true);
+  if(reduceMotion){ v.removeAttribute('autoplay'); v.pause?.(); }
+});
+</script>
+</body>
+</html>

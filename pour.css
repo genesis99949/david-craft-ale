@@ -1,0 +1,123 @@
+/* ============================================================
+   THE POUR — layered rising page transition
+   ------------------------------------------------------------
+   Four bands rise from below in the beer palette, each one both
+   higher in z and later in time than the one before, so the last
+   to arrive (cocoa) is the one left covering the screen. Bubbles
+   rise through the cocoa while the next page loads, then the
+   stack unwinds upward and the page is revealed.
+
+   Mounted on every page by three things:
+     1. this file
+     2. the pre-paint guard inline in each <head>
+     3. pour.js
+
+   Values below are the single source of truth — pour.js reads
+   them back off :root, so tuning happens here and nowhere else.
+   ============================================================ */
+
+:root{
+  --pour-cover:   800ms;
+  --pour-hold:    500ms;
+  --pour-reveal:  300ms;
+  --pour-stagger:  55ms;
+  --pour-bump:      0px;  /* scalloped foam crest; 0 = flat bands */
+  --pour-ease: cubic-bezier(.645,.045,.355,1);
+
+  --pour-1: #ffc24b;   /* honey  — leads */
+  --pour-2: #b23a27;   /* amber  */
+  --pour-3: #2f8577;   /* ipa    */
+  --pour-4: #572010;   /* cocoa  — lands last, holds the screen */
+  --pour-mark: #fdeedf;
+  --pour-bubble: rgba(253,238,223,.40);
+}
+
+/* Pre-paint cover. The inline <head> guard stamps data-pour="in"
+   before the body is parsed, so the incoming page paints covered
+   instead of flashing its content. pour.js hands this off to the
+   real overlay and clears the attribute; the guard's own timeout
+   clears it too if pour.js never runs, so a script failure can
+   never leave a dead screen. */
+html[data-pour="in"]::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:9998;
+  background:var(--pour-4);
+}
+
+.pour{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  overflow:hidden;
+  visibility:hidden;
+  pointer-events:none;
+}
+.pour.is-on{
+  visibility:visible;
+  pointer-events:auto;   /* swallow double-clicks mid-transition */
+}
+
+.pour__layer{
+  position:absolute;
+  left:-6%;
+  width:112%;
+  height:100%;
+  bottom:0;
+  background:var(--c);
+  transform:translateY(100%);
+  will-change:transform;
+}
+
+/* Scalloped foam crest: a tiled row of semicircles riding the
+   leading edge. At --pour-bump 0 it collapses to nothing and the
+   bands read as flat colour. */
+.pour__layer::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:100%;
+  height:var(--b);
+  background:radial-gradient(circle var(--b) at 50% 100%, var(--c) 0 97%, transparent 100%)
+             0 0 / calc(var(--b) * 2) var(--b) repeat-x;
+}
+
+.pour__layer--1{ --c:var(--pour-1); --b:calc(var(--pour-bump) * .6);  z-index:1; }
+.pour__layer--2{ --c:var(--pour-2); --b:calc(var(--pour-bump) * .8);  z-index:2; }
+.pour__layer--3{ --c:var(--pour-3); --b:var(--pour-bump);             z-index:3; }
+.pour__layer--4{ --c:var(--pour-4); --b:calc(var(--pour-bump) * 1.25); z-index:4; }
+
+.pour__bubbles{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  opacity:0;
+}
+.pour__bub{
+  position:absolute;
+  bottom:-10%;
+  border-radius:50%;
+  background:var(--pour-bubble);
+  will-change:transform;
+}
+
+.pour__mark{
+  position:absolute;
+  inset:0;
+  z-index:6;
+  display:grid;
+  place-items:center;
+  opacity:0;
+}
+.pour__mark svg{ width:clamp(46px,7vw,86px); height:auto; }
+.pour__mark svg path{ fill:var(--pour-mark); }
+
+/* Full-screen colour sweeping across the viewport is exactly the
+   motion this query exists for. Under reduced motion there is no
+   transition at all — links navigate straight through. */
+@media (prefers-reduced-motion: reduce){
+  html[data-pour="in"]::before{ display:none; }
+  .pour{ display:none; }
+}

@@ -1,0 +1,25 @@
+# ── Fisiere temporare de lucru ──────────────────────────────
+# Scratch folosit in timpul dezvoltarii. Se regenereaza, nu e munca ta.
+.tmp/
+.chrome-cdp-report/
+.agents/
+
+# ── Capturi de QA ───────────────────────────────────────────
+# Screenshot-uri de verificare, inclusiv de pe site-uri terte.
+# Nu vrei continut care nu-ti apartine in propriul repo.
+qa-*.png
+
+# ── Pachete de tooling ──────────────────────────────────────
+# Nu fac parte din site.
+RTFSkill/
+RTFSkill.zip
+
+# ── Setari locale de masina ─────────────────────────────────
+# launch.json ramane (documenteaza cum se porneste proiectul),
+# dar permisiunile locale sunt specifice calculatorului tau.
+.claude/settings.local.json
+
+# ── Gunoi de sistem de operare ──────────────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store

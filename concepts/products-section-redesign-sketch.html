@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>David Craft Beer — Products section concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Hanken+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#f8edda;--paper:#fff6ea;--ink:#2e1a0e;--cocoa:#572010;--honey:#ffc24b;--brick:#b23a27;--teal:#376f67;--ease:cubic-bezier(.2,.75,.2,1)}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:"Hanken Grotesk",sans-serif}.concept{position:relative;isolation:isolate;min-height:100vh;padding:clamp(28px,5vw,72px) clamp(18px,4vw,64px) 52px;overflow:hidden}.concept:before{content:"";position:absolute;inset:auto -8vw -18vw 36%;height:76vw;border-radius:50%;background:rgba(255,194,75,.28);z-index:-2}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:28px;max-width:1440px;margin:auto}.kicker{margin:0 0 12px;font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--brick)}h1{margin:0;font-family:"Alfa Slab One",serif;font-weight:400;font-size:clamp(50px,9vw,130px);line-height:.82;text-transform:uppercase;letter-spacing:-.02em}.intro{max-width:34ch;margin:8px 0 0;font-size:clamp(15px,1.4vw,18px);line-height:1.5}.seal{width:90px;aspect-ratio:1;border:2px solid var(--cocoa);border-radius:50%;display:grid;place-items:center;text-align:center;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;animation:spin 18s linear infinite}@keyframes spin{to{rotate:360deg}}
+.shelf{max-width:1440px;margin:clamp(34px,5vw,68px) auto 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.4vw,20px);align-items:end}.beer{--tone:var(--honey);position:relative;min-width:0;height:clamp(360px,45vw,650px);padding:18px;border:0;border-radius:26px;background:color-mix(in srgb,var(--tone) 72%,var(--paper));color:var(--ink);overflow:hidden;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(87,32,16,.18);transition:translate .38s var(--ease),box-shadow .38s var(--ease),filter .38s}.beer:before{content:"";position:absolute;inset:18px;border:1px dashed rgba(87,32,16,.25);border-radius:50%;transform:scale(.82)}.beer:hover,.beer[aria-pressed=true]{translate:0 -14px;box-shadow:0 25px 45px rgba(46,26,14,.18),inset 0 0 0 2px var(--cocoa)}.beer:nth-child(2){--tone:#de795d}.beer:nth-child(3){--tone:#86aaa0}.beer:nth-child(4){--tone:#71402d;color:var(--paper)}.beer img{position:absolute;z-index:1;left:50%;bottom:72px;translate:-50% 0;height:72%;max-width:78%;object-fit:contain;filter:drop-shadow(0 22px 18px rgba(46,26,14,.28));transition:transform .4s var(--ease)}.beer:hover img,.beer[aria-pressed=true] img{transform:scale(1.045) rotate(-1deg)}.beer-name{position:absolute;z-index:2;left:18px;right:18px;bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:8px;text-align:left}.beer-name strong{font-family:"Alfa Slab One",serif;font-size:clamp(19px,2vw,31px);font-weight:400;text-transform:uppercase;line-height:.9}.beer-name span{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.78}.spark{position:absolute;z-index:2;right:25px;top:22px;font-size:25px;color:var(--brick)}
+.detail{max-width:1440px;margin:22px auto 0;display:grid;grid-template-columns:minmax(230px,.7fr) 1.3fr auto;gap:clamp(18px,4vw,56px);align-items:center;padding:24px 28px;border:1px solid rgba(87,32,16,.18);border-radius:24px;background:rgba(255,246,234,.82);box-shadow:0 16px 38px rgba(46,26,14,.09);backdrop-filter:blur(12px)}.detail h2{margin:0;font-family:"Alfa Slab One",serif;font-size:clamp(29px,4vw,54px);font-weight:400;text-transform:uppercase;line-height:.92;color:var(--accent,var(--brick))}.detail p{margin:0;max-width:58ch;line-height:1.55}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.meta span{padding:6px 10px;border:1px solid rgba(87,32,16,.28);border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.cta{min-height:50px;padding:0 24px;border:0;border-radius:999px;background:var(--cocoa);color:var(--paper);font:800 12px "Hanken Grotesk";letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;cursor:pointer}.concept-note{position:absolute;right:18px;bottom:12px;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.55}
+.mobile-nav{display:none}
+@media(max-width:850px){.top{display:block}.seal{display:none}.shelf{grid-template-columns:repeat(2,1fr);align-items:stretch}.beer{height:430px}.detail{grid-template-columns:1fr}.cta{width:100%}}
+@media(max-width:520px){
+  .concept{padding:30px 14px 36px}.top{padding-inline:4px}.top h1{font-size:clamp(52px,15vw,66px);line-height:.86}.intro{max-width:31ch;margin-top:18px;font-size:15px}
+  .shelf{display:flex;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:4px;padding:22px 4px 18px;scrollbar-width:none}
+  .shelf::-webkit-scrollbar{display:none}.beer{flex:0 0 78vw;height:min(110vw,430px);scroll-snap-align:center}.beer:hover,.beer[aria-pressed=true]{translate:0;box-shadow:0 18px 34px rgba(46,26,14,.17),inset 0 0 0 2px var(--cocoa)}.beer:hover img,.beer[aria-pressed=true] img{transform:scale(1.025)}
+  .mobile-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 5px 14px}.swipe-hint{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.65}.mobile-dots{display:flex;gap:7px}.mobile-dot{width:9px;height:9px;padding:0;border:1.5px solid var(--cocoa);border-radius:50%;background:transparent}.mobile-dot[aria-current=true]{width:24px;border-radius:999px;background:var(--cocoa)}
+  .detail{margin-top:4px;padding:22px 20px;border-radius:20px;gap:16px}.detail h2{font-size:clamp(31px,10vw,42px)}.detail p{font-size:14.5px}.cta{width:100%}.concept-note{position:static;margin:22px 4px 0;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<section class="concept" aria-labelledby="concept-title">
+  <header class="top">
+    <div><p class="kicker">Four brews · four personalities</p><h1 id="concept-title">Choose<br>your brew</h1></div>
+    <p class="intro">A taproom-style shelf that keeps the full family visible, while giving each beer its own bold little stage.</p>
+    <div class="seal" aria-hidden="true">David<br>Craft Ale<br>★</div>
+  </header>
+  <div class="shelf" aria-label="Choose a beer">
+    <button class="beer" aria-pressed="true" data-name="Blonde Ale" data-accent="#b23a27" data-copy="Bright, easy-going and made for long afternoons. A crisp first pour with David’s warm, playful character." data-meta="Crisp|Golden|Easy-going"><span class="spark">✦</span><img src="../assets/bottle-blonde.png" alt="Blonde Ale bottle"><span class="beer-name"><strong>Blonde</strong><span>Ale · 01</span></span></button>
+    <button class="beer" aria-pressed="false" data-name="Amber Pale Ale" data-accent="#8d341f" data-copy="Toasty malt, soft bitterness and a copper glow. Familiar enough to welcome you in, distinctive enough to stay remembered." data-meta="Toasty|Copper|Balanced"><span class="spark">✦</span><img src="../assets/bottle-amber.png" alt="Amber Pale Ale bottle"><span class="beer-name"><strong>Amber</strong><span>Pale Ale · 02</span></span></button>
+    <button class="beer" aria-pressed="false" data-name="IPA" data-accent="#376f67" data-copy="Bold, aromatic and hop-forward. The loudest member of the lineup, wrapped in the same handcrafted David attitude." data-meta="Hoppy|Aromatic|Bold"><span class="spark">✦</span><img src="../assets/bottle-ipa.png" alt="IPA bottle"><span class="beer-name"><strong>IPA</strong><span>India Pale · 03</span></span></button>
+    <button class="beer" aria-pressed="false" data-name="Dark Lager" data-accent="#572010" data-copy="Smooth, deep and quietly confident. Roasted character without the heaviness, built for a slower kind of pour." data-meta="Roasted|Smooth|Dark"><span class="spark">✦</span><img src="../assets/bottle-dark.png" alt="Dark Lager bottle"><span class="beer-name"><strong>Dark</strong><span>Lager · 04</span></span></button>
+  </div>
+  <div class="mobile-nav" aria-label="Beer carousel position"><span class="swipe-hint">Swipe to explore →</span><div class="mobile-dots"><button class="mobile-dot" aria-label="Show Blonde Ale" aria-current="true"></button><button class="mobile-dot" aria-label="Show Amber Pale Ale" aria-current="false"></button><button class="mobile-dot" aria-label="Show IPA" aria-current="false"></button><button class="mobile-dot" aria-label="Show Dark Lager" aria-current="false"></button></div></div>
+  <div class="detail" id="detail">
+    <h2 id="detail-name">Blonde Ale</h2>
+    <div><p id="detail-copy">Bright, easy-going and made for long afternoons. A crisp first pour with David’s warm, playful character.</p><div class="meta" id="detail-meta"><span>Crisp</span><span>Golden</span><span>Easy-going</span></div></div>
+    <button class="cta" type="button">Meet this brew →</button>
+  </div>
+  <p class="concept-note">Products section · redesign sketch</p>
+</section>
+<script>
+const beers=[...document.querySelectorAll('.beer')],dots=[...document.querySelectorAll('.mobile-dot')],name=document.querySelector('#detail-name'),copy=document.querySelector('#detail-copy'),meta=document.querySelector('#detail-meta'),detail=document.querySelector('#detail');
+function selectBeer(index,scroll=false){const beer=beers[index];beers.forEach((item,i)=>item.setAttribute('aria-pressed',String(i===index)));dots.forEach((dot,i)=>dot.setAttribute('aria-current',String(i===index)));name.textContent=beer.dataset.name;copy.textContent=beer.dataset.copy;meta.innerHTML=beer.dataset.meta.split('|').map(item=>`<span>${item}</span>`).join('');detail.style.setProperty('--accent',beer.dataset.accent);if(scroll)beer.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest',inline:'center'})}
+beers.forEach((beer,index)=>beer.addEventListener('click',()=>selectBeer(index)));
+dots.forEach((dot,index)=>dot.addEventListener('click',()=>selectBeer(index,true)));
+const shelf=document.querySelector('.shelf');let ticking=false;shelf.addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const center=shelf.scrollLeft+shelf.clientWidth/2;let closest=0,distance=Infinity;beers.forEach((beer,index)=>{const next=Math.abs(beer.offsetLeft+beer.offsetWidth/2-center);if(next<distance){distance=next;closest=index}});selectBeer(closest);ticking=false})},{passive:true});
+</script>
+</body>
+</html>
