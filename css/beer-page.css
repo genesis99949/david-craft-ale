@@ -1,0 +1,102 @@
+/* Beer product details share Hopper's layout, gallery and shop components. */
+.bp-recommendations{padding:76px 0 48px;background:var(--cream-soft);color:var(--cocoa);overflow:hidden}
+.bp-recommendations__heading{text-align:center;padding:0 24px 48px}
+.bp-recommendations__heading h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(38px,5.4vw,76px);line-height:1.05;letter-spacing:var(--ds-xl-ls);text-transform:uppercase}
+.bp-slider{
+  --slider-gutter:0px;--slider-gap:clamp(16px,2vw,32px);
+  display:flex;gap:var(--slider-gap);overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;
+  padding:12px var(--slider-gutter) 24px;position:relative;
+}
+.bp-slider[data-slider-ready]{scrollbar-width:none}
+.bp-slider[data-slider-ready]::-webkit-scrollbar{display:none}
+.bp-slider:focus-visible{outline:3px solid var(--cocoa);outline-offset:-5px}
+.bp-slider-card{
+  flex:0 0 calc(25% - var(--slider-gap));min-width:0;display:flex;flex-direction:column;align-items:center;
+  padding:12px 12px 20px;scroll-snap-align:center;text-align:center;text-decoration:none;color:inherit;
+}
+.bp-slider-card:focus-visible{outline:3px solid var(--cocoa);outline-offset:-3px;border-radius:16px}
+.bp-slider-photo{height:clamp(360px,36vw,520px);width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:32px}
+.bp-slider-photo img{height:100%;width:auto;max-width:90%;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:transform .4s var(--ease)}
+.bp-slider-card:hover img{transform:translateY(-8px) rotate(-2deg)}
+.bp-slider-card h3{margin:0 0 28px;min-height:2.6em;display:flex;align-items:center;font-size:clamp(17px,1.7vw,24px);font-weight:900;letter-spacing:.1em;line-height:1.3;text-transform:uppercase}
+.bp-slider-link{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:60px;padding:16px 30px;min-width:210px;border:2px solid var(--cocoa);border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;transition:background .2s,color .2s}
+.bp-slider-card:hover .bp-slider-link{background:var(--cocoa);color:var(--cream-soft)}
+.bp-slider-controls{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:20px}
+.bp-slider-controls[hidden]{display:none}
+.bp-slider-arrow{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--cocoa);border-radius:50%;background:transparent;color:var(--cocoa);cursor:pointer}
+.bp-slider-arrow:disabled{opacity:.3;cursor:default}
+.bp-slider-arrow:not(:disabled):hover{background:var(--honey)}
+.bp-slider-arrow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bp-slider-dots{position:relative;display:flex;align-items:center;max-width:calc(100vw - 156px);overflow-x:auto;scrollbar-width:none}
+.bp-slider-dots button{flex:0 0 44px;width:44px;height:44px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;padding:0}
+.bp-slider-dots button::after{content:"";width:7px;height:7px;border:1px solid var(--cocoa);border-radius:50%}
+.bp-slider-dots button[aria-current="true"]::after{background:var(--cocoa)}
+.bp-slider-controls button:focus-visible{outline:3px solid var(--cocoa);outline-offset:3px}
+.bp-slider.is-dragging{scroll-snap-type:none;cursor:grabbing;user-select:none}
+.bp-slider.is-dragging a{cursor:grabbing}
+@media(min-width:901px){
+  .bp-slider{cursor:grab}
+  .bp-slider-link{min-width:0;max-width:100%;padding-inline:clamp(12px,1.6vw,30px);gap:10px;font-size:clamp(10px,.85vw,12px)}
+}
+@media(max-width:900px){
+  .bp-recommendations{padding:56px 0 36px}
+  .bp-recommendations__heading{padding-bottom:32px}
+  .bp-recommendations__heading h2{font-size:clamp(34px,8.8vw,58px)}
+  .bp-slider{--slider-gap:12px}
+  .bp-slider-card{flex-basis:82vw;padding-inline:8px}
+  .bp-slider-photo{height:clamp(330px,92vw,480px);margin-bottom:24px}
+  .bp-slider-card h3{font-size:18px;margin-bottom:20px}
+  .bp-slider-link{min-height:56px;min-width:190px;padding-inline:22px}
+  .bp-slider-controls{gap:14px;margin-top:8px}
+}
+@media(prefers-reduced-motion:reduce){.bp-slider-photo img,.bp-slider-link{transition:none}.bp-slider-card:hover img{transform:none}}
+.beer-page{--brew-accent:#a87409;--brew-wash:#ffc24b}
+.beer-page .hp-hero__text{padding:clamp(36px,5vw,80px);min-width:0}
+.beer-page .hp-hero h1{font-size:clamp(40px,5.2vw,78px);line-height:1.02;margin-bottom:22px}
+.bp-lead{max-width:38ch;margin:0 0 24px;font-size:17px;line-height:1.6}
+.bp-selector{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:30px}
+.bp-selector a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 13px;border:1px solid rgba(253,238,223,.4);border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+.bp-selector a[aria-current="page"]{background:var(--cream-soft);border-color:var(--cream-soft);color:var(--cocoa)}
+.bp-selector a:hover{border-color:var(--honey)}
+.bp-selector a:focus-visible,.beer-page .hp-quiet:focus-visible{outline:3px solid var(--honey);outline-offset:4px}
+.bp-meta{display:flex;justify-content:center;gap:24px;margin:0 0 26px}
+.bp-meta div{display:flex;flex-direction:column;gap:4px}
+.bp-meta dt{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+.bp-meta dd{margin:0;font-size:17px;font-weight:800}
+.beer-page .hp-price{justify-content:center;margin-bottom:20px}
+.beer-page .hp-price b{font-size:32px}
+.beer-page .hp-price span{font-size:11px}
+.beer-page .hp-hero__media{background:var(--brew-wash);min-height:640px}
+.bp-gallery figure{overflow:hidden;display:flex;align-items:center;justify-content:center}
+.bp-gallery .bp-scene{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.bp-gallery .bp-photo{width:100%;height:100%;object-fit:contain;padding:72px 64px 84px;filter:drop-shadow(0 20px 14px rgba(46,26,14,.2))}
+.bp-gallery .bp-photo--glass{padding:110px 72px}
+.bp-gallery .bp-photo--detail{position:absolute;left:50%;top:50%;height:210%;width:auto;max-width:none;object-fit:contain;padding:0;transform:translate(-50%,-74%);filter:none}
+.bp-gallery figcaption{position:absolute;z-index:1;top:24px;left:24px;font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cocoa);background:var(--cream-soft);padding:8px 14px;border-radius:999px}
+.beer-page .hp-dots{bottom:16px}
+.beer-page .hp-dots button{width:36px;height:44px}
+.bp-gallery-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.beer-page .hp-about{background:var(--cream-soft)}
+.beer-page .hp-columns{gap:clamp(40px,7vw,112px);padding:clamp(48px,6vw,88px) clamp(24px,5vw,72px)}
+.beer-page .hp-columns h2{line-height:1.05}
+.bp-facts{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+.bp-facts div{padding:20px 0;border-bottom:1px solid rgba(87,32,16,.25)}
+.bp-facts dt{margin-bottom:8px;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--cocoa-soft)}
+.bp-facts dd{margin:0;font-size:20px;font-weight:800;line-height:1.3}
+.bp-note{font-size:12px!important;color:var(--cocoa-soft);margin-top:24px!important}
+.beer-page .hp-callout{gap:24px;padding:64px 24px;background:var(--teal)}
+.beer-page .hp-callout p{max-width:50ch;margin:0;font-size:17px}
+@media(max-width:900px){
+  .beer-page .hp-hero__media{min-height:0;aspect-ratio:1}
+  .beer-page .hp-hero__text{padding:36px 22px 44px}
+  .beer-page .hp-hero h1{font-size:clamp(40px,10vw,62px)}
+  .bp-selector{gap:6px;margin-bottom:26px}
+  .bp-selector a{padding:8px 11px;font-size:10px}
+  .bp-gallery .bp-photo{padding:44px 52px 60px}
+  .bp-gallery .bp-photo--glass{padding:70px 58px}
+  .bp-gallery .bp-photo--detail{padding:0}
+  .bp-gallery figcaption{top:16px;left:16px;font-size:10px;padding:7px 11px}
+  .bp-meta{gap:20px}
+}
+

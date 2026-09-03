@@ -32,7 +32,7 @@
   --body:'Hanken Grotesk',Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
 
-  --ds-display-lh:.88;--ds-display-ls:-.025em;
+  --ds-display-lh:.88;--ds-display-ls:0.025em;
   --ds-xl-lh:.9;--ds-xl-ls:-.018em;
   --ds-md-lh:1.05;--ds-md-ls:0em;
   --ds-sm-lh:1.1;--ds-sm-ls:.02em;

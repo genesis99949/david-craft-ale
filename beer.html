@@ -1,6 +1,99 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title id="page-title">Blonde Ale | David Craft Ale</title><meta name="description" content="Explore a fictional David Craft Ale product page created as part of a graphic-design and front-end development portfolio project."><link rel="stylesheet" href="css/editorial-pages.css"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E"><link rel="stylesheet" href="css/site-chrome.css"><script src="js/site-chrome.js" defer></script><link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><script src="js/shop.js" defer></script></head><body>
-<a class="skip" href="#main">Skip to content</a><header class="page-head"><a class="page-brand" href="index.html"><img src="assets/hopper-hero.png" alt=""><span>David Craft Ale</span></a><nav class="page-nav" aria-label="Primary"><a href="products.html">Products</a><a href="story.html">Our Story</a></nav></header>
-<main id="main"><section class="editorial-hero"><div class="hero-copy"><p class="eyebrow">Meet the four brews</p><h1 id="brew-title">Blonde<br>Ale</h1><p class="lead" id="brew-lead"></p><div class="meta-row" id="brew-meta"></div><div class="hero-actions"><a class="pill" href="products.html">View full lineup →</a><a class="pill alt" href="index.html#products">Back to the four →</a></div></div><div class="hero-art glass"><img id="brew-image" src="assets/bottle-blonde.png" alt="Blonde Ale bottle"></div></section>
-<section class="content-band dark"><div class="section-grid"><h2 id="character-title">Golden by nature.</h2><div class="section-copy"><p id="brew-story"></p><p class="fine">David Craft Ale is a fictional portfolio concept. This product does not exist and is not available for purchase.</p></div></div><div class="feature-grid" id="brew-features"></div></section></main>
-<footer class="page-foot"><strong>Good beer.<br>Good company.</strong><nav aria-label="Footer"><a href="index.html#top">Home</a><a href="products.html">Products</a><a href="hopper.html">Hopper Plushie</a><a href="story.html">Our Story</a><a href="index.html#reviews">Reviews</a><a href="affiliate.html">Become an Affiliate</a><a href="terms.html">Terms and conditions</a><a href="privacy.html">Cookies and Privacy Policy</a></nav><small>© 2026 David Craft Ale · Fictional portfolio concept by <a class="foot-credit" href="https://www.behance.net/ramonbugariu" target="_blank" rel="noopener noreferrer">Ramon Bugariu</a></small></footer>
-<script src="js/beer.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blonde Ale | David Craft Ale</title>
+<meta name="description" content="Explore Blonde Ale: bright gold, gentle fruit and a crisp finish. Meet the four David Craft Ale brews.">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/hopper-page.css">
+<link rel="stylesheet" href="css/beer-page.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/site-chrome.css">
+<script src="js/site-chrome.js" defer></script>
+<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script>
+<link rel="stylesheet" href="css/shop.css"><script src="js/shop.js" defer></script>
+</head>
+<body class="beer-page">
+<a class="skip" href="#main">Skip to content</a>
+<header class="page-head" aria-label="Fallback navigation"><a href="index.html">David Craft Ale</a></header>
+<main id="main">
+  <section class="hp-hero" aria-labelledby="brew-title">
+    <div class="hp-hero__text">
+      <p class="hp-kicker">David Craft Ale · The four brews</p>
+      <nav class="bp-selector" aria-label="Choose your beer">
+        <a href="beer.html?brew=blonde" data-brew="blonde" aria-current="page">Blonde Ale</a>
+        <a href="beer.html?brew=amber" data-brew="amber">Amber Pale Ale</a>
+        <a href="beer.html?brew=ipa" data-brew="ipa">IPA</a>
+        <a href="beer.html?brew=dark" data-brew="dark">Dark Lager</a>
+      </nav>
+      <h1 id="brew-title">Blonde<br>Ale</h1>
+      <p class="bp-lead" id="brew-lead">Light, crisp and quietly sunny—the easy-going member of the David Craft Ale family.</p>
+      <dl class="bp-meta" aria-label="Beer specifications">
+        <div><dt>One bottle</dt><dd id="brew-volume">330 ml</dd></div>
+        <div><dt>Alcohol</dt><dd id="brew-abv">4.8% vol</dd></div>
+        <div><dt>Bitterness</dt><dd id="brew-ibu">IBU 18</dd></div>
+      </dl>
+      <p class="hp-price"><b>3.99 USD</b><span>Individual bottle</span></p>
+      <div class="hp-actions">
+        <button class="hp-btn" type="button" id="buy-beer">Add to cart <span aria-hidden="true">→</span></button>
+        <a class="hp-quiet" href="#about-beer">Meet this brew <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <div class="hp-hero__media">
+      <div class="hp-gallery bp-gallery" id="beer-gallery" role="region" aria-roledescription="carousel" aria-label="Blonde Ale product images" tabindex="0">
+        <figure data-active aria-hidden="false"><img class="bp-photo" id="brew-image" src="assets/bottle-blonde.png" width="313" height="927" fetchpriority="high" alt="David Craft Ale Blonde Ale bottle"><figcaption>The bottle</figcaption></figure>
+        <figure aria-hidden="true"><img class="bp-scene" id="brew-back" src="assets/beer-gallery/blonde-back-800.webp" srcset="assets/beer-gallery/blonde-back-480.webp 480w, assets/beer-gallery/blonde-back-800.webp 800w, assets/beer-gallery/blonde-back-1536.webp 1536w" sizes="(max-width: 900px) 100vw, 50vw" width="1536" height="1536" loading="lazy" alt="Blonde Ale bottle viewed from the back"><figcaption>The back label</figcaption></figure>
+        <figure aria-hidden="true"><img class="bp-scene" id="brew-table" src="assets/beer-gallery/blonde-table-800.webp" srcset="assets/beer-gallery/blonde-table-480.webp 480w, assets/beer-gallery/blonde-table-800.webp 800w, assets/beer-gallery/blonde-table-1536.webp 1536w" sizes="(max-width: 900px) 100vw, 50vw" width="1536" height="1536" loading="lazy" alt="Blonde Ale bottle and glass on a sunlit wooden table"><figcaption>At the table</figcaption></figure>
+        <figure aria-hidden="true"><img class="bp-photo bp-photo--glass" id="brew-glass" src="assets/glass-blonde.png" loading="lazy" alt="Blonde Ale poured into a glass"><figcaption>The pour</figcaption></figure>
+        <figure aria-hidden="true"><img class="bp-photo bp-photo--detail" id="brew-detail" src="assets/bottle-blonde.png" loading="lazy" alt="Close-up of the Blonde Ale label and Hopper illustration"><figcaption>A closer look</figcaption></figure>
+      </div>
+      <div class="hp-gallery__controls">
+        <button class="hp-gallery__arrow" type="button" data-gal="prev" aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="hp-dots" role="group" aria-label="Product images"></div>
+        <button class="hp-gallery__arrow" type="button" data-gal="next" aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <p class="bp-gallery-status" id="gallery-status" aria-live="polite" aria-atomic="true">Image 1 of 5: The bottle</p>
+    </div>
+  </section>
+  <section class="hp-about" id="about-beer" aria-labelledby="character-title">
+    <div class="hp-columns">
+      <div><p class="hp-kicker">Meet your next favourite</p><h2 id="character-title">Golden by nature.</h2><p id="brew-story">A soft malt sweetness meets a gentle fruity aroma and a clean finish. Bright, balanced and easy to come back to, Blonde Ale brings a little sunshine to the table.</p><p id="brew-moment">For long afternoons, an extra chair and the first round with friends.</p><p class="bp-note">David Craft Ale is a fictional portfolio concept. No real orders or payments are processed.</p></div>
+      <dl class="bp-facts" aria-label="Tasting profile">
+        <div><dt>In the glass</dt><dd id="brew-look">Bright gold</dd></div>
+        <div><dt>On the palate</dt><dd id="brew-palate">Crisp &amp; easy-going</dd></div>
+        <div><dt>Aroma</dt><dd id="brew-aroma">Gentle fruit &amp; soft malt</dd></div>
+        <div><dt>Made for</dt><dd id="brew-mood">Long afternoons</dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="hp-callout" aria-labelledby="company-title"><h2 id="company-title">Same table.<br>Your kind of beer.</h2><p>Four different characters. One familiar face on every label. Find the pour that feels like you.</p><a class="hp-btn hp-btn--outline" href="story.html">Meet our story <span aria-hidden="true">→</span></a></section>
+  <section class="bp-recommendations" data-product-slider aria-labelledby="related-title">
+    <div class="bp-recommendations__heading"><p class="hp-kicker">From our table to yours</p><h2 id="related-title">More good company.</h2></div>
+    <div class="bp-slider" id="related-beers" role="region" aria-roledescription="carousel" aria-label="Explore beers, six-packs and Hopper accessories" tabindex="0">
+      <a class="bp-slider-card bp-related" href="beer.html?brew=amber"><div class="bp-slider-photo"><img src="assets/bottle-amber.png" alt="Amber Pale Ale bottle" loading="lazy"></div><h3>Amber Pale Ale</h3><span class="bp-slider-link">Meet this brew <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="beer.html?brew=ipa"><div class="bp-slider-photo"><img src="assets/bottle-ipa.png" alt="IPA bottle" loading="lazy"></div><h3>IPA</h3><span class="bp-slider-link">Meet this brew <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="beer.html?brew=dark"><div class="bp-slider-photo"><img src="assets/bottle-dark.png" alt="Dark Lager bottle" loading="lazy"></div><h3>Dark Lager</h3><span class="bp-slider-link">Meet this brew <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="products.html#blonde-ale-bottle-six-pack"><div class="bp-slider-photo"><img src="assets/sixpack-bottles-blonde.png" alt="Blonde Ale Bottle Six-Pack" loading="lazy"></div><h3>Blonde Ale Bottle Six-Pack</h3><span class="bp-slider-link">See the six-pack <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="products.html#blonde-ale-can-six-pack"><div class="bp-slider-photo"><img src="assets/sixpack-cans-blonde.png" alt="Blonde Ale Can Six-Pack" loading="lazy"></div><h3>Blonde Ale Can Six-Pack</h3><span class="bp-slider-link">See the six-pack <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="hopper.html"><div class="bp-slider-photo"><img src="assets/Plushie_nobg.png" alt="Hopper Plushie" loading="lazy"></div><h3>Hopper Plushie</h3><span class="bp-slider-link">Meet Hopper <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="products.html#hopper-pint-glass"><div class="bp-slider-photo"><img src="assets/hopper-pint-glass.png" alt="Hopper Pint Glass" loading="lazy"></div><h3>Hopper Pint Glass</h3><span class="bp-slider-link">Take a closer look <span aria-hidden="true">→</span></span></a>
+      <a class="bp-slider-card bp-related" href="products.html#hopper-beer-mats"><div class="bp-slider-photo"><img src="assets/hopper-beer-mats.png" alt="Hopper Beer Mats" loading="lazy"></div><h3>Hopper Beer Mats</h3><span class="bp-slider-link">Take a closer look <span aria-hidden="true">→</span></span></a>
+    </div>
+    <div class="bp-slider-controls" hidden>
+      <button type="button" class="bp-slider-arrow" data-slider-prev aria-label="Previous products" aria-controls="related-beers"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="bp-slider-dots" role="group" aria-label="Choose a carousel position"></div>
+      <button type="button" class="bp-slider-arrow" data-slider-next aria-label="Next products" aria-controls="related-beers"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <p class="bp-gallery-status" data-slider-status aria-live="polite" aria-atomic="true"></p>
+  </section>
+</main>
+<footer class="hp-foot">
+  <strong>Good beer.<br>Good company.</strong>
+  <nav aria-label="Footer"><a href="index.html#top">Home</a><a href="products.html">Products</a><a href="hopper.html">Hopper Plushie</a><a href="story.html">Our Story</a><a href="index.html#reviews">Reviews</a><a href="affiliate.html">Become an Affiliate</a><a href="terms.html">Terms and conditions</a><a href="privacy.html">Cookies and Privacy Policy</a></nav>
+  <small>&copy; 2026 David Craft Ale &middot; Fictional portfolio concept by <a class="foot-credit" href="https://www.behance.net/ramonbugariu" target="_blank" rel="noopener noreferrer">Ramon Bugariu</a> &middot; Drink Responsibly. 18+.</small>
+</footer>
+<script src="js/beer.js"></script>
+<script src="js/product-slider.js"></script>
+</body>
+</html>

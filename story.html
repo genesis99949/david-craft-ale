@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="story-page">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,6 +7,8 @@
   <meta name="description" content="David Craft Ale began around a crowded table and grew into bold beer for the good parts nobody planned.">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/story-page.css">
+  <link rel="stylesheet" href="css/story-motion.css">
+  <script src="js/story-motion.js" defer></script>
   <script src="js/story-hopper-flight.js" defer></script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/site-chrome.css">
@@ -20,17 +22,17 @@
       <img class="story-hero__image" src="assets/story/hero-800.webp" srcset="assets/story/hero-480.webp 480w, assets/story/hero-800.webp 800w, assets/story/hero-1200.webp 1200w, assets/story/hero-1440.webp 1440w" sizes="(max-width: 820px) 157svh, 100vw" width="1568" height="1003" decoding="async" fetchpriority="high" alt="Friends setting an extra place around a rooftop table at sunset while Hopper flies overhead">
       <div class="story-hero__veil" aria-hidden="true"></div>
       <p class="story-hero__caption story-hero__caption--left">A brewing company<br>for the unplanned</p>
-      <div class="story-hero__title"><p class="story-kicker">Our story</p><h1 id="story-title">Plans change.<br>Good.</h1></div>
+      <div class="story-hero__title"><p class="story-kicker">Our story</p><h1 id="story-title">Plans Change.<br>Good.</h1></div>
       <p class="story-hero__caption story-hero__caption--right">Born around a table<br>Est. 2023</p>
     </section>
     <section class="story-origin story-band story-band--cream" aria-labelledby="origin-title">
-      <img class="story-portrait" src="assets/story/origin-640.webp" srcset="assets/story/origin-320.webp 320w, assets/story/origin-640.webp 640w" sizes="(max-width: 820px) 220px, 265px" width="1254" height="1254" decoding="async" alt="Two friends laughing over early beer label sketches" loading="lazy">
+      <div class="story-portrait-frame" data-story-reveal="iris"><img class="story-portrait" src="assets/story/origin-640.webp" srcset="assets/story/origin-320.webp 320w, assets/story/origin-640.webp 640w" sizes="(max-width: 820px) 220px, 265px" width="1254" height="1254" decoding="async" alt="Two friends laughing over early beer label sketches" loading="lazy"></div>
       <p class="story-kicker">It started small</p>
       <h2 id="origin-title">One message.<br>One spare chair.<br>One more joining.</h2>
       <p class="story-origin__copy">David Craft Ale came together the way the best plans do: casually, a little late and with more people than expected. A tiny idea passed around a crowded table became a brewing company for the moments nobody put in the calendar.</p>
     </section>
     <section class="story-split story-split--mission" aria-labelledby="mission-title">
-      <div class="story-split__media"><img src="assets/story/brewing-800.webp" srcset="assets/story/brewing-480.webp 480w, assets/story/brewing-800.webp 800w, assets/story/brewing-1200.webp 1200w" sizes="(max-width: 820px) 100vw, 60vw" width="1448" height="1086" decoding="async" alt="A small team making beer together in a characterful brewhouse" loading="lazy"></div>
+      <div class="story-split__media" data-story-reveal="curtain"><img src="assets/story/brewing-800.webp" srcset="assets/story/brewing-480.webp 480w, assets/story/brewing-800.webp 800w, assets/story/brewing-1200.webp 1200w" sizes="(max-width: 820px) 100vw, 60vw" width="1448" height="1086" decoding="async" alt="A small team making beer together in a characterful brewhouse" loading="lazy"></div>
       <div class="story-split__copy story-band--honey">
         <p class="story-kicker">What keeps us moving</p><h2 id="mission-title">Clear flavour.<br>Bright character.</h2>
         <p>We make beers that know who they are. Each recipe carries its own energy, from light and easy to deep and unruly, while every bottle still belongs at the same table.</p>
@@ -59,19 +61,20 @@
           <li><span>03</span><div><h3>Ready for the table</h3><p>The finishing touch on a bottle made to share.</p></div></li>
         </ol>
       </div>
-      <figure class="story-way-intro__art"><img src="assets/story/labeling-v3-800.webp" srcset="assets/story/labeling-v3-480.webp 480w, assets/story/labeling-v3-800.webp 800w, assets/story/labeling-v3-1200.webp 1200w" sizes="(max-width: 820px) calc(100vw - 40px), 46vw" width="1254" height="1254" decoding="async" alt="Hands applying a David Craft Ale label to an amber bottle beside pencil sketches of Hopper" loading="lazy"><figcaption>From the first pencil line to the finishing touch.</figcaption></figure>
+      <figure class="story-way-intro__art"><div class="story-label-frame" data-story-reveal="iris"><img src="assets/story/labeling-v3-800.webp" srcset="assets/story/labeling-v3-480.webp 480w, assets/story/labeling-v3-800.webp 800w, assets/story/labeling-v3-1200.webp 1200w" sizes="(max-width: 820px) calc(100vw - 40px), 46vw" width="1254" height="1254" decoding="async" alt="Hands applying a David Craft Ale label to an amber bottle beside pencil sketches of Hopper" loading="lazy"></div><figcaption>From the first pencil line to the finishing touch.</figcaption></figure>
     </section>
-    <section class="story-split story-split--way" aria-label="How David Craft Ale shows up">
-      <div class="story-split__copy story-band--teal">
-        <p class="story-kicker">Good company travels</p><h2>We show up with something to share.</h2>
-        <p>Artwork you can spot across a room. A flying hop named Hopper who never arrives empty-winged. A mixed crate that works whether the night is four people in a kitchen or half the street in a courtyard.</p>
-        <p>We are building slowly, releasing thoughtfully and leaving enough space to surprise ourselves.</p>
-        <a class="story-pill story-pill--light" href="hopper.html">Meet Hopper <span aria-hidden="true">→</span></a>
+    <section class="story-courtyard story-band--honey" aria-labelledby="courtyard-title">
+      <div class="story-courtyard__caption">
+        <p class="story-kicker">Good company travels</p>
+        <h2 id="courtyard-title">Bring a crate.<br><span>Stay a while.</span></h2>
       </div>
-      <div class="story-split__media"><img src="assets/story/courtyard-800.webp" srcset="assets/story/courtyard-480.webp 480w, assets/story/courtyard-800.webp 800w, assets/story/courtyard-1200.webp 1200w" sizes="(max-width: 820px) 100vw, 60vw" width="1448" height="1086" decoding="async" alt="Friends carrying a crate of beer into a welcoming evening courtyard" loading="lazy"></div>
+      <figure class="story-courtyard__scene">
+        <div class="story-courtyard__frame" data-story-reveal="curtain"><img class="story-courtyard__image" src="assets/story/courtyard-1200.webp" srcset="assets/story/courtyard-480.webp 480w, assets/story/courtyard-800.webp 800w, assets/story/courtyard-1200.webp 1200w, assets/story/courtyard-1448.webp 1448w" sizes="(max-width: 820px) 160vw, 92vw" width="1448" height="1086" decoding="async" alt="Friends arriving with a crate of beer as Hopper leads them into a lively evening courtyard" loading="lazy"></div>
+        <figcaption><span>For the plans nobody made.</span><span>And the ones who bring the beer.</span></figcaption>
+      </figure>
     </section>
     <section class="story-split story-split--hopper" aria-labelledby="hopper-story-title">
-      <div class="story-split__media"><img src="assets/story/hopper-800.webp" srcset="assets/story/hopper-480.webp 480w, assets/story/hopper-800.webp 800w, assets/story/hopper-1200.webp 1122w" sizes="(max-width: 820px) 100vw, 60vw" width="1122" height="1402" decoding="async" alt="The Hopper plush, a soft hop cone with leaf wings and a star-tipped stem, sitting in daylight" loading="lazy"></div>
+      <div class="story-split__media" data-story-reveal="curtain"><img src="assets/story/hopper-800.webp" srcset="assets/story/hopper-480.webp 480w, assets/story/hopper-800.webp 800w, assets/story/hopper-1200.webp 1122w" sizes="(max-width: 820px) 100vw, 60vw" width="1122" height="1402" decoding="async" alt="The Hopper plush, a soft hop cone with leaf wings and a star-tipped stem, sitting in daylight" loading="lazy"></div>
       <div class="story-split__copy story-band--cocoa">
         <span class="story-crate-hopper story-crate-hopper--one" aria-hidden="true"><span class="story-crate-sprite"><img class="story-crate-frame story-crate-frame--up" src="assets/hopper-crate-up-264.png" width="88" height="88" alt="" decoding="async"><img class="story-crate-frame story-crate-frame--down" src="assets/hopper-crate-down-264.png" width="88" height="88" alt="" decoding="async"></span></span>
         <span class="story-crate-hopper story-crate-hopper--two" aria-hidden="true"><span class="story-crate-sprite"><img class="story-crate-frame story-crate-frame--up" src="assets/hopper-crate-up-264.png" width="88" height="88" alt="" decoding="async"><img class="story-crate-frame story-crate-frame--down" src="assets/hopper-crate-down-264.png" width="88" height="88" alt="" decoding="async"></span></span>
