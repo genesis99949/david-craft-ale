@@ -14,10 +14,10 @@ qa-*.png
 RTFSkill/
 RTFSkill.zip
 
-# ── Setari locale de masina ─────────────────────────────────
-# launch.json ramane (documenteaza cum se porneste proiectul),
-# dar permisiunile locale sunt specifice calculatorului tau.
-.claude/settings.local.json
+# ── Configurare tooling local ───────────────────────────────
+# launch.json contine calea absoluta a masinii tale, iar SKILL.md e
+# definitia unui tool. Niciunul nu face parte din site.
+.claude/
 
 # ── Gunoi de sistem de operare ──────────────────────────────
 Thumbs.db
