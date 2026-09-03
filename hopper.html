@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hopper Plushie | David Craft Ale</title>
 <meta name="description" content="Hopper, the David Craft Ale hop mascot, as a soft plush companion. A limited drop from the fictional David Craft Ale portfolio concept.">
-<link rel="stylesheet" href="fonts.css">
-<link rel="stylesheet" href="hopper-page.css">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/hopper-page.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="site-chrome.css">
-<script src="site-chrome.js" defer></script>
-<link rel="stylesheet" href="pour.css"><script>(function(){try{var s=sessionStorage.getItem("dcb-pour");if(!s)return;sessionStorage.removeItem("dcb-pour");if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;var d=document.documentElement;d.setAttribute("data-pour","in");window.__pour=JSON.parse(s);setTimeout(function(){d.removeAttribute("data-pour")},1800)}catch(e){}})();</script><script src="pour.js" defer></script>
-<link rel="stylesheet" href="shop.css"><script src="shop.js" defer></script>
+<link rel="stylesheet" href="css/site-chrome.css">
+<script src="js/site-chrome.js" defer></script>
+<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script>
+<link rel="stylesheet" href="css/shop.css"><script src="js/shop.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -143,106 +143,6 @@
   <small>&copy; 2026 David Craft Ale &middot; Fictional portfolio concept by <a class="foot-credit" href="https://www.behance.net/ramonbugariu" target="_blank" rel="noopener noreferrer">Ramon Bugariu</a> &middot; Drink Responsibly. 18+.</small>
 </footer>
 
-<script>
-/* Add-to-cart for this page. Reads the same data attributes products.html
-   uses and hands the item to the shared cart in shop.js. */
-document.addEventListener('click', (e) => {
-  if (!(e.target instanceof Element)) return;
-
-  const buy = e.target.closest('[data-buy-hopper]');
-  if (buy) {
-    window.DCB?.cart.add({
-      slug: 'hopper-plushie',
-      name: 'Hopper Plushie',
-      price: '29.99',
-      currency: 'USD',
-      package: 'Limited plushie',
-      image: 'assets/Plushie_nobg.png'
-    });
-    window.DCB?.cart.open();
-    return;
-  }
-
-  const add = e.target.closest('[data-add]');
-  if (!add) return;
-  const card = add.closest('[data-product-slug]');
-  if (!card) return;
-  window.DCB?.cart.add({
-    slug: card.dataset.productSlug,
-    name: card.querySelector('h3').textContent.trim(),
-    price: card.dataset.productPrice,
-    currency: 'USD',
-    package: card.dataset.productPackage,
-    image: card.querySelector('img').getAttribute('src')
-  });
-  const label = add.firstChild;
-  if (label && label.nodeType === Node.TEXT_NODE) {
-    label.textContent = 'Added ';
-    setTimeout(() => { label.textContent = 'Add to cart '; }, 1200);
-  }
-});
-
-/* The shared header is injected by site-chrome.js and takes vertical
-   space; feed its height to the hero so section 1 fills exactly one screen. */
-(() => {
-  const setChrome = () => {
-    const h = ['.site-header', '.site-announce']
-      .reduce((n, s) => n + (document.querySelector(s)?.offsetHeight || 0), 0);
-    document.documentElement.style.setProperty('--chrome-h', h + 'px');
-  };
-  addEventListener('DOMContentLoaded', setChrome);
-  addEventListener('resize', setChrome);
-  setChrome();
-})();
-
-/* Hero gallery — matches the reference's arrows + dots. */
-(() => {
-  const gal = document.getElementById('gallery');
-  if (!gal) return;
-  const slides = [...gal.querySelectorAll('figure')];
-  const dots = document.querySelector('.hp-dots');
-  let i = 0;
-
-  slides.forEach((_, n) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('aria-label', `Show image ${n + 1} of ${slides.length}`);
-    b.addEventListener('click', () => show(n));
-    dots.appendChild(b);
-  });
-
-  function show(n) {
-    i = (n + slides.length) % slides.length;
-    slides.forEach((f, k) => {
-      f.toggleAttribute('data-active', k === i);
-      f.setAttribute('aria-hidden', String(k !== i));
-    });
-    [...dots.children].forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
-  }
-
-  document.querySelectorAll('[data-gal]').forEach(btn =>
-    btn.addEventListener('click', () => show(i + (btn.dataset.gal === 'next' ? 1 : -1))));
-
-  gal.addEventListener('keydown', e => {
-    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-    e.preventDefault();
-    show(i + (e.key === 'ArrowRight' ? 1 : -1));
-  });
-  let touchStart = null;
-  gal.addEventListener('touchstart', e => {
-    touchStart = e.touches.length === 1 ? {x:e.touches[0].clientX, y:e.touches[0].clientY} : null;
-  }, {passive:true});
-  gal.addEventListener('touchend', e => {
-    if (!touchStart || !e.changedTouches.length) return;
-    const dx = e.changedTouches[0].clientX - touchStart.x;
-    const dy = e.changedTouches[0].clientY - touchStart.y;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) show(i + (dx < 0 ? 1 : -1));
-    touchStart = null;
-  }, {passive:true});
-  gal.addEventListener('touchcancel', () => { touchStart = null; }, {passive:true});
-
-  show(0);
-})();
-</script>
+<script src="js/hopper.js"></script>
 </body>
 </html>
