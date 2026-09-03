@@ -1043,3 +1043,6 @@ section[id]{scroll-margin-top:76px}
 .w-full {
   width: 100%;
 }
+/* Product links from the story land below the fixed header. */
+.prod-card[id]{scroll-margin-top:110px}
+.prod-card:target{outline:3px solid var(--cocoa,#572010);outline-offset:6px}
