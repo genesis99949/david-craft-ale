@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/products.css">
-<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><link rel="stylesheet" href="css/site-footer.css"><script src="js/shop.js" defer></script></head>
+<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css?v=3"><link rel="stylesheet" href="css/site-footer.css"><link rel="stylesheet" href="css/offer-popup.css?v=3"><script src="js/shop.js?v=3" defer></script><script src="js/vendor/gsap.min.js" defer></script><script src="js/offer-popup.js?v=3" defer></script></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <!-- MENU -->
@@ -52,7 +52,10 @@
       <h2 class="quick-view-title" id="quick-view-title"></h2>
       <p class="quick-view-description" id="quick-view-description"></p>
       <div class="quick-view-meta"><strong class="quick-view-price" id="quick-view-price"></strong><span class="quick-view-package" id="quick-view-package"></span></div>
-      <button class="btn quick-view-add" id="quick-view-add" type="button">Add to cart <span aria-hidden="true">→</span></button>
+      <div class="quick-view-actions">
+        <button class="btn quick-view-add" id="quick-view-add" type="button">Add to cart <span aria-hidden="true">→</span></button>
+        <a class="btn quick-view-details" id="quick-view-details" href="beer.html" hidden>View full details <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 </div>
@@ -109,10 +112,10 @@
     <div class="lineup-view-toolbar">
       <span class="lineup-view-caption">View</span>
       <label class="lineup-view-switch">
-        <span>Carousel</span>
-        <input id="lineup-view-toggle" type="checkbox" role="switch" aria-label="Grid view">
-        <span class="lineup-switch-track" aria-hidden="true"><span class="lineup-switch-thumb"></span></span>
         <span>Grid</span>
+        <input id="lineup-view-toggle" type="checkbox" role="switch" aria-label="Carousel view">
+        <span class="lineup-switch-track" aria-hidden="true"><span class="lineup-switch-thumb"></span></span>
+        <span>Carousel</span>
       </label>
     </div>
     <span class="lineup-chaser" id="lineup-chaser" aria-hidden="true">

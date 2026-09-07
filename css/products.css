@@ -825,13 +825,31 @@ main{
   color:rgba(253,238,223,.78)
 }
 
-.quick-view-add{
+.quick-view-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
   margin-top:28px;
+}
+
+.quick-view-actions .quick-view-add,
+.quick-view-actions .quick-view-details{
   min-height:52px;
   padding-inline:30px;
+  border:1px solid transparent;
   background:var(--honey);
   color:var(--cocoa)
 }
+
+.quick-view-actions .quick-view-add:hover,
+.quick-view-actions .quick-view-details:hover{
+  border-color:transparent;
+  color:var(--cocoa);
+  background:#e8a81e
+}
+
+.quick-view-details[hidden]{display:none}
 
 @keyframes quickViewBob{
   0%,100%{
@@ -917,7 +935,13 @@ main{
   }
   .quick-view-add{
     width:100%;
+  }
+  .quick-view-actions{
+    flex-direction:column;
     margin-top:20px
+  }
+  .quick-view-details{
+    width:100%
   }
 }
 
@@ -3379,6 +3403,10 @@ section[id]{
 .full-lineup-section.is-grid-view .prod-card-price,
 .full-lineup-section.is-grid-view .prod-card-price small{
   color:var(--cocoa)
+}
+
+.full-lineup-section.is-grid-view .section-accent svg .p{
+  fill:var(--cocoa)
 }
 
 .full-lineup-section.is-grid-view .lineup-group-title{

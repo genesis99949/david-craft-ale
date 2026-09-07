@@ -134,10 +134,16 @@
     "price": "2.49"
   }
 };
-  const requested = new URLSearchParams(location.search).get('brew');
+  const pageParams = new URLSearchParams(location.search);
+  const requested = pageParams.get('brew');
   const key = Object.hasOwn(brews, requested) ? requested : 'blonde';
   const brew = brews[key];
-  const variantState = {container:'bottle',pack:'single'};
+  const requestedContainer = pageParams.get('container');
+  const requestedPack = pageParams.get('pack');
+  const variantState = {
+    container:['bottle','can'].includes(requestedContainer)?requestedContainer:'bottle',
+    pack:['single','six'].includes(requestedPack)?requestedPack:'single'
+  };
   const currentVariant = () => {
     const isBottle = variantState.container === 'bottle';
     const isSix = variantState.pack === 'six';
@@ -242,6 +248,12 @@
     slides=allSlides.filter(slide => !slide.hidden);
     galleryControls.hidden=slides.length<2;
     gallery.setAttribute('aria-label',`${variant.name} product images`);
+    const nextUrl=new URL(location.href);
+    nextUrl.searchParams.set('brew',key);
+    nextUrl.searchParams.set('container',variantState.container);
+    nextUrl.searchParams.set('pack',variantState.pack);
+    history.replaceState(null,'',nextUrl);
+    $('#back-to-products').href=`products.html#${variantState.container==='can'?'cans':'bottles'}`;
     rebuildDots();show(0);
   }
   document.querySelectorAll('[data-variant-container]').forEach(button => button.addEventListener('click',()=>{

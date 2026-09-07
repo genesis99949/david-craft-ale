@@ -117,6 +117,7 @@ const quickViewDescription = $('#quick-view-description');
 const quickViewPrice = $('#quick-view-price');
 const quickViewPackage = $('#quick-view-package');
 const quickViewAdd = $('#quick-view-add');
+const quickViewDetails = $('#quick-view-details');
 let quickViewCard = null;
 let quickViewReturnFocus = null;
 
@@ -143,6 +144,21 @@ const productDescriptions = {
   'hopper-pint-glass':'A David Craft Ale pint glass featuring Hopper, ready to give the pour a proper home and the shelf more personality.'
 };
 
+const beerDetailKeys = {
+  'blonde-ale':'blonde',
+  'amber-pale-ale':'amber',
+  'ipa':'ipa',
+  'dark-lager':'dark'
+};
+
+function beerDetailHref(slug=''){
+  const beerBase=Object.keys(beerDetailKeys).find(base=>slug===`${base}-bottle`||slug===`${base}-can`||slug===`${base}-bottle-six-pack`||slug===`${base}-can-six-pack`);
+  if(!beerBase) return '';
+  const container=slug.includes('-can')?'can':'bottle';
+  const pack=slug.endsWith('-six-pack')?'six':'single';
+  return `beer.html?brew=${beerDetailKeys[beerBase]}&container=${container}&pack=${pack}`;
+}
+
 function openQuickView(card){
   if(!card) return;
   const productImage = card.querySelector('.prod-card-photo img');
@@ -162,6 +178,9 @@ function openQuickView(card){
   quickViewPrice.textContent = (productPrice?.childNodes[0]?.textContent || `${card.dataset.productPrice || '2.49'} USD`).trim();
   quickViewPackage.textContent = [card.dataset.productPackage,quantity].filter(Boolean).join(' · ');
   quickViewAdd.dataset.addToCart = originalAdd?.dataset.addToCart || productName;
+  const detailsHref=beerDetailHref(card.dataset.productSlug);
+  quickViewDetails.hidden=!detailsHref;
+  if(detailsHref) quickViewDetails.href=detailsHref;
   quickView.classList.add('is-open');
   quickView.setAttribute('aria-hidden','false');
   syncBodyScrollLock();
@@ -287,7 +306,7 @@ document.addEventListener('keydown',event=>{
   }
   function setGridView(active,persist=false){
     section.classList.toggle('is-grid-view',active);
-    toggle.checked=active;
+    toggle.checked=!active;
     section.querySelectorAll('.full-lineup-grid').forEach(rail=>{
       if(active) rail.scrollLeft=0;
       rail.setAttribute('aria-label',rail.getAttribute('aria-label').replace(/, grid view|, carousel view/g,'')+(active?', grid view':', carousel view'));
@@ -296,8 +315,9 @@ document.addEventListener('keydown',event=>{
   }
 
   const requestedView=new URLSearchParams(location.search).get('view');
-  setGridView(requestedView==='grid'||(requestedView!=='carousel'&&savedView()==='grid'));
-  toggle.addEventListener('change',()=>setGridView(toggle.checked,true));
+  const storedView=savedView();
+  setGridView(requestedView==='grid'||(requestedView!=='carousel'&&storedView!=='carousel'));
+  toggle.addEventListener('change',()=>setGridView(!toggle.checked,true));
 })();
 
 /* ================= FULL LINEUP CAROUSELS ================= */

@@ -254,6 +254,21 @@
   letter-spacing:.02em
 }
 
+.cart-discount{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:8px;
+  color:var(--shop-teal,#25655a);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase
+}
+
+.cart-discount[hidden]{display:none}
+
 .cart-checkout{
   width:100%;
   min-height:48px;

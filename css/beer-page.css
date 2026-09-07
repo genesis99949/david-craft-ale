@@ -287,6 +287,26 @@
   margin-bottom:22px
 }
 
+.bp-back-to-shop{
+  align-self:flex-start;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  min-height:44px;
+  margin-bottom:18px;
+  color:inherit;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  text-decoration:none;
+  opacity:.78;
+  transition:opacity .2s,transform .25s var(--ease)
+}
+
+.bp-back-to-shop:hover{opacity:1;transform:translateX(-3px)}
+.bp-back-to-shop:focus-visible{outline:3px solid var(--honey);outline-offset:4px}
+
 .bp-lead{
   max-width:38ch;
   margin:0 0 24px;

@@ -19,10 +19,12 @@
   'use strict';
 
   const KEY = 'dcb-cart';
+  const DISCOUNT_KEY = 'dcb-discount';
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------------- state ---------------- */
   let items = [];
+  let discount = null;
   try {
     const raw = localStorage.getItem(KEY);
     const parsed = raw ? JSON.parse(raw) : [];
@@ -30,6 +32,16 @@
       items = parsed.filter(i => i && typeof i.slug === 'string' && Number.isFinite(+i.price));
     }
   } catch (e) { items = []; }          /* private mode, or someone else's data */
+
+  try {
+    const parsedDiscount = JSON.parse(localStorage.getItem(DISCOUNT_KEY) || 'null');
+    const percent = Number(parsedDiscount?.percent);
+    if (percent >= 10 && percent <= 40) discount = {
+      code: String(parsedDiscount.code || 'HOPPER'),
+      percent,
+      requiredSlugs: Array.isArray(parsedDiscount.requiredSlugs) ? parsedDiscount.requiredSlugs.map(String) : []
+    };
+  } catch (e) { discount = null; }
 
   const persist = () => {
     try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) { /* non-fatal */ }
@@ -65,6 +77,7 @@
       </div>
       <div class="cart-items" data-cart-list aria-live="polite"></div>
       <div class="cart-drawer-foot">
+        <div class="cart-discount" data-cart-discount hidden><span>Bundle discount</span><strong></strong></div>
         <div class="cart-total"><span>Total</span><strong data-cart-total>0.00 USD</strong></div>
         <button class="cart-checkout" type="button" data-cart-checkout>Checkout <span aria-hidden="true">&rarr;</span></button>
         <p class="cart-note">Product pricing &middot; Shipping calculated at checkout</p>
@@ -90,6 +103,7 @@
   const drawer   = root.querySelector('.cart-drawer');
   const list     = root.querySelector('[data-cart-list]');
   const totalEl  = root.querySelector('[data-cart-total]');
+  const discountEl = root.querySelector('[data-cart-discount]');
   const panel    = root.querySelector('.search-panel');
   const input    = root.querySelector('[data-search-input]');
   const results  = root.querySelector('[data-search-results]');
@@ -158,7 +172,17 @@
           <button class="cart-remove" type="button" data-remove="${i}" aria-label="Remove ${esc(item.name)} from cart">&times;</button>
         </article>`).join('');
     }
-    totalEl.textContent = `${items.reduce((s, i) => s + i.price * i.quantity, 0).toFixed(2)} USD`;
+    const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
+    const requiredItems = discount?.requiredSlugs?.map(slug => items.find(item => item.slug === slug)) || [];
+    const bundleEligible = discount && requiredItems.length >= 2 && requiredItems.every(Boolean);
+    const bundleSubtotal = bundleEligible ? requiredItems.reduce((sum,item) => sum + item.price,0) : 0;
+    const saving = bundleEligible ? bundleSubtotal * discount.percent / 100 : 0;
+    discountEl.hidden = !saving;
+    if (saving) {
+      discountEl.querySelector('span').textContent = `${discount.code} · ${discount.percent}% off`;
+      discountEl.querySelector('strong').textContent = `−${saving.toFixed(2)} USD`;
+    }
+    totalEl.textContent = `${(subtotal - saving).toFixed(2)} USD`;
   }
 
   function sync() { persist(); paintBadges(); renderCart(); }
@@ -297,6 +321,16 @@
 
   /* another tab changed the cart — keep this one honest */
   addEventListener('storage', (e) => {
+    if (e.key === DISCOUNT_KEY) {
+      try {
+        const next = JSON.parse(e.newValue || 'null');
+        discount = next && Number(next.percent) >= 10 && Number(next.percent) <= 40
+          ? { ...next, requiredSlugs:Array.isArray(next.requiredSlugs) ? next.requiredSlugs.map(String) : [] }
+          : null;
+        renderCart();
+      } catch (err) { discount = null; renderCart(); }
+      return;
+    }
     if (e.key !== KEY) return;
     try { const v = JSON.parse(e.newValue || '[]'); if (Array.isArray(v)) { items = v; paintBadges(); renderCart(); } }
     catch (err) { /* ignore malformed */ }
@@ -326,7 +360,19 @@
       });
       sync();
     },
-    open: openCart, close: () => closeCart(), count, items: () => items.slice()
+    applyDiscount(next) {
+      const percent = Number(next?.percent);
+      if (percent < 10 || percent > 40) return false;
+      discount = {
+        code: String(next.code || `HOPPER${percent}`),
+        percent,
+        requiredSlugs:Array.isArray(next.requiredSlugs) ? next.requiredSlugs.map(String) : []
+      };
+      try { localStorage.setItem(DISCOUNT_KEY, JSON.stringify(discount)); } catch (e) { /* non-fatal */ }
+      renderCart();
+      return true;
+    },
+    open: openCart, close: () => closeCart(), count, items: () => items.slice(), discount: () => discount && { ...discount }
   };
   window.DCB.search = { open: openSearch, close: () => closeSearch() };
 

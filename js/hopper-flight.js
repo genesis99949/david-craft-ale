@@ -62,15 +62,39 @@
       const bottom = Math.min(height - 16, last ? last.offsetTop + last.offsetHeight + size * .6 : height - 48);
       const nextLayout = [width, height, size, top, bottom].join(':');
       if (nextLayout === layout) return;
+      const firstLayout = !layout;
       layout = nextLayout;
       // Anchor the three territories to the actual text, rather than the panel's
       // empty padding. The gap also accommodates the sprite's slight rotation.
       const slice = (bottom - top) / flights.length, gap = size * .2;
       flights.forEach((flight, i) => {
-        flight.zone = {left: 16, right: width - size - 16,
+        const oldZone = flight.zone;
+        const nextZone = {left: 16, right: width - size - 16,
           top: top + i * slice + gap, bottom: top + (i + 1) * slice - size - gap};
-        hide(flight);
-        if (!reduced.matches) spawn(flight, true);
+        flight.zone = nextZone;
+
+        if (firstLayout) {
+          hide(flight);
+          if (!reduced.matches) spawn(flight, true);
+          return;
+        }
+
+        // Product copy can change the stage height. Keep every courier at the
+        // same relative point in its territory so selecting another beer does
+        // not restart its route, lifetime or random appearance timer.
+        if (oldZone && flight.active) {
+          const remap = (value, oldMin, oldMax, nextMin, nextMax) => {
+            const oldSpan = Math.max(1, oldMax - oldMin);
+            return nextMin + Math.max(0, Math.min(1, (value - oldMin) / oldSpan)) * (nextMax - nextMin);
+          };
+          flight.x = remap(flight.x, oldZone.left, oldZone.right, nextZone.left, nextZone.right);
+          flight.y = remap(flight.y, oldZone.top, oldZone.bottom, nextZone.top, nextZone.bottom);
+          flight.fromX = remap(flight.fromX, oldZone.left, oldZone.right, nextZone.left, nextZone.right);
+          flight.fromY = remap(flight.fromY, oldZone.top, oldZone.bottom, nextZone.top, nextZone.bottom);
+          flight.toX = remap(flight.toX, oldZone.left, oldZone.right, nextZone.left, nextZone.right);
+          flight.toY = remap(flight.toY, oldZone.top, oldZone.bottom, nextZone.top, nextZone.bottom);
+          render(flight, 0);
+        }
       });
     }
 
