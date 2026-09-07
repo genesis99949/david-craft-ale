@@ -8,15 +8,31 @@
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/index.css">
-<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><script src="js/shop.js" defer></script></head>
+<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><link rel="stylesheet" href="css/site-footer.css"><link rel="stylesheet" href="css/hopper-flight.css"><script src="js/shop.js" defer></script></head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
 <!-- LOADER -->
 <div id="splash" aria-hidden="true">
-  <div class="wordmark"><div class="big">DAVID</div><div class="small">CRAFT ALE</div></div>
-  <span class="pour-star" data-star="34" data-fill="#572010"></span>
-  <div class="pour-pct" id="pour-pct">0%</div>
-  <div class="pour-line">Pouring the first round…</div>
+  <div class="splash-layers">
+    <i class="splash-layer splash-layer--1"></i><i class="splash-layer splash-layer--2"></i>
+    <i class="splash-layer splash-layer--3"></i><i class="splash-layer splash-layer--4"></i>
+  </div>
+  <div class="splash-bubbles">
+    <i style="--x:4%;--s:18px;--d:.05s;--t:2.2s"></i><i style="--x:9%;--s:46px;--d:.7s;--t:3.1s"></i>
+    <i style="--x:15%;--s:11px;--d:.2s;--t:1.9s"></i><i style="--x:20%;--s:30px;--d:1.1s;--t:2.7s"></i>
+    <i style="--x:26%;--s:62px;--d:.35s;--t:3.5s"></i><i style="--x:31%;--s:15px;--d:1.35s;--t:2s"></i>
+    <i style="--x:36%;--s:38px;--d:.55s;--t:2.9s"></i><i style="--x:41%;--s:9px;--d:.1s;--t:1.7s"></i>
+    <i style="--x:46%;--s:24px;--d:1.05s;--t:2.3s"></i><i style="--x:51%;--s:72px;--d:.15s;--t:3.8s"></i>
+    <i style="--x:56%;--s:13px;--d:.85s;--t:1.8s"></i><i style="--x:61%;--s:34px;--d:.4s;--t:2.6s"></i>
+    <i style="--x:66%;--s:20px;--d:1.2s;--t:2.15s"></i><i style="--x:71%;--s:54px;--d:.65s;--t:3.2s"></i>
+    <i style="--x:76%;--s:10px;--d:.3s;--t:1.65s"></i><i style="--x:81%;--s:29px;--d:.95s;--t:2.45s"></i>
+    <i style="--x:87%;--s:66px;--d:.25s;--t:3.6s"></i><i style="--x:93%;--s:16px;--d:1.15s;--t:2.05s"></i>
+    <i style="--x:12%;--s:25px;--d:1.55s;--t:2.4s"></i><i style="--x:34%;--s:19px;--d:1.7s;--t:2.2s"></i>
+    <i style="--x:58%;--s:43px;--d:1.45s;--t:3s"></i><i style="--x:74%;--s:17px;--d:1.75s;--t:1.9s"></i>
+    <i style="--x:84%;--s:36px;--d:1.6s;--t:2.8s"></i><i style="--x:97%;--s:12px;--d:.5s;--t:1.75s"></i>
+  </div>
+  <div class="splash-mark"><span data-star="34" data-fill="#FDEEDF"></span><div class="wordmark"><div class="big">DAVID</div><div class="small">CRAFT ALE</div></div></div>
 </div>
 
 <!-- MENU -->
@@ -30,6 +46,7 @@
   <nav>
     <a href="#top" data-menu-link>Home</a>
     <a href="products.html" data-menu-link>Products</a>
+    <a href="products.html#find-us" data-menu-link>Find a Distributor</a>
     <a href="affiliate.html" data-menu-link>Become an Affiliate</a>
     <a href="story.html" data-menu-link>Our Story</a>
   </nav>
@@ -66,7 +83,7 @@
 </header>
 <div class="announce">Free shipping on orders over $55</div>
 
-<main>
+<main id="main">
   <!-- HERO -->
   <section class="hero-band" aria-label="Our beers">
     <div class="ambient-icon twinkle icon-hero-star" aria-hidden="true" data-sparkle="40" data-fill="#B23A27"></div>
@@ -102,8 +119,12 @@
   <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee-track"></div></div>
 
   <!-- PRODUCTS -->
-  <section id="products" aria-label="Beer details">
+  <section id="products" aria-label="Beer details" data-hopper-flight="front">
     <span class="badge-spin" aria-hidden="true" id="badge-spin"></span>
+    <span class="story-crate-hopper story-crate-hopper--one" aria-hidden="true"><span class="story-crate-sprite"><img class="story-crate-frame story-crate-frame--up" src="assets/hopper-crate-up-264.png" width="88" height="88" alt="" decoding="async"><img class="story-crate-frame story-crate-frame--down" src="assets/hopper-crate-down-264.png" width="88" height="88" alt="" decoding="async"></span></span>
+    <span class="story-crate-hopper story-crate-hopper--two" aria-hidden="true"><span class="story-crate-sprite"><img class="story-crate-frame story-crate-frame--up" src="assets/hopper-crate-up-264.png" width="88" height="88" alt="" decoding="async"><img class="story-crate-frame story-crate-frame--down" src="assets/hopper-crate-down-264.png" width="88" height="88" alt="" decoding="async"></span></span>
+    <span class="story-crate-hopper story-crate-hopper--three" aria-hidden="true"><span class="story-crate-sprite"><img class="story-crate-frame story-crate-frame--up" src="assets/hopper-crate-up-264.png" width="88" height="88" alt="" decoding="async"><img class="story-crate-frame story-crate-frame--down" src="assets/hopper-crate-down-264.png" width="88" height="88" alt="" decoding="async"></span></span>
+    <span class="story-crate-hopper story-crate-hopper--four" aria-hidden="true"><span class="story-crate-sprite"><img class="story-crate-frame story-crate-frame--up" src="assets/hopper-crate-up-264.png" width="88" height="88" alt="" decoding="async"><img class="story-crate-frame story-crate-frame--down" src="assets/hopper-crate-down-264.png" width="88" height="88" alt="" decoding="async"></span></span>
     <header class="brew-concept-head reveal">
       <div>
         <p class="kicker">Four brews · four personalities</p>
@@ -201,53 +222,25 @@
   <section id="story" aria-label="Our story">
     <div class="story-grid">
     <div class="sunset">
-      <svg viewBox="0 0 1440 520" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Two bottles clinking in front of a golden sunset">
-        <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#3A1A08"/>
-            <stop offset=".34" stop-color="#8A4A16"/>
-            <stop offset=".62" stop-color="#E89A33"/>
-            <stop offset="1" stop-color="#FFCE64"/>
-          </linearGradient>
-          <radialGradient id="sunGlow" cx=".5" cy=".5" r=".5">
-            <stop offset="0" stop-color="#FFEDBE" stop-opacity=".95"/>
-            <stop offset=".55" stop-color="#FFD989" stop-opacity=".5"/>
-            <stop offset="1" stop-color="#FFD989" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <rect width="1440" height="520" fill="url(#sky)"/>
-        <circle cx="720" cy="350" r="260" fill="url(#sunGlow)"/>
-        <circle cx="720" cy="360" r="92" fill="#FFF1C4"/>
-        <path d="M0 470 Q 240 430 480 452 T 960 448 T 1440 452 L1440 520 L0 520 Z" fill="#241005" opacity=".92"/>
-        <g fill="#241005">
-          <g transform="translate(628,340) rotate(-24)">
-            <path d="M-16 -150 h32 v52 c0 22 22 30 22 58 v130 q0 14 -14 14 h-48 q-14 0 -14 -14 v-130 c0 -28 22 -36 22 -58 z"/>
-            <rect x="-18" y="-166" width="36" height="20" rx="4"/>
-          </g>
-          <g transform="translate(812,340) rotate(24)">
-            <path d="M-16 -150 h32 v52 c0 22 22 30 22 58 v130 q0 14 -14 14 h-48 q-14 0 -14 -14 v-130 c0 -28 22 -36 22 -58 z"/>
-            <rect x="-18" y="-166" width="36" height="20" rx="4"/>
-          </g>
-        </g>
-        <g fill="#FFEDBE">
-          <circle cx="700" cy="180" r="3"/><circle cx="756" cy="150" r="2.4"/><circle cx="726" cy="120" r="2"/>
-          <circle cx="240" cy="120" r="2.2"/><circle cx="1210" cy="140" r="2.4"/><circle cx="1080" cy="90" r="1.8"/>
-        </g>
-      </svg>
-      <video id="story-video" src="assets/story-loop.mp4" poster="assets/story-poster.png"
-             autoplay muted loop playsinline aria-label="Illustration of two bottles clinking at sunset over a barley field"></video>
+      <img class="story-photo"
+           src="assets/story-community-1152.jpg"
+           srcset="assets/story-community-768.jpg 768w, assets/story-community-1152.jpg 1152w"
+           sizes="(max-width: 860px) calc(100vw - 48px), 56vw"
+           width="1152" height="1536" loading="lazy" decoding="async"
+           alt="Three friends talking together around a reflective table in a modern glass-walled bar">
     </div>
     <div class="story-copy">
       <div class="ambient-icon spin-soft icon-story-star" aria-hidden="true" data-sparkle="40" data-fill="#E8A81E"></div>
       <p class="kicker reveal">From our brewhouse to yours</p>
-      <h2 class="section-head story-scroll-title">Made for<br>Good Company</h2>
+      <h2 class="section-head reveal">Made for<br>Good Company</h2>
       <div class="story-accent reveal d1" aria-hidden="true"></div>
-      <p class="reveal d1">At David Craft Ale, we are driven by a passion for brewing exceptional beer. Our commitment to quality and innovation shines through in every pint. From our humble beginnings as a group of beer enthusiasts, we set out to create unique and unforgettable flavors. With meticulous attention to detail and a dedication to pushing the boundaries of brewing, we craft beers that captivate the senses and bring people together.<br>Join us in experiencing the artistry behind every sip of David Craft Ale.</p>
+      <p class="reveal d1">David Craft Ale started with a simple idea: make characterful beer for the moments that bring people together. We brew every small batch with care, curiosity and a belief that good company is the best ingredient.</p>
       <div class="story-facts reveal d2">
         <span>Est. 2023</span>
         <span>4 Core Brews</span>
         <span>100% Small Batch</span>
       </div>
+      <a class="btn story-link reveal d2" href="story.html">Discover our story <span aria-hidden="true">→</span></a>
     </div>
     </div>
   </section>
@@ -257,7 +250,6 @@
     <div class="ambient-icon twinkle icon-reviews-star" aria-hidden="true" data-sparkle="40" data-fill="#E8A81E"></div>
     <p class="kicker reveal">Straight from the taproom</p>
     <h2 class="section-head reveal d1">Real Honest Pours</h2>
-    <span class="hover-hopper reveal d2" style="--hh:52px" aria-hidden="true"></span>
     <div class="review-grid">
       <figure class="review-card c-cocoa reveal">
         <blockquote class="q">The Dark lager tastes like a campfire that learned some manners.</blockquote>
@@ -299,6 +291,7 @@
   <nav class="foot-nav" aria-label="Footer">
     <a href="#top">Home</a>
     <a href="products.html">Products</a>
+    <a href="products.html#find-us">Find a Distributor</a>
     <a href="hopper.html">Hopper Plushie</a>
     <a href="story.html">Our Story</a>
     <a href="#reviews">Reviews</a>
@@ -311,7 +304,8 @@
     <span>Drink Responsibly</span>
   </div>
   <div class="foot-star" data-star="26" data-fill="#572010"></div>
-  <p class="foot-note">© 2026 David Craft Ale · Brewed with meticulous attention & questionable puns · 18+</p>
+  <p class="foot-note">© 2026 David Craft Ale · 18+</p>
+  <p class="foot-credit-line">Fictional portfolio concept by <a class="foot-credit" href="https://www.behance.net/ramonbugariu" target="_blank" rel="noopener noreferrer">Ramon Bugariu</a></p>
 </footer>
 
 <div id="toast" role="status"></div>
@@ -320,6 +314,7 @@
      how fonts.css is embedded as base64 rather than linked. -->
 <script src="js/vendor/lenis.js"></script>
 
+<script src="js/hopper-flight.js" defer></script>
 <script src="js/index.js"></script>
 </body>
 </html>

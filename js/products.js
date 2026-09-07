@@ -55,6 +55,20 @@ document.addEventListener('click', e=>{
   if(toastBtn){ e.preventDefault(); showToast(toastBtn.dataset.toast); }
 });
 
+/* Format shortcuts also position horizontally hidden products inside a rail. */
+document.querySelectorAll('.shop-jump-nav a[href^="#"]').forEach(link=>{
+  link.addEventListener('click',event=>{
+    const target = document.querySelector(link.getAttribute('href'));
+    const rail = target?.closest('.full-lineup-grid');
+    if(!target || !rail) return;
+    event.preventDefault();
+    history.pushState(null,'',link.getAttribute('href'));
+    target.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start',inline:'nearest'});
+    const gutter = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
+    rail.scrollTo({left:Math.max(0,target.offsetLeft-gutter),behavior:reduceMotion?'auto':'smooth'});
+  });
+});
+
 /* Cart state and the drawer live in shop.js now, shared by every page.
    This only turns a product card into an item and hands it over. */
 function addCardToCart(card,addButton){
@@ -64,7 +78,7 @@ function addCardToCart(card,addButton){
   window.DCB?.cart.add({
     slug,
     name: productName,
-    price: card.dataset.productPrice || '3.99',
+    price: card.dataset.productPrice || '2.49',
     currency: 'USD',
     package: card.dataset.productPackage || 'Product',
     image: card.querySelector('.prod-card-photo img').getAttribute('src')
@@ -145,7 +159,7 @@ function openQuickView(card){
   quickViewImage.alt = productImage?.alt || productName;
   quickViewTitle.textContent = productName;
   quickViewDescription.textContent = productDescriptions[card.dataset.productSlug] || 'A member of the David Craft Ale lineup, made to bring more character to the moment.';
-  quickViewPrice.textContent = (productPrice?.childNodes[0]?.textContent || `${card.dataset.productPrice || '3.99'} USD`).trim();
+  quickViewPrice.textContent = (productPrice?.childNodes[0]?.textContent || `${card.dataset.productPrice || '2.49'} USD`).trim();
   quickViewPackage.textContent = [card.dataset.productPackage,quantity].filter(Boolean).join(' · ');
   quickViewAdd.dataset.addToCart = originalAdd?.dataset.addToCart || productName;
   quickView.classList.add('is-open');
@@ -259,6 +273,33 @@ document.addEventListener('keydown',event=>{
   section.addEventListener('pointerleave',()=>{hopper.style.opacity='0';hasPoint=false;});
 })();
 
+/* ================= FULL LINEUP VIEW SWITCH ================= */
+(function(){
+  const section=$('.full-lineup-section');
+  const toggle=$('#lineup-view-toggle');
+  if(!section||!toggle) return;
+
+  function savedView(){
+    try{return localStorage.getItem('dca-lineup-view');}catch(_){return null;}
+  }
+  function saveView(value){
+    try{localStorage.setItem('dca-lineup-view',value);}catch(_){}
+  }
+  function setGridView(active,persist=false){
+    section.classList.toggle('is-grid-view',active);
+    toggle.checked=active;
+    section.querySelectorAll('.full-lineup-grid').forEach(rail=>{
+      if(active) rail.scrollLeft=0;
+      rail.setAttribute('aria-label',rail.getAttribute('aria-label').replace(/, grid view|, carousel view/g,'')+(active?', grid view':', carousel view'));
+    });
+    if(persist) saveView(active?'grid':'carousel');
+  }
+
+  const requestedView=new URLSearchParams(location.search).get('view');
+  setGridView(requestedView==='grid'||(requestedView!=='carousel'&&savedView()==='grid'));
+  toggle.addEventListener('change',()=>setGridView(toggle.checked,true));
+})();
+
 /* ================= FULL LINEUP CAROUSELS ================= */
 document.querySelectorAll('.full-lineup-grid').forEach(carousel=>{
   carousel.querySelectorAll('img').forEach(image=>image.draggable=false);
@@ -283,12 +324,14 @@ document.querySelectorAll('.full-lineup-grid').forEach(carousel=>{
     carousel.scrollTo({left:index===0?0:maxScroll,behavior:reduceMotion?'auto':'smooth'});
   }));
   carousel.addEventListener('keydown',event=>{
+    if(carousel.closest('.full-lineup-section')?.classList.contains('is-grid-view')) return;
     if(event.key!=='ArrowLeft' && event.key!=='ArrowRight') return;
     event.preventDefault();
     carousel.scrollBy({left:event.key==='ArrowLeft'?-step():step(),behavior:reduceMotion?'auto':'smooth'});
   });
   let pointerId=null,startX=0,startScroll=0,dragged=false;
   carousel.addEventListener('pointerdown',event=>{
+    if(carousel.closest('.full-lineup-section')?.classList.contains('is-grid-view')) return;
     if(event.pointerType!=='mouse' || event.button!==0) return;
     pointerId=event.pointerId;startX=event.clientX;startScroll=carousel.scrollLeft;dragged=false;
   });
@@ -327,6 +370,7 @@ document.querySelectorAll('.full-lineup-grid').forEach(carousel=>{
   const BASE_DUR = 26;
 
   const track = $('#marquee-track-products');
+  if(!track) return;
   track.innerHTML = baseSeq;
   const baseWidth = track.scrollWidth || 1;
   const targetWidth = Math.max(document.documentElement.clientWidth, screen.width || 0) * 1.25;
@@ -382,6 +426,53 @@ document.querySelectorAll('.prod-carousel').forEach(carousel=>{
     if(!ticking){ ticking = true; requestAnimationFrame(updateActive); }
   }, {passive:true});
 });
+
+/* ================= DISTRIBUTOR LOCATOR ================= */
+(function(){
+  const form = $('#locator-search');
+  if(!form) return;
+  const query = $('#locator-query');
+  const cards = Array.from(document.querySelectorAll('.location-card'));
+  const pins = Array.from(document.querySelectorAll('.map-pin'));
+  const filters = Array.from(document.querySelectorAll('[data-location-filter]'));
+  const count = $('#locator-count');
+  const empty = $('#locator-empty');
+  let activeFilter = 'all';
+
+  function selectLocation(id){
+    cards.forEach(card=>card.classList.toggle('is-active',card.dataset.locationId===id));
+    pins.forEach(pin=>pin.classList.toggle('is-active',pin.dataset.locationId===id));
+  }
+  function filterLocations(){
+    const term = query.value.trim().toLocaleLowerCase();
+    let visible = 0, firstVisible = '';
+    cards.forEach(card=>{
+      const matchesType = activeFilter==='all' || card.dataset.locationType===activeFilter;
+      const matchesText = !term || card.dataset.locationSearch.includes(term);
+      const show = matchesType && matchesText;
+      card.hidden = !show;
+      const pin = pins.find(item=>item.dataset.locationId===card.dataset.locationId);
+      if(pin) pin.hidden = !show;
+      if(show){ visible++; if(!firstVisible) firstVisible=card.dataset.locationId; }
+    });
+    count.textContent = `${visible} ${visible===1?'place':'places'}`;
+    empty.hidden = visible!==0;
+    if(firstVisible) selectLocation(firstVisible);
+  }
+  form.addEventListener('submit',event=>{event.preventDefault();filterLocations();});
+  query.addEventListener('input',filterLocations);
+  filters.forEach(button=>button.addEventListener('click',()=>{
+    activeFilter=button.dataset.locationFilter;
+    filters.forEach(item=>{const selected=item===button;item.classList.toggle('is-active',selected);item.setAttribute('aria-pressed',String(selected));});
+    filterLocations();
+  }));
+  cards.forEach(card=>card.querySelector('button').addEventListener('click',()=>selectLocation(card.dataset.locationId)));
+  pins.forEach(pin=>pin.addEventListener('click',()=>{
+    selectLocation(pin.dataset.locationId);
+    const card=cards.find(item=>item.dataset.locationId===pin.dataset.locationId);
+    card?.querySelector('button').focus({preventScroll:true});
+  }));
+})();
 
 /* ================= SCROLL REVEALS ================= */
 (function(){

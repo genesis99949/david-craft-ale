@@ -1,0 +1,181 @@
+/* css/site-footer.css
+   Footer-ul comun tuturor paginilor. Mutat aici din index.css/products.css,
+   unde exista in doua copii identice, ca sa poata fi folosit si de paginile
+   care isi au propriul stylesheet de baza (hopper, story, affiliate, legal,
+   editorial).
+
+   Fiecare pagina isi declara propriul set de tokeni, iar setul difera:
+   --peach lipseste din legal-pages.css si editorial-pages.css, --cocoa-soft
+   din story-page.css, iar fontul display se numeste --font-display pe index
+   si products, dar --display in restul. De aceea footerul isi rezolva mai
+   intai propriile variabile, cu fallback, si nu citeste tokenii direct.
+
+   Doua variante, alese dupa culoarea ultimei sectiuni a paginii: cea implicita
+   pe piersica, pentru paginile care se termina intr-o banda colorata, si
+   --dark pe cocoa, pentru cele care se termina in crem si unde piersica ar
+   citi ca o continuare a sectiunii, nu ca footer. Ambele schimba doar cei
+   patru tokeni de mai jos; regulile de mai departe nu stiu in ce varianta
+   sunt. */
+.site-footer{
+  --foot-bg: var(--peach, #F6D4B4);
+  --foot-fg: var(--ink, #2E1A0E);
+  /* text curent: links, nota      */
+  --foot-quiet: var(--cocoa-soft, #7A3A1E);
+  /* nav si mesajul paginii      */
+  --foot-loud: var(--cocoa, #572010);
+  /* wordmark si steaua            */
+  --foot-display: var(--font-display, var(--display, 'Alfa Slab One', Georgia, serif));
+  position:sticky;
+  bottom:0;
+  z-index:1;
+  background:var(--foot-bg);
+  color:var(--foot-fg);
+  text-align:center;
+  padding:clamp(40px,6vw,56px) 24px 30px;
+  overflow:hidden;
+}
+
+.site-footer--dark{
+  --foot-bg: var(--cocoa, #572010);
+  --foot-fg: var(--cream-soft, #FDEEDF);
+  --foot-quiet: rgba(253,238,223,.72);
+  --foot-loud: var(--cream-soft, #FDEEDF);
+}
+
+.foot-nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:clamp(16px,4vw,40px);
+  font-weight:800;
+  font-size:12.5px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--foot-quiet);
+  margin-bottom:clamp(28px,5vw,48px);
+}
+
+.foot-nav a{
+  color:inherit;
+  text-decoration:none;
+  opacity:.85
+}
+
+.foot-nav a:hover{
+  opacity:1;
+  text-decoration:underline
+}
+
+/* mesajul propriu fiecarei pagini ("Made with character.", "Nothing to hide.")
+   pastrat din footerele vechi. Sta deasupra wordmark-ului si sub el ca scara,
+   ca sa citeasca drept semnatura de pagina inaintea celei de brand. */
+.foot-message{
+  display:block;
+  font-family:var(--foot-display);
+  font-weight:400;
+  text-transform:uppercase;
+  color:var(--foot-quiet);
+  font-size:clamp(26px,4.6vw,58px);
+  line-height:.94;
+  letter-spacing:0;
+  margin:0 0 clamp(16px,2.6vw,26px);
+  text-wrap:balance;
+}
+
+/* billboard-scale sign-off in the display face, matching the headline scale
+   used elsewhere rather than the small Archivo wordmark lockup. Sized down
+   from the old single-word "DAVID" treatment since the full name is 3x the
+   characters — same visual weight, not the same point size. */
+.foot-wordmark{
+  font-family:var(--foot-display);
+  font-weight:400;
+  text-transform:uppercase;
+  color:var(--foot-loud);
+  font-size:clamp(40px,10vw,140px);
+  line-height:.9;
+  letter-spacing:.01em;
+  margin:0 0 clamp(28px,5vw,40px);
+}
+
+.foot-links{
+  display:flex;
+  justify-content:center;
+  gap:clamp(20px,6vw,64px);
+  flex-wrap:wrap;
+  margin:0 0 26px;
+  font-size:13.5px;
+}
+
+.foot-links a,.foot-links span{
+  color:var(--foot-fg);
+  text-decoration:none;
+  opacity:.85;
+  padding:6px 0;
+  line-height:1.4;
+}
+
+.foot-links a:hover{
+  opacity:1;
+  text-decoration:underline
+}
+
+.foot-star{
+  display:flex;
+  justify-content:center;
+  margin-bottom:14px
+}
+
+.foot-star svg{
+  width:26px;
+  height:26px
+}
+
+/* steaua vine cu fill scris in atribut (#572010) din generatorul de stele;
+   atributul de prezentare pierde in fata CSS-ului, deci varianta dark o
+   poate reculora fara sa umble la marcaj. */
+.foot-star svg path{
+  fill:var(--foot-loud)
+}
+
+.foot-note{
+  margin:0;
+  font-size:12.5px;
+  opacity:.7;
+  text-align:left
+}
+
+.foot-credit-line{
+  position:absolute;
+  right:clamp(18px,3vw,44px);
+  bottom:24px;
+  margin:0;
+  color:var(--foot-fg);
+  font-size:12.5px;
+  line-height:1.4;
+  opacity:.78;
+  text-align:right;
+}
+
+.foot-credit{
+  color:inherit;
+  text-decoration:underline;
+  text-underline-offset:2px
+}
+
+.foot-credit:hover{
+  text-decoration-thickness:2px
+}
+
+@media(max-width:760px){
+  .site-footer{
+    padding-bottom:24px
+  }
+  .foot-note{
+    text-align:center
+  }
+  .foot-credit-line{
+    position:static;
+    margin-top:10px;
+    text-align:center
+  }
+}

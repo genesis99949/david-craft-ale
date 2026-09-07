@@ -308,11 +308,17 @@
     add(item) {
       if (!item || !item.slug) return;
       const found = items.find(i => i.slug === item.slug);
-      if (found) found.quantity += 1;
+      if (found) {
+        found.quantity += 1;
+        found.name = item.name || found.name;
+        found.price = Number.parseFloat(item.price) || found.price;
+        found.package = item.package || found.package;
+        found.image = item.image || found.image;
+      }
       else items.push({
         slug: item.slug,
         name: item.name || 'Product',
-        price: Number.parseFloat(item.price) || 3.99,
+        price: Number.parseFloat(item.price) || 2.49,
         currency: item.currency || 'USD',
         package: item.package || 'Product',
         image: item.image || '',

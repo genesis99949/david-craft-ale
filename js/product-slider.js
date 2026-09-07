@@ -22,8 +22,34 @@
     track.append(...slides.slice(0,edgeCount).map(duplicate));
     const rendered = [...track.querySelectorAll('.bp-slider-card')];
     const wrap = index => (index % slides.length + slides.length) % slides.length;
-    let positions = [], current = slides.length > 2 ? 1 : 0, nearest = edgeCount + current;
+    let positions = [], loopWidth = 0, current = slides.length > 2 ? 1 : 0, nearest = edgeCount + current;
     let queued = false, drag = null, suppressClick = false, settleTimer;
+    let spin = null, spinVel = 0;
+    const FRICTION = .955;      // cat de repede se stinge invartirea
+    const MIN_VEL  = .15;       // sub asta, s-a oprit
+
+    // Moving out of a clone shifts by exactly one loop, so the picture does not
+    // move. Called every frame while spinning, which is what lets a hard fling
+    // keep going round instead of hitting the end of the scroll range.
+    function wrapLoop(){
+      if(!loopWidth) return;
+      if(track.scrollLeft < positions[edgeCount]) track.scrollLeft += loopWidth;
+      else if(track.scrollLeft >= positions[edgeCount+slides.length]) track.scrollLeft -= loopWidth;
+    }
+    function stopSpin(){ if(spin){ cancelAnimationFrame(spin); spin = null; } }
+    function startSpin(velocity){
+      stopSpin();
+      spinVel = velocity;
+      if(reduced.matches || Math.abs(spinVel) < MIN_VEL){ sync(); return; }
+      const step = () => {
+        track.scrollLeft += spinVel;
+        wrapLoop();
+        sync();
+        spinVel *= FRICTION;
+        spin = Math.abs(spinVel) > MIN_VEL ? requestAnimationFrame(step) : null;
+      };
+      spin = requestAnimationFrame(step);
+    }
 
     function clearDragClick() {
       suppressClick=false;
@@ -34,24 +60,34 @@
       queued = false;
       nearest = positions.reduce((best, position, index) => Math.abs(position-track.scrollLeft) < Math.abs(positions[best]-track.scrollLeft) ? index : best,0);
       current = wrap(nearest-edgeCount);
-      prev.disabled = next.disabled = slides.length < 2;
-      [...dots.children].forEach((dot,index) => dot.setAttribute('aria-current',String(index===current)));
-      const activeDot=dots.children[current];
-      if(activeDot && dots.scrollWidth>dots.clientWidth) dots.scrollLeft=activeDot.offsetLeft-(dots.clientWidth-activeDot.offsetWidth)/2;
-      status.textContent = `Product ${current+1} of ${slides.length}: ${slides[current].querySelector('h3').textContent}`;
+      if(prev) prev.disabled = slides.length < 2;
+      if(next) next.disabled = slides.length < 2;
+      // Dots, arrows and the status line are optional chrome: the markup can
+      // drop any of them and the slider still scrolls.
+      if(dots){
+        [...dots.children].forEach((dot,index) => dot.setAttribute('aria-current',String(index===current)));
+        const activeDot=dots.children[current];
+        if(activeDot && dots.scrollWidth>dots.clientWidth) dots.scrollLeft=activeDot.offsetLeft-(dots.clientWidth-activeDot.offsetWidth)/2;
+      }
+      if(status) status.textContent = `Product ${current+1} of ${slides.length}: ${slides[current].querySelector('h3').textContent}`;
     }
 
     function measure() {
       positions = rendered.map(slide => slide.offsetLeft + slide.offsetWidth/2 - track.clientWidth/2);
+      // Distance covered by one full set of real slides. Shifting the scroll by
+      // exactly this much moves out of a clone without moving the picture.
+      loopWidth = positions[edgeCount+slides.length] - positions[edgeCount];
       track.scrollTo({left:positions[edgeCount+current],behavior:'instant'});
-      dots.replaceChildren();
-      slides.forEach((slide,index) => {
-        const dot = document.createElement('button');dot.type='button';
-        dot.setAttribute('aria-label',`Go to carousel position ${index+1}`);
-        dot.setAttribute('aria-controls',track.id);
-        dot.addEventListener('click',()=>go(index));dots.appendChild(dot);
-      });
-      controls.hidden = slides.length<2;
+      if(dots){
+        dots.replaceChildren();
+        slides.forEach((slide,index) => {
+          const dot = document.createElement('button');dot.type='button';
+          dot.setAttribute('aria-label',`Go to carousel position ${index+1}`);
+          dot.setAttribute('aria-controls',track.id);
+          dot.addEventListener('click',()=>go(index));dots.appendChild(dot);
+        });
+      }
+      if(controls) controls.hidden = slides.length<2;
       track.setAttribute('data-slider-ready','');
       sync();
     }
@@ -65,19 +101,23 @@
       track.scrollTo({left:positions[target],behavior:reduced.matches?'instant':'smooth'});
     }
     function settle() {
-      if(drag) return;
+      if(drag || spin) return;
       sync();
-      if(nearest < edgeCount || nearest >= edgeCount+slides.length) {
-        track.scrollTo({left:positions[edgeCount+current],behavior:'instant'});
-      }
+      // Drifted into a clone: jump by exactly one loop so the same cards stay
+      // under the cursor. Snapping to a card here is what used to feel like
+      // the slider grabbing the scroll back.
+      wrapLoop();
+      sync();
     }
-    prev.addEventListener('click',()=>go(current-1));
-    next.addEventListener('click',()=>go(current+1));
+    if(prev) prev.addEventListener('click',()=>go(current-1));
+    if(next) next.addEventListener('click',()=>go(current+1));
     track.addEventListener('scroll',()=>{
       if(!queued){queued=true;requestAnimationFrame(sync);}
+      if(spin) return;
       clearTimeout(settleTimer);settleTimer=setTimeout(settle,180);
     },{passive:true});
     track.addEventListener('scrollend',settle);
+    ['wheel','touchstart'].forEach(type => track.addEventListener(type,stopSpin,{passive:true}));
     track.addEventListener('keydown',event=>{
       if(event.key==='Enter')clearDragClick();
       if(event.target!==track || !['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
@@ -87,7 +127,7 @@
     // Mouse dragging, while touch keeps the browser's native momentum and snap.
     track.addEventListener('pointerdown',event=>{
       if(event.pointerType!=='mouse'||event.button!==0)return;
-      clearDragClick();drag={id:event.pointerId,x:event.clientX,left:track.scrollLeft,moved:false};
+      stopSpin();clearDragClick();drag={id:event.pointerId,x:event.clientX,left:track.scrollLeft,moved:false,vel:0,lastX:event.clientX,lastT:performance.now()};
     });
     track.addEventListener('pointermove',event=>{
       if(!drag||event.pointerId!==drag.id)return;
@@ -100,13 +140,20 @@
         rendered.forEach(slide=>slide.setAttribute('data-no-pour',''));
       }
       event.preventDefault();track.scrollLeft=drag.left-dx;
+      // Smoothed pointer speed, so one jittery frame does not decide the fling.
+      const t=performance.now(), gap=t-drag.lastT;
+      if(gap>0){
+        const instant=-(event.clientX-drag.lastX)/gap*16;   // px per frame, sign of scrollLeft
+        drag.vel=drag.vel*.7+instant*.3;
+        drag.lastX=event.clientX;drag.lastT=t;
+      }
     });
     function endDrag(){
       if(!drag)return;
-      const {id,moved}=drag;drag=null;
+      const {id,moved}=drag, drag2vel=drag.vel;drag=null;
       if(track.hasPointerCapture(id))track.releasePointerCapture(id);
       track.classList.remove('is-dragging');
-      if(moved){suppressClick=true;sync();track.scrollTo({left:positions[nearest],behavior:reduced.matches?'instant':'smooth'});}
+      if(moved){suppressClick=true;startSpin(drag2vel);}
     }
     track.addEventListener('pointerup',endDrag);
     track.addEventListener('pointercancel',endDrag);

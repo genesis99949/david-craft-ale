@@ -1,0 +1,142 @@
+/* css/hopper-flight.css
+   Curierii Hopper — sprite-ul cu doua cadre (aripi sus / aripi jos) si
+   scena peste care zboara. Extras din story-page.css, unde traia doar
+   pentru .story-split--hopper, ca sa poata fi refolosit si de sectiunea
+   de produse din index.html fara sa dublam regulile.
+
+   O scena e orice element cu [data-hopper-flight]. js/story-hopper-flight.js
+   ii cauta pe toti, imparte inaltimea in cate un teritoriu pentru fiecare
+   curier si ii plimba cu requestAnimationFrame. Marimea sprite-ului vine
+   din --courier-size, setat de pagina, ca sa se potriveasca fiecarei scene.
+
+   Numele de clase au ramas cele din story (story-crate-*) ca sa nu atingem
+   marcajul si stilurile care merg deja. */
+
+[data-hopper-flight]{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden
+}
+
+/* Implicit curierii trec prin spatele continutului (story). Pe o scena
+   marcata [data-hopper-flight="front"] trec prin fata, pentru sectiuni ale
+   caror blocuri sunt opace si i-ar ascunde complet — acolo continutul nu
+   mai are nevoie de z-index, iar regula nici nu se aplica, ca sa nu strice
+   pozitionarea elementelor deja absolute din sectiune. */
+[data-hopper-flight]:not([data-hopper-flight="front"])>:not(.story-crate-hopper){
+  position:relative;
+  z-index:2
+}
+
+[data-hopper-flight="front"] .story-crate-hopper{
+  z-index:6
+}
+
+.story-crate-hopper{
+  position:absolute;
+  z-index:1;
+  display:block;
+  width:var(--courier-size);
+  height:var(--courier-size);
+  pointer-events:none;
+  user-select:none;
+  --flap-speed:240ms;
+  --flap-delay:0ms
+}
+
+.story-crate-sprite{
+  position:relative;
+  display:block;
+  width:100%;
+  height:100%
+}
+
+.story-crate-hopper .story-crate-frame{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  object-fit:contain;
+  animation:storyCrateWingsUp var(--flap-speed) steps(1,end) var(--flap-delay) infinite;
+  animation-play-state:paused
+}
+
+.story-crate-hopper .story-crate-frame--down{
+  opacity:0;
+  animation-name:storyCrateWingsDown
+}
+
+/* bat din aripi doar cat scena e pe ecran */
+[data-hopper-flight].is-flying .story-crate-frame{
+  animation-play-state:running
+}
+
+[data-hopper-flight].is-flying .story-crate-hopper{
+  will-change:transform
+}
+
+/* cand scriptul preia pozitionarea, ancorele statice de mai jos ies din
+   ecuatie: totul se muta prin transform, pornind din coltul stanga-sus */
+[data-hopper-flight].has-flight-paths .story-crate-hopper{
+  top:0;
+  left:0;
+  right:auto;
+  bottom:auto;
+  opacity:0
+}
+
+/* pozitii de rezerva, folosite cand scriptul nu ruleaza */
+.story-crate-hopper--one{
+  top:4px;
+  left:4%;
+  --flap-delay:-60ms
+}
+
+.story-crate-hopper--two{
+  top:2px;
+  right:8%;
+  --flap-speed:260ms;
+  --flap-delay:-150ms
+}
+
+.story-crate-hopper--three{
+  bottom:3px;
+  left:12%;
+  --flap-speed:220ms;
+  --flap-delay:-90ms
+}
+
+.story-crate-hopper--four{
+  bottom:6px;
+  right:14%;
+  --flap-speed:250ms;
+  --flap-delay:-30ms
+}
+
+@keyframes storyCrateWingsUp{
+  0%,100%{
+    opacity:1
+  }
+  50%{
+    opacity:0
+  }
+}
+
+@keyframes storyCrateWingsDown{
+  0%,100%{
+    opacity:0
+  }
+  50%{
+    opacity:1
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .story-crate-hopper .story-crate-frame{
+    animation:none
+  }
+  .story-crate-hopper .story-crate-frame--down{
+    display:none
+  }
+}

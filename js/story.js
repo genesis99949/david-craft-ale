@@ -10,7 +10,7 @@
 
     const bands = [
       ...document.querySelectorAll('main > section'),
-      document.querySelector('.story-footer')
+      document.querySelector('.site-footer')
     ].filter(Boolean);
 
     /* A section states its colour either on itself (story-band--cream),

@@ -8,8 +8,9 @@
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/products.css">
-<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><script src="js/shop.js" defer></script></head>
+<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><link rel="stylesheet" href="css/site-footer.css"><script src="js/shop.js" defer></script></head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <!-- MENU -->
 <div id="menu" role="dialog" aria-modal="true" aria-label="Menu">
   <div class="menu-top">
@@ -21,6 +22,7 @@
   <nav>
     <a href="index.html#top" data-menu-link>Home</a>
     <a href="products.html" data-menu-link>Products</a>
+    <a href="#find-us" data-menu-link>Find a Distributor</a>
     <a href="affiliate.html" data-menu-link>Become an Affiliate</a>
     <a href="story.html" data-menu-link>Our Story</a>
   </nav>
@@ -69,9 +71,9 @@
     <img src="assets/hopper-hero.png" alt="" onerror="this.remove()">
   </a>
   <div class="hgroup right">
-    <button class="icon-btn" data-toast="Accounts open with the taproom. Stay tuned!" aria-label="Account">
+    <a class="icon-btn" href="account.html" aria-label="Account">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-    </button>
+    </a>
     <button class="icon-btn cart-button" id="cart-button" aria-label="Cart, empty" aria-controls="dcb-cart-drawer" aria-expanded="false">
       <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.6 12.5a1.8 1.8 0 0 0 1.8 1.5h7.9a1.8 1.8 0 0 0 1.8-1.4L21 8H6"/></svg>
       <span class="cart-count" id="cart-count" aria-hidden="true">0</span>
@@ -80,96 +82,86 @@
 </header>
 <div class="announce">Free shipping on orders over $55 · Drink responsibly</div>
 
-<main>
-  <!-- HERO — atmospheric mood shot, no product shown yet -->
-  <section class="products-hero w-full h-full" aria-label="Our products">
-    <video class="products-hero-bg" src="assets/story-loop.mp4" poster="assets/story-poster.png" autoplay muted loop playsinline aria-hidden="true"></video>
-    <div class="products-hero-overlay" aria-hidden="true"></div>
-    <div class="products-hero-content">
-      <h1 class="products-hero-title">Trace Every Pour<br>Back to the Batch</h1>
-      <p class="products-hero-caption">David Craft Ale — Small Batch, Big Personality</p>
+<main id="main">
+  <section class="shop-intro" aria-labelledby="products-title">
+    <div class="shop-intro-copy">
+      <p class="kicker">From our brewhouse to your fridge</p>
+      <h1 id="products-title">Pick your pour.</h1>
+      <p>Choose a brew, choose the format and add it to your cart. Everything you need is right here.</p>
+      <a class="shop-locator-link" href="#find-us">Find a distributor near you <span aria-hidden="true">→</span></a>
     </div>
-  </section>
-
-  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee-track-products"></div></div>
-
-  <!-- CAROUSEL 1 — the core beer range (light band) -->
-  <section class="carousel-section light" aria-label="The four brews">
-    <p class="kicker reveal">From our brewhouse to yours</p>
-    <h2 class="section-head reveal d1">The Four Brews</h2>
-    <span class="carousel-badge" id="badge-lineup" aria-hidden="true"></span>
-    <div class="prod-carousel" id="carousel-lineup">
-      <article class="prod-card">
-        <a class="prod-card-photo" href="beer.html?brew=blonde" tabindex="-1" aria-hidden="true"><img src="assets/bottle-blonde.png" alt="David Craft Ale Blonde Ale bottle" loading="lazy"></a>
-        <h3 class="prod-card-name">Blonde Ale</h3>
-        <a class="btn" href="beer.html?brew=blonde">Learn More <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="prod-card">
-        <a class="prod-card-photo" href="beer.html?brew=amber" tabindex="-1" aria-hidden="true"><img src="assets/bottle-amber.png" alt="David Craft Ale Amber Pale Ale bottle" loading="lazy"></a>
-        <h3 class="prod-card-name">Amber Pale Ale</h3>
-        <a class="btn" href="beer.html?brew=amber">Learn More <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="prod-card">
-        <a class="prod-card-photo" href="beer.html?brew=ipa" tabindex="-1" aria-hidden="true"><img src="assets/bottle-ipa.png" alt="David Craft Ale IPA bottle" loading="lazy"></a>
-        <h3 class="prod-card-name">IPA</h3>
-        <a class="btn" href="beer.html?brew=ipa">Learn More <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="prod-card">
-        <a class="prod-card-photo" href="beer.html?brew=dark" tabindex="-1" aria-hidden="true"><img src="assets/bottle-dark.png" alt="David Craft Ale Dark Lager bottle" loading="lazy"></a>
-        <h3 class="prod-card-name">Dark Lager</h3>
-        <a class="btn" href="beer.html?brew=dark">Learn More <span aria-hidden="true">→</span></a>
-      </article>
-    </div>
+    <nav class="shop-jump-nav" aria-label="Shop by format">
+      <a href="#bottles">Bottles <span aria-hidden="true">↓</span></a>
+      <a href="#cans">Cans <span aria-hidden="true">↓</span></a>
+      <a href="#blonde-ale-bottle-six-pack">Six-packs <span aria-hidden="true">↓</span></a>
+      <a href="#accessories">Accessories <span aria-hidden="true">↓</span></a>
+    </nav>
+    <ul class="shop-promises" aria-label="Shopping benefits">
+      <li><strong>2 formats</strong><span>Bottle or can</span></li>
+      <li><strong>2 pack sizes</strong><span>Single or six-pack</span></li>
+      <li><strong>Free shipping</strong><span>On orders over $55</span></li>
+    </ul>
   </section>
 
   <!-- FULL LINEUP — every product/SKU currently defined by the project -->
   <section class="carousel-section dark full-lineup-section" aria-labelledby="full-lineup-title">
-    <p class="kicker reveal">Every brew and one fuzzy friend</p>
-    <h2 class="section-head reveal d1" id="full-lineup-title">Bottles</h2>
+    <h2 class="visually-hidden" id="full-lineup-title">Shop the full lineup</h2>
+    <div class="lineup-view-toolbar">
+      <span class="lineup-view-caption">View</span>
+      <label class="lineup-view-switch">
+        <span>Carousel</span>
+        <input id="lineup-view-toggle" type="checkbox" role="switch" aria-label="Grid view">
+        <span class="lineup-switch-track" aria-hidden="true"><span class="lineup-switch-thumb"></span></span>
+        <span>Grid</span>
+      </label>
+    </div>
     <span class="lineup-chaser" id="lineup-chaser" aria-hidden="true">
       <img class="f1" src="assets/hopper-up.png" alt="">
       <img class="f2" src="assets/hopper-down.png" alt="">
     </span>
-    <section class="lineup-group" aria-label="Bottles products">
+    <section class="lineup-group" id="bottles" aria-labelledby="lineup-bottles-title">
+    <p class="kicker reveal">Start with the classics</p>
+    <h3 class="lineup-group-title" id="lineup-bottles-title">Bottles</h3>
+    <div class="section-accent" aria-hidden="true"><span data-star="14" data-fill="#FFC24B"></span></div>
     <div class="full-lineup-grid" id="full-lineup-grid" role="region" aria-label="Bottles products" tabindex="0">
-      <article class="prod-card reveal" style="--asset-bottom:.3%" id="blonde-ale-bottle" data-product-slug="blonde-ale-bottle" data-product-package="Individual bottle beer">
-        <div class="prod-card-photo"><img src="assets/bottle-blonde.png" alt="David Craft Ale Blonde Ale bottle" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+      <article class="prod-card reveal" style="--asset-bottom:.3%" id="blonde-ale-bottle" data-product-slug="blonde-ale-bottle" data-product-price="2.49" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img class="prod-card-base" src="assets/bottle-blonde.png" alt="David Craft Ale Blonde Ale bottle" loading="lazy"><img class="prod-card-hover" src="assets/product-hover/blonde-macro.webp" alt="" loading="lazy" aria-hidden="true"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale</h3><p class="prod-card-price">2.49 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Blonde Ale Bottle">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d1" style="--asset-bottom:.3%" id="amber-pale-ale-bottle" data-product-slug="amber-pale-ale-bottle" data-product-package="Individual bottle beer">
-        <div class="prod-card-photo"><img src="assets/bottle-amber.png" alt="David Craft Ale Amber Pale Ale bottle" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+      <article class="prod-card reveal d1" style="--asset-bottom:.3%" id="amber-pale-ale-bottle" data-product-slug="amber-pale-ale-bottle" data-product-price="2.49" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img class="prod-card-base" src="assets/bottle-amber.png" alt="David Craft Ale Amber Pale Ale bottle" loading="lazy"><img class="prod-card-hover" src="assets/product-hover/amber-macro.webp" alt="" loading="lazy" aria-hidden="true"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale</h3><p class="prod-card-price">2.49 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Bottle">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d2" style="--asset-bottom:.4%" id="ipa-bottle" data-product-slug="ipa-bottle" data-product-package="Individual bottle beer">
-        <div class="prod-card-photo"><img src="assets/bottle-ipa.png" alt="David Craft Ale IPA bottle" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">IPA</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+      <article class="prod-card reveal d2" style="--asset-bottom:.4%" id="ipa-bottle" data-product-slug="ipa-bottle" data-product-price="2.49" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img class="prod-card-base" src="assets/bottle-ipa.png" alt="David Craft Ale IPA bottle" loading="lazy"><img class="prod-card-hover" src="assets/product-hover/ipa-macro.webp" alt="" loading="lazy" aria-hidden="true"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA</h3><p class="prod-card-price">2.49 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="IPA Bottle">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d3" style="--asset-bottom:1.8%" id="dark-lager-bottle" data-product-slug="dark-lager-bottle" data-product-package="Individual bottle beer">
-        <div class="prod-card-photo"><img src="assets/bottle-dark.png" alt="David Craft Ale Dark Lager bottle" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+      <article class="prod-card reveal d3" style="--asset-bottom:1.8%" id="dark-lager-bottle" data-product-slug="dark-lager-bottle" data-product-price="2.49" data-product-package="Individual bottle beer">
+        <div class="prod-card-photo"><img class="prod-card-base" src="assets/bottle-dark.png" alt="David Craft Ale Dark Lager bottle" loading="lazy"><img class="prod-card-hover" src="assets/product-hover/dark-macro.webp" alt="" loading="lazy" aria-hidden="true"></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager</h3><p class="prod-card-price">2.49 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Dark Lager Bottle">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal" style="--asset-bottom:3%" id="blonde-ale-bottle-six-pack" data-product-slug="blonde-ale-bottle-six-pack" data-product-package="Bottle six-pack">
+      <article class="prod-card reveal" style="--asset-bottom:3%" id="blonde-ale-bottle-six-pack" data-product-slug="blonde-ale-bottle-six-pack" data-product-price="13.99" data-product-package="Bottle six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-bottles-blonde.png" alt="Blonde Ale bottle six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale Six-Pack</h3><p class="prod-card-price">13.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Blonde Ale Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d1" style="--asset-bottom:2.7%" id="amber-pale-ale-bottle-six-pack" data-product-slug="amber-pale-ale-bottle-six-pack" data-product-package="Bottle six-pack">
+      <article class="prod-card reveal d1" style="--asset-bottom:2.7%" id="amber-pale-ale-bottle-six-pack" data-product-slug="amber-pale-ale-bottle-six-pack" data-product-price="13.99" data-product-package="Bottle six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-bottles-amber.png" alt="Amber Pale Ale bottle six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale Six-Pack</h3><p class="prod-card-price">13.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d2" style="--asset-bottom:3.7%" id="ipa-bottle-six-pack" data-product-slug="ipa-bottle-six-pack" data-product-package="Bottle six-pack">
+      <article class="prod-card reveal d2" style="--asset-bottom:3.7%" id="ipa-bottle-six-pack" data-product-slug="ipa-bottle-six-pack" data-product-price="13.99" data-product-package="Bottle six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-bottles-ipa.png" alt="IPA bottle six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">IPA Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA Six-Pack</h3><p class="prod-card-price">13.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="IPA Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d3" style="--asset-bottom:3%" id="dark-lager-bottle-six-pack" data-product-slug="dark-lager-bottle-six-pack" data-product-package="Bottle six-pack">
+      <article class="prod-card reveal d3" style="--asset-bottom:3%" id="dark-lager-bottle-six-pack" data-product-slug="dark-lager-bottle-six-pack" data-product-price="13.99" data-product-package="Bottle six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-bottles-dark.png" alt="Dark Lager bottle six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager Six-Pack</h3><p class="prod-card-price">13.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Dark Lager Bottle Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
     </div>
@@ -178,48 +170,49 @@
       <button type="button" aria-label="Show bottle six-packs" aria-current="false"></button>
     </nav>
     </section>
-    <section class="lineup-group" aria-labelledby="lineup-cans-title">
+    <section class="lineup-group" id="cans" aria-labelledby="lineup-cans-title">
     <p class="kicker reveal">Crack open the lineup</p>
     <h3 class="lineup-group-title" id="lineup-cans-title">Cans</h3>
+    <div class="section-accent" aria-hidden="true"><span data-star="14" data-fill="#FFC24B"></span></div>
     <div class="full-lineup-grid" id="full-lineup-cans-grid" role="region" aria-label="Cans products" tabindex="0">
-      <article class="prod-card reveal" style="--asset-bottom:2.5%" data-product-slug="blonde-ale-can" data-product-package="Individual can">
+      <article class="prod-card reveal" style="--asset-bottom:2.5%" data-product-slug="blonde-ale-can" data-product-price="1.99" data-product-package="Individual can">
         <div class="prod-card-photo"><img src="assets/can-blonde.png" alt="Blonde Ale can" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale</h3><p class="prod-card-price">1.99 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Blonde Ale Can">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d1" style="--asset-bottom:2.4%" data-product-slug="amber-pale-ale-can" data-product-package="Individual can">
+      <article class="prod-card reveal d1" style="--asset-bottom:2.4%" data-product-slug="amber-pale-ale-can" data-product-price="1.99" data-product-package="Individual can">
         <div class="prod-card-photo"><img src="assets/can-amber.png" alt="Amber Pale Ale can" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale</h3><p class="prod-card-price">1.99 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Can">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d2" style="--asset-bottom:2.4%" data-product-slug="ipa-can" data-product-package="Individual can">
+      <article class="prod-card reveal d2" style="--asset-bottom:2.4%" data-product-slug="ipa-can" data-product-price="1.99" data-product-package="Individual can">
         <div class="prod-card-photo"><img src="assets/can-ipa.png" alt="IPA can" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">IPA</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA</h3><p class="prod-card-price">1.99 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="IPA Can">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d3" style="--asset-bottom:2.4%" data-product-slug="dark-lager-can" data-product-package="Individual can">
+      <article class="prod-card reveal d3" style="--asset-bottom:2.4%" data-product-slug="dark-lager-can" data-product-price="1.99" data-product-package="Individual can">
         <div class="prod-card-photo"><img src="assets/can-dark.png" alt="Dark Lager can" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager</h3><p class="prod-card-price">3.99 USD<small>500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager</h3><p class="prod-card-price">1.99 USD<small>330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Dark Lager Can">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal" style="--asset-bottom:2.4%" id="blonde-ale-can-six-pack" data-product-slug="blonde-ale-can-six-pack" data-product-package="Can six-pack">
+      <article class="prod-card reveal" style="--asset-bottom:2.4%" id="blonde-ale-can-six-pack" data-product-slug="blonde-ale-can-six-pack" data-product-price="10.99" data-product-package="Can six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-cans-blonde.png" alt="Blonde Ale can six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Blonde Ale Six-Pack</h3><p class="prod-card-price">10.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Blonde Ale Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d1" style="--asset-bottom:2.4%" id="amber-pale-ale-can-six-pack" data-product-slug="amber-pale-ale-can-six-pack" data-product-package="Can six-pack">
+      <article class="prod-card reveal d1" style="--asset-bottom:2.4%" id="amber-pale-ale-can-six-pack" data-product-slug="amber-pale-ale-can-six-pack" data-product-price="10.99" data-product-package="Can six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-cans-amber.png" alt="Amber Pale Ale can six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Amber Pale Ale Six-Pack</h3><p class="prod-card-price">10.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Amber Pale Ale Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d2" style="--asset-bottom:.8%" id="ipa-can-six-pack" data-product-slug="ipa-can-six-pack" data-product-package="Can six-pack">
+      <article class="prod-card reveal d2" style="--asset-bottom:.8%" id="ipa-can-six-pack" data-product-slug="ipa-can-six-pack" data-product-price="10.99" data-product-package="Can six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-cans-ipa.png" alt="IPA can six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">IPA Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">IPA Six-Pack</h3><p class="prod-card-price">10.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="IPA Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
-      <article class="prod-card reveal d3" style="--asset-bottom:2.4%" id="dark-lager-can-six-pack" data-product-slug="dark-lager-can-six-pack" data-product-package="Can six-pack">
+      <article class="prod-card reveal d3" style="--asset-bottom:2.4%" id="dark-lager-can-six-pack" data-product-slug="dark-lager-can-six-pack" data-product-price="10.99" data-product-package="Can six-pack">
         <div class="prod-card-photo"><img src="assets/sixpack-cans-dark.png" alt="Dark Lager can six-pack" loading="lazy"></div>
-        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager Six-Pack</h3><p class="prod-card-price">3.99 USD<small>6 × 500 ml</small></p></div>
+        <div class="prod-card-copy"><h3 class="prod-card-name">Dark Lager Six-Pack</h3><p class="prod-card-price">10.99 USD<small>6 × 330 ml</small></p></div>
         <button class="btn on-dark" data-add-to-cart="Dark Lager Can Six-Pack">Add to cart <span aria-hidden="true">→</span></button>
       </article>
     </div>
@@ -228,9 +221,10 @@
       <button type="button" aria-label="Show can six-packs" aria-current="false"></button>
     </nav>
     </section>
-    <section class="lineup-group" aria-labelledby="lineup-accessories-title">
+    <section class="lineup-group" id="accessories" aria-labelledby="lineup-accessories-title">
     <p class="kicker reveal">A little more David Craft Ale</p>
     <h3 class="lineup-group-title" id="lineup-accessories-title">Accessories</h3>
+    <div class="section-accent" aria-hidden="true"><span data-star="14" data-fill="#572010"></span></div>
     <div class="full-lineup-grid" id="full-lineup-accessories-grid" role="region" aria-label="Accessories products" tabindex="0">
       <article class="prod-card reveal" style="--asset-bottom:7.8%" data-product-slug="hopper-plushie" data-product-package="Limited plushie" data-product-price="29.99">
         <div class="prod-card-photo"><img src="assets/Plushie_nobg.png" alt="Hopper plushie" loading="lazy"></div>
@@ -260,6 +254,7 @@
   <section id="p-reviews" aria-label="Reviews">
     <p class="kicker reveal">Straight from the taproom</p>
     <h2 class="section-head reveal d1">Real Honest Pours</h2>
+    <div class="section-accent reveal d2" aria-hidden="true"><span data-star="14" data-fill="#FFC24B"></span></div>
     <div class="review-grid">
       <figure class="review-card c-cocoa reveal">
         <blockquote class="q">Six-pack didn't survive the drive home. Worth it.</blockquote>
@@ -280,11 +275,59 @@
     </div>
   </section>
 
-  <!-- RETAIL AVAILABILITY BAND -->
-  <section class="retail-band" aria-label="Where to find David Craft Ale">
-    <p class="kicker reveal" style="color:var(--cream-soft)">Available at select taprooms &amp; bottle shops</p>
-    <h2 class="reveal d1">Real Beer,<br>Real Close By</h2>
-    <button class="btn on-dark reveal d2" data-toast="The store locator opens with the taproom. Check back soon!">Find a Taproom <span aria-hidden="true">→</span></button>
+  <!-- DISTRIBUTOR LOCATOR -->
+  <section class="retail-band" id="find-us" aria-labelledby="locator-title">
+    <div class="locator-heading">
+      <p class="kicker reveal">Taprooms, bars &amp; bottle shops</p>
+      <h2 class="reveal d1" id="locator-title">Find Hopper<br>nearby.</h2>
+      <p class="locator-intro reveal d2">Search the places pouring or stocking David Craft Ale. Demo locations are shown for the portfolio experience.</p>
+    </div>
+    <div class="locator-tools reveal d2">
+      <form class="locator-search" id="locator-search" role="search">
+        <label for="locator-query">City, neighbourhood or postcode</label>
+        <div class="locator-search-row">
+          <input id="locator-query" name="location" type="search" placeholder="Try “Bucharest” or “Old Town”" autocomplete="postal-code">
+          <button type="submit">Search <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      <div class="locator-filters" aria-label="Filter locations">
+        <button class="is-active" type="button" data-location-filter="all" aria-pressed="true">All places</button>
+        <button type="button" data-location-filter="taproom" aria-pressed="false">Taprooms &amp; bars</button>
+        <button type="button" data-location-filter="shop" aria-pressed="false">Bottle shops</button>
+      </div>
+    </div>
+    <div class="locator-layout reveal d3">
+      <div class="locator-map" role="img" aria-label="Stylised map of David Craft Ale stockists in Bucharest">
+        <span class="map-water" aria-hidden="true"></span>
+        <span class="map-road road-a" aria-hidden="true"></span><span class="map-road road-b" aria-hidden="true"></span>
+        <span class="map-road road-c" aria-hidden="true"></span><span class="map-road road-d" aria-hidden="true"></span>
+        <span class="map-label label-center" aria-hidden="true">BUCHAREST</span>
+        <span class="map-label label-old-town" aria-hidden="true">OLD TOWN</span>
+        <span class="map-label label-north" aria-hidden="true">DOROBANȚI</span>
+        <button class="map-pin is-active" type="button" style="--x:57%;--y:55%" data-location-id="old-town" aria-label="Show Old Town Taproom"><span>1</span></button>
+        <button class="map-pin" type="button" style="--x:68%;--y:25%" data-location-id="northside" aria-label="Show Northside Bottle Shop"><span>2</span></button>
+        <button class="map-pin" type="button" style="--x:44%;--y:72%" data-location-id="fabrica" aria-label="Show Fabrica Social Bar"><span>3</span></button>
+        <button class="map-pin" type="button" style="--x:21%;--y:48%" data-location-id="west-end" aria-label="Show West End Craft Corner"><span>4</span></button>
+      </div>
+      <div class="locator-results">
+        <div class="locator-results-head"><strong id="locator-count">4 places</strong><span>Demo stockists</span></div>
+        <div class="locator-list" id="locator-list" aria-live="polite">
+          <article class="location-card is-active" data-location-id="old-town" data-location-type="taproom" data-location-search="old town bucharest bucuresti centru 030167">
+            <button type="button"><span class="location-number">1</span><span><strong>Old Town Taproom</strong><small>Taproom · Old Town, Bucharest</small></span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="location-card" data-location-id="northside" data-location-type="shop" data-location-search="northside bottle shop dorobanti bucharest bucuresti 010578">
+            <button type="button"><span class="location-number">2</span><span><strong>Northside Bottle Shop</strong><small>Bottle shop · Dorobanți, Bucharest</small></span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="location-card" data-location-id="fabrica" data-location-type="taproom" data-location-search="fabrica social bar parcul carol bucharest bucuresti 040172">
+            <button type="button"><span class="location-number">3</span><span><strong>Fabrica Social Bar</strong><small>Bar · Carol Park, Bucharest</small></span><span aria-hidden="true">→</span></button>
+          </article>
+          <article class="location-card" data-location-id="west-end" data-location-type="shop" data-location-search="west end craft corner cotroceni bucharest bucuresti 060114">
+            <button type="button"><span class="location-number">4</span><span><strong>West End Craft Corner</strong><small>Bottle shop · Cotroceni, Bucharest</small></span><span aria-hidden="true">→</span></button>
+          </article>
+        </div>
+        <p class="locator-empty" id="locator-empty" hidden>No stockists match that search yet. Try “Bucharest” or a neighbourhood.</p>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -293,6 +336,7 @@
   <nav class="foot-nav" aria-label="Footer">
     <a href="index.html#top">Home</a>
     <a href="products.html">Products</a>
+    <a href="products.html#find-us">Find a Distributor</a>
     <a href="hopper.html">Hopper Plushie</a>
     <a href="story.html">Our Story</a>
     <a href="index.html#reviews">Reviews</a>
@@ -305,7 +349,8 @@
     <span>Drink Responsibly</span>
   </div>
   <div class="foot-star" data-star="26" data-fill="#572010"></div>
-  <p class="foot-note">© 2026 David Craft Ale · Brewed with meticulous attention &amp; questionable puns · 18+</p>
+  <p class="foot-note">© 2026 David Craft Ale · 18+</p>
+  <p class="foot-credit-line">Fictional portfolio concept by <a class="foot-credit" href="https://www.behance.net/ramonbugariu" target="_blank" rel="noopener noreferrer">Ramon Bugariu</a></p>
 </footer>
 
 <div id="toast" role="status"></div>

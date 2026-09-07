@@ -7,7 +7,7 @@
     "image": "assets/bottle-blonde.png",
     "accent": "#a87409",
     "wash": "#ffc24b",
-    "lead": "Light, crisp and quietly sunnyâ€”the easy-going member of the David Craft Ale family.",
+    "lead": "Light, crisp and quietly sunny—the easy-going member of the David Craft Ale family.",
     "meta": [
       "330 ml",
       "4.8% vol",
@@ -32,7 +32,7 @@
     "moment": "For long afternoons, an extra chair and the first round with friends.",
     "aroma": "Gentle fruit & soft malt",
     "slug": "blonde-ale-bottle",
-    "price": "3.99"
+    "price": "2.49"
   },
   "amber": {
     "name": "Amber Pale Ale",
@@ -65,7 +65,7 @@
     "moment": "For a crowded table, a shared meal and conversations that go on a little longer.",
     "aroma": "Caramel & toasted malt",
     "slug": "amber-pale-ale-bottle",
-    "price": "3.99"
+    "price": "2.49"
   },
   "ipa": {
     "name": "IPA",
@@ -98,7 +98,7 @@
     "moment": "For the curious, the hop lovers and the friend who always chooses something bold.",
     "aroma": "Citrus & floral hops",
     "slug": "ipa-bottle",
-    "price": "3.99"
+    "price": "2.49"
   },
   "dark": {
     "name": "Dark Lager",
@@ -131,12 +131,31 @@
     "moment": "For slow evenings, familiar faces and one more story around the table.",
     "aroma": "Coffee & roasted malt",
     "slug": "dark-lager-bottle",
-    "price": "3.99"
+    "price": "2.49"
   }
 };
   const requested = new URLSearchParams(location.search).get('brew');
   const key = Object.hasOwn(brews, requested) ? requested : 'blonde';
   const brew = brews[key];
+  const variantState = {container:'bottle',pack:'single'};
+  const currentVariant = () => {
+    const isBottle = variantState.container === 'bottle';
+    const isSix = variantState.pack === 'six';
+    const containerName = isBottle ? 'Bottle' : 'Can';
+    const baseSlug = brew.slug.replace('-bottle',`-${variantState.container}`);
+    return {
+      slug:`${baseSlug}${isSix?'-six-pack':''}`,
+      name:`${brew.name} ${containerName}${isSix?' Six-Pack':''}`,
+      price:isSix?(isBottle?'13.99':'10.99'):(isBottle?'2.49':'1.99'),
+      package:isSix?`${containerName} six-pack`:`Individual ${variantState.container}`,
+      image:isSix
+        ? `assets/sixpack-${isBottle?'bottles':'cans'}-${key}.png`
+        : `assets/${isBottle?'bottle':'can'}-${key}.png`,
+      unitLabel:isSix?`Six ${isBottle?'bottles':'cans'}`:`One ${variantState.container}`,
+      volume:isSix?'6 × 330 ml':'330 ml',
+      caption:isSix?`The ${containerName.toLowerCase()} six-pack`:`The ${variantState.container}`
+    };
+  };
   const $ = selector => document.querySelector(selector);
   const set = (selector, text) => { $(selector).textContent = text; };
   document.title = `${brew.name} | David Craft Ale`;
@@ -152,12 +171,11 @@
   $('#brew-image').src = brew.image; $('#brew-image').alt = `${brew.name} bottle`;
   ['back','table'].forEach(view => {
     const photo = $(`#brew-${view}`);
-    photo.src = `assets/beer-gallery/${key}-${view}-800.webp`;
-    photo.srcset = [480,800,1536].map(width => `assets/beer-gallery/${key}-${view}-${width}.webp ${width}w`).join(', ');
+    const stem = `${key}-${view}${key === 'dark' ? '-v2' : ''}`;
+    photo.src = `assets/beer-gallery/${stem}-800.webp`;
+    photo.srcset = [480,800,1536].map(width => `assets/beer-gallery/${stem}-${width}.webp ${width}w`).join(', ');
     photo.alt = view === 'back' ? `${brew.name} bottle viewed from the back` : `${brew.name} bottle and glass on a wooden table`;
   });
-  $('#brew-glass').src = `assets/glass-${key}.png`; $('#brew-glass').alt = `${brew.name} poured into a glass`;
-  $('#brew-detail').src = brew.image; $('#brew-detail').alt = `Close-up of the ${brew.name} label and Hopper illustration`;
   document.querySelectorAll('[data-brew]').forEach(link => {
     if (link.dataset.brew === key) link.setAttribute('aria-current','page');
     else link.removeAttribute('aria-current');
@@ -180,29 +198,58 @@
     </a>`).join('');
 
   $('#buy-beer').addEventListener('click', () => {
-    window.DCB?.cart.add({slug:brew.slug,name:`${brew.name} Bottle`,price:brew.price,currency:'USD',package:'Individual bottle beer',image:brew.image});
+    const variant=currentVariant();
+    window.DCB?.cart.add({...variant,currency:'USD'});
     window.DCB?.cart.open();
   });
 
   // Match Hopper's gallery: arrows, direct selection, keyboard and touch.
-  const gallery = $('#beer-gallery'), slides = [...gallery.querySelectorAll('figure')], dots = $('.hp-dots');
+  if (key !== 'ipa') $('[data-brew-only="ipa"]')?.remove?.();
+  const gallery = $('#beer-gallery'), allSlides = [...gallery.querySelectorAll('figure')], dots = $('.hp-dots'), galleryControls = $('.hp-gallery__controls');
   gallery.setAttribute('aria-label',`${brew.name} product images`);
-  let current = 0, touch = null;
+  let slides = [...allSlides], current = 0, touch = null;
   function show(next) {
     current = (next + slides.length) % slides.length;
+    allSlides.forEach(slide => {slide.removeAttribute('data-active');slide.setAttribute('aria-hidden','true');});
     slides.forEach((slide,index) => {
-      slide.toggleAttribute('data-active',index === current);
-      slide.setAttribute('aria-hidden',String(index !== current));
+      if(index === current){slide.setAttribute('data-active','true');slide.setAttribute('aria-hidden','false');}
     });
     [...dots.children].forEach((dot,index) => dot.setAttribute('aria-current',String(index === current)));
     const caption = slides[current].querySelector('figcaption').textContent;
     set('#gallery-status',`Image ${current + 1} of ${slides.length}: ${caption}`);
   }
-  slides.forEach((slide,index) => {
-    const dot = document.createElement('button');
-    dot.type = 'button';dot.setAttribute('aria-label',`Show ${slide.querySelector('figcaption').textContent.toLowerCase()}`);
-    dot.addEventListener('click',() => show(index));dots.appendChild(dot);
-  });
+  function rebuildDots(){
+    dots.innerHTML='';
+    slides.forEach((slide,index) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';dot.setAttribute('aria-label',`Show ${slide.querySelector('figcaption').textContent.toLowerCase()}`);
+      dot.addEventListener('click',() => show(index));dots.appendChild(dot);
+    });
+  }
+  function renderVariant(){
+    const variant=currentVariant();
+    document.querySelectorAll('[data-variant-container]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.variantContainer === variantState.container)));
+    document.querySelectorAll('[data-variant-pack]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.variantPack === variantState.pack)));
+    set('#variant-price',`${variant.price} USD`);
+    set('#variant-package',variant.package);
+    set('#brew-unit-label',variant.unitLabel);
+    set('#brew-volume',variant.volume);
+    const mainPhoto=$('#brew-image'),mainSlide=allSlides[0];
+    mainPhoto.src=variant.image;mainPhoto.alt=variant.name;
+    mainSlide.querySelector('figcaption').textContent=variant.caption;
+    const showBottleStory=variantState.container === 'bottle' && variantState.pack === 'single';
+    allSlides.slice(1).forEach(slide => {slide.hidden=!showBottleStory;});
+    slides=allSlides.filter(slide => !slide.hidden);
+    galleryControls.hidden=slides.length<2;
+    gallery.setAttribute('aria-label',`${variant.name} product images`);
+    rebuildDots();show(0);
+  }
+  document.querySelectorAll('[data-variant-container]').forEach(button => button.addEventListener('click',()=>{
+    variantState.container=button.dataset.variantContainer;renderVariant();
+  }));
+  document.querySelectorAll('[data-variant-pack]').forEach(button => button.addEventListener('click',()=>{
+    variantState.pack=button.dataset.variantPack;renderVariant();
+  }));
   document.querySelectorAll('[data-gal]').forEach(button => button.addEventListener('click',() => show(current + (button.dataset.gal === 'next' ? 1 : -1))));
   gallery.addEventListener('keydown',event => {
     if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
@@ -217,7 +264,7 @@
     touch = null;
   }, {passive:true});
   gallery.addEventListener('touchcancel',() => {touch=null;}, {passive:true});
-  show(0);
+  renderVariant();
 
   const setChrome = () => {
     const height = ['.site-header','.site-announce'].reduce((sum,selector) => sum + ($(selector)?.offsetHeight || 0),0);
