@@ -177,7 +177,9 @@
   $('#brew-image').src = brew.image; $('#brew-image').alt = `${brew.name} bottle`;
   ['back','table'].forEach(view => {
     const photo = $(`#brew-${view}`);
-    const stem = `${key}-${view}${key === 'dark' ? '-v2' : ''}`;
+    const stem = view === 'back'
+      ? `back-view/${brew.slug.replace(/-bottle$/, '-back')}`
+      : `${key}-table${key === 'dark' ? '-v2' : ''}`;
     photo.src = `assets/beer-gallery/${stem}-800.webp`;
     photo.srcset = [480,800,1536].map(width => `assets/beer-gallery/${stem}-${width}.webp ${width}w`).join(', ');
     photo.alt = view === 'back' ? `${brew.name} bottle viewed from the back` : `${brew.name} bottle and glass on a wooden table`;
