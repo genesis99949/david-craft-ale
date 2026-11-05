@@ -1,0 +1,59 @@
+/* Linkurile din header: pe desktop stau la vedere langa iconite,
+   pe telefon si tableta raman doar in burger menu. */
+.site-header .desk-nav{
+  display:none
+}
+
+@media(min-width:1200px){
+  /* culoarea vine din header, ca pe Story (header transparent peste hero) */
+  .site-header{
+    color:#2e1a0e
+  }
+  .site-header .hgroup{
+    align-items:center
+  }
+  .site-header #menu-open,.site-header #shared-menu-open{
+    display:none
+  }
+  .site-header .desk-nav{
+    display:flex;
+    align-items:center;
+    gap:clamp(14px,1.8vw,28px)
+  }
+  .site-header .hgroup:not(.right) .desk-nav{
+    margin-left:10px
+  }
+  .site-header .hgroup.right .desk-nav{
+    margin-right:10px
+  }
+  .site-header .desk-nav a{
+    position:relative;
+    color:inherit;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    text-decoration:none;
+    white-space:nowrap;
+    padding:6px 0
+  }
+  .site-header .desk-nav a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    height:3px;
+    width:0;
+    background:#e8a81e;
+    transition:width .3s cubic-bezier(.2,.75,.2,1)
+  }
+  .site-header .desk-nav a:hover::after,.site-header .desk-nav a:focus-visible::after,.site-header .desk-nav a[aria-current="page"]::after{
+    width:100%
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .site-header .desk-nav a::after{
+    transition:none
+  }
+}
