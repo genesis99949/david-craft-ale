@@ -105,6 +105,49 @@ function selectBeer(i, animate = true){
 }
 selectBeer(0, false);
 
+/* Fiecare bere are o descriere de alta lungime, asa ca panoul "Now pouring" —
+   si odata cu el toata sectiunea de produse — crestea si scadea la fiecare
+   selectie: 48px intre Blonde si Dark Lager la 1440px, adica tot ce urmeaza
+   pe pagina saltea. Rezervam din start inaltimea celei mai lungi descrieri,
+   ca sectiunea sa ramana fixa indiferent ce produs e ales.
+
+   Masuram maximul in loc sa fixam Dark Lager, desi azi el e cel mai lung:
+   asa ramane corect si daca se rescriu textele. Rezervarea sta pe descriere,
+   nu pe panou, fiindca panoul e grid cu align-items:center — o inaltime pe el
+   ar recentra continutul si textul ar sari vertical intre selectii. */
+function reserveTallest(el, textFor){
+  if (!el) return;
+  const shown = el.textContent;
+  el.style.minHeight = '0px';
+  let tallest = 0;
+  for (const beer of BEERS){
+    el.textContent = textFor(beer);
+    tallest = Math.max(tallest, el.scrollHeight);
+  }
+  el.textContent = shown;
+  el.style.minHeight = tallest + 'px';
+}
+
+/* Doua elemente variaza, si nu acelasi e cel mai inalt peste tot: descrierea
+   decide pe desktop (Dark Lager, cea mai lunga), iar pe ecrane inguste numele
+   afisat, unde "AMBER PALE ALE" si "IPA INDIA PALE ALE" se rup pe mai multe
+   randuri decat "DARK LAGER" — 35px diferenta la 375px. De aceea le rezervam
+   pe amandoua, altfel sectiunea ramanea fixa doar pe desktop. */
+function reserveDetailHeights(){
+  reserveTallest($('#beer-name'), b => `${b.name} ${b.style}`);
+  reserveTallest($('#beer-desc'), b => b.desc);
+}
+
+reserveDetailHeights();
+/* fontul display se incarca dupa primul paint si schimba numarul de randuri */
+document.fonts?.ready.then(reserveDetailHeights);
+/* la redimensionare textul se reaseaza, deci si maximul e altul */
+let descResizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(descResizeTimer);
+  descResizeTimer = setTimeout(reserveDetailHeights, 150);
+});
+
 /* ================= PRODUCT SHELF: SWIPE + EDGE TAP ================= */
 (function(){
   const shelf=$('#brew-shelf');
@@ -150,8 +193,8 @@ document.addEventListener('click', e=>{
   if(beerBtn){
     selectBeer(+beerBtn.dataset.beer);
     if(beerBtn.closest('#lineup')){
-      if(lenis) lenis.scrollTo('#products', {offset:-76});
-      else $('#products').scrollIntoView({behavior:'smooth'});
+      if(window.DCBScroll) window.DCBScroll.scrollTo('#products', {offset:-76});
+      else $('#products').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
     }
     return;
   }
@@ -182,27 +225,32 @@ function showToast(msg){
   toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
 }
 
-/* ================= SMOOTH SCROLL (Lenis) + HERO PARALLAX ================= */
+/* ================= HERO PARALLAX ================= */
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let lenis = null;
-if(!reduceMotion && window.Lenis){
-  lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
-  (function raf(time){ lenis.raf(time); requestAnimationFrame(raf); })();
-
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const heroBand = document.querySelector('.hero-band');
   const heroTitle = document.querySelector('.hero-title');
   const heroLineup = document.querySelector('.lineup');
   if(heroBand && heroTitle && heroLineup){
-    lenis.on('scroll', ({ scroll }) => {
+    const update = () => {
+      if(reduced.matches){
+        heroTitle.style.transform = '';
+        heroLineup.style.transform = '';
+        return;
+      }
       const heroH = heroBand.offsetHeight || 1;
-      const p = Math.min(1, Math.max(0, scroll / heroH));
+      const p = Math.min(1, Math.max(0, scrollY / heroH));
       // headline drifts down (reads as "farther away"), bottles rise faster
       // (reads as "closer") — opposite directions is what sells the depth
       heroTitle.style.transform  = `translateY(${(p * 46).toFixed(1)}px)`;
       heroLineup.style.transform = `translateY(${(p * -64).toFixed(1)}px)`;
-    });
+    };
+    addEventListener('scroll', update, {passive:true});
+    reduced.addEventListener('change', update);
+    update();
   }
-}
+})();
 
 /* ================= LOADER ================= */
 const splash = $('#splash');

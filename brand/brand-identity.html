@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>David Craft Ale — Brand Identity</title>
+<!-- Source of truth: css/index.css tokens, css/fonts.css faces, assets/ artwork,
+     js/index.js starPath() / sparkleSVG() / rotating badge. Nothing here is invented
+     that the live site does not already ship. -->
+<link rel="stylesheet" href="../css/fonts.css">
+<style>
+:root{
+  --cream:#FCE4CD;
+  --cream-soft:#FDEEDF;
+  --peach:#F6D4B4;
+  --paper:#FFF6EA;
+  --ink:#2E1A0E;
+  --cocoa:#572010;
+  --cocoa-soft:#7A3A1E;
+  --honey:#FFC24B;
+  --honey-deep:#E8A81E;
+  --brick:#B23A27;
+  --blonde:#D9A126;
+  --amber:#B23A27;
+  --ipa:#2F8577;
+  --dark:#2C2925;
+  --rule:rgba(87,32,16,.22);
+  --display:'Alfa Slab One',Georgia,serif;
+  --mark:'Archivo',Arial,sans-serif;
+  --body:'Hanken Grotesk',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream)}
+body{
+  width:1920px;
+  font-family:var(--body);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{padding:44px 56px 0}
+
+/* ---------- shared ---------- */
+.label{
+  font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--cocoa-soft);display:flex;gap:10px;align-items:baseline
+}
+.label b{color:var(--brick);font-weight:800}
+.note{font-size:13px;line-height:1.5;color:var(--cocoa-soft)}
+.note strong{color:var(--cocoa);font-weight:800}
+.display{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.9}
+.row{display:grid;border-top:1px solid var(--rule)}
+.cell{padding:28px 32px 30px;border-left:1px solid var(--rule);display:flex;flex-direction:column}
+.cell:first-child{border-left:0;padding-left:0}
+.cell:last-child{padding-right:0}
+svg{display:block}
+
+/* ---------- top line ---------- */
+.topline{display:flex;justify-content:space-between;align-items:center;padding-bottom:22px}
+.topline .label{color:var(--cocoa)}
+.topline .meta{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--cocoa-soft)}
+
+/* ---------- 01 primary ---------- */
+.r1{grid-template-columns:1fr 560px}
+.primary{display:flex;align-items:center;justify-content:center;gap:56px;flex:1;padding:26px 0 8px}
+.primary img{width:360px;height:auto;filter:drop-shadow(0 10px 0 rgba(87,32,16,.06))}
+.lockup{display:flex;flex-direction:column;align-items:center}
+.orn{display:flex;align-items:center;gap:14px}
+.orn i{display:block;height:3px;background:var(--cocoa);border-radius:2px}
+.orn i+i{margin-top:0}
+.orn .pair{display:flex;flex-direction:column;gap:5px}
+.orn .pair i:last-child{background:var(--honey-deep)}
+.lockup .david{font-size:212px;color:var(--cocoa);letter-spacing:.01em;margin-top:10px}
+.lockup .craft{font-size:112px;color:var(--brick);letter-spacing:.08em;margin-top:6px;margin-left:.08em}
+.tag{display:flex;align-items:center;gap:22px;margin-top:22px}
+.tag i{display:block;width:110px;height:3px;background:var(--honey-deep);border-radius:2px}
+.tag span{font-weight:800;font-size:22px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa)}
+
+.oncolor{display:grid;grid-template-rows:1fr 1fr;gap:16px;margin-top:20px;flex:1}
+.panel{border-radius:26px;display:flex;align-items:center;justify-content:center;gap:22px;position:relative;overflow:hidden}
+.panel.honey{background:var(--honey)}
+.panel.honey img{width:132px}
+.panel.honey .d{font-size:74px;color:var(--cocoa)}
+.panel.honey .c{font-size:38px;color:var(--brick);letter-spacing:.08em;margin-top:4px}
+.panel.cocoa{background:var(--cocoa);flex-direction:column;gap:12px}
+.wordmark{font-family:var(--mark);color:var(--cream-soft);text-align:center;line-height:.95}
+.wordmark .big{font-weight:900;font-size:64px;letter-spacing:.02em}
+.wordmark .small{font-weight:600;font-size:27px;letter-spacing:.24em;margin-left:.12em}
+.panel .cap{position:absolute;left:20px;bottom:14px;font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.panel.honey .cap{color:var(--cocoa-soft)}
+.panel.cocoa .cap{color:rgba(253,238,223,.6)}
+
+/* ---------- row 2 ---------- */
+.r2{grid-template-columns:340px 340px 560px 1fr}
+.center{flex:1;display:flex;align-items:center;justify-content:center}
+.badge{width:236px;height:236px}
+.badge-sizes{display:flex;align-items:flex-end;gap:18px;justify-content:center;margin-top:6px}
+.cap2{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--cocoa-soft);text-align:center;margin-top:8px}
+
+.marks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end;margin-top:4px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tile .sq{width:64px;height:64px;border-radius:14px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);display:grid;place-items:center}
+.tile .sq img{width:46px}
+
+.mascot{flex:1;position:relative;display:flex;align-items:center;justify-content:center}
+.mascot .hero{width:272px;position:relative;z-index:1}
+.mascot .floor{position:absolute;left:50%;bottom:16px;translate:-50% 0;width:250px;height:22px;border-radius:50%;background:var(--honey);opacity:.55}
+.mascot .fly{position:absolute}
+.mascot .fly.a{width:74px;left:22px;top:30px;rotate:-8deg}
+.mascot .fly.b{width:50px;right:44px;top:6px;rotate:9deg}
+.mascot .plush{position:absolute;right:6px;bottom:6px;width:96px;z-index:2;filter:drop-shadow(0 8px 10px rgba(46,26,14,.18))}
+.mname{display:flex;align-items:center;justify-content:center;gap:16px}
+.mname i{display:block;width:44px;height:3px;background:var(--honey-deep);border-radius:2px}
+.mname .display{font-size:36px;color:var(--cocoa)}
+.mline{text-align:center;font-size:15.5px;line-height:1.45;margin-top:6px}
+.scales{display:flex;justify-content:center;gap:22px;margin-top:10px}
+.scales span{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cocoa-soft)}
+.scales em{font-style:normal;color:var(--brick)}
+
+.palette{display:flex;flex-direction:column;gap:22px;margin-top:22px;flex:1}
+.core{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.sw{display:flex;flex-direction:column;align-items:center;text-align:center}
+.sw .dot{width:76px;height:76px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(87,32,16,.18)}
+.sw .n{font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin-top:10px}
+.sw .h{font-size:12.5px;font-weight:600;color:var(--cocoa-soft);margin-top:2px;letter-spacing:.04em}
+.sw .u{font-size:11.5px;color:var(--cocoa-soft);opacity:.85;margin-top:1px}
+.beers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.bsw{border-radius:18px;height:104px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;color:var(--cream-soft)}
+.bsw .display{font-size:22px}
+.bsw .hx{font-size:12px;font-weight:700;letter-spacing:.04em;display:flex;flex-direction:column;gap:1px;opacity:.92}
+.bsw .hx span+span{font-weight:600;opacity:.8}
+
+/* ---------- row 3 ---------- */
+.r3{grid-template-columns:600px 500px 1fr}
+.type{display:grid;grid-template-columns:300px 1fr;gap:24px;margin-top:22px;flex:1}
+.spec .d1{font-size:84px;color:var(--cocoa)}
+.spec .d2{font-size:38px;color:var(--brick);letter-spacing:.06em;margin-top:6px}
+.spec .k{display:flex;align-items:center;gap:10px;margin-top:20px}
+.spec .k i{display:block;width:18px;height:2px;background:var(--honey-deep)}
+.spec .k span{font-weight:800;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cocoa)}
+.spec .pop{font-family:var(--display);text-transform:uppercase;font-size:24px;color:var(--cocoa);margin-top:22px;line-height:1}
+.spec .pop em{font-style:normal;color:var(--brick)}
+.faces{display:flex;flex-direction:column}
+.face{padding:12px 0;border-top:1px solid var(--rule)}
+.face:first-child{border-top:0;padding-top:0}
+.face .role{font-weight:800;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cocoa-soft)}
+.face .nm{font-size:16px;font-weight:600;color:var(--ink);margin-top:4px}
+.face .nm.alfa{font-family:var(--display);font-weight:400;font-size:21px;text-transform:uppercase;color:var(--cocoa)}
+.face .nm.arch{font-family:var(--mark);font-weight:900;font-size:19px;letter-spacing:.02em;color:var(--cocoa)}
+.face .nm.arch small{font-weight:600;font-size:12px;letter-spacing:.24em;margin-left:6px}
+.face .rule{font-size:12px;color:var(--cocoa-soft);margin-top:3px;line-height:1.45}
+.alpha{font-size:13px;line-height:1.55;color:var(--ink);margin-top:6px;letter-spacing:.01em}
+
+.gfx{display:flex;flex-direction:column;gap:20px;margin-top:22px;flex:1}
+.toast{align-self:center;display:inline-flex;align-items:center;gap:10px;background:var(--cocoa);color:var(--cream-soft);font-size:13px;font-weight:600;padding:11px 20px;border-radius:999px;box-shadow:0 10px 24px rgba(46,26,14,.18)}
+.gorn{display:flex;align-items:center;justify-content:center;gap:16px}
+.gorn .pair{display:flex;flex-direction:column;gap:5px}
+.gorn .pair i{display:block;width:120px;height:3px;background:var(--cocoa);border-radius:2px}
+.gorn .pair i:last-child{background:var(--honey-deep);width:96px}
+.gorn .pair.r{align-items:flex-start}
+.gorn .pair.l{align-items:flex-end}
+.glyphs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:end}
+.glyph{display:flex;flex-direction:column;align-items:center;gap:10px}
+.glyph .g{height:58px;display:flex;align-items:center;justify-content:center;gap:8px}
+.glyph .t{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--cocoa-soft);text-align:center;line-height:1.35}
+.ui{display:flex;flex-wrap:nowrap;gap:8px;align-items:center;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--cocoa);color:var(--cream-soft);font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:14px 24px;border-radius:999px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1.5px solid rgba(87,32,16,.35);color:var(--cocoa);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:999px;background:var(--paper)}
+.chip.plain{background:transparent;font-weight:700;letter-spacing:.06em}
+.dots{height:0;border-top:3px dotted rgba(178,58,39,.7);margin:0 6px}
+
+.shelf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px;flex:1}
+.card{--tone:var(--honey);position:relative;border-radius:26px;background:color-mix(in srgb,var(--tone) 72%,var(--paper));box-shadow:inset 0 0 0 1px rgba(87,32,16,.18);overflow:hidden;min-height:384px;color:var(--ink)}
+.card::before{content:"";position:absolute;inset:18px;border:1px dashed rgba(87,32,16,.25);border-radius:50%;transform:scale(.82)}
+.card img{position:absolute;left:50%;bottom:84px;translate:-50% 0;height:70%;max-width:80%;object-fit:contain;filter:drop-shadow(0 22px 18px rgba(46,26,14,.28));z-index:1}
+.card .sp{position:absolute;right:18px;top:18px;z-index:2}
+.card .lab{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;display:flex;flex-direction:column;gap:7px}
+.card .lab strong{font-family:var(--display);font-weight:400;font-size:26px;line-height:.9;text-transform:uppercase}
+.card .lab small{display:flex;flex-direction:column;gap:2px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.8;line-height:1.35}
+.card.dark{color:var(--paper)}
+
+/* ---------- marquee strip ---------- */
+.strip{margin-top:0;background:var(--cocoa);color:var(--cream-soft);display:flex;align-items:center;justify-content:center;gap:26px;height:64px;font-weight:800;font-size:14px;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;overflow:hidden}
+.foot{display:flex;justify-content:space-between;align-items:center;padding:14px 56px 18px;background:var(--peach);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--cocoa-soft)}
+.foot .resp{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--cocoa)}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="topline">
+    <div class="label">David Craft Ale <b>·</b> Brand Identity</div>
+    <div class="meta">Edition 02 · October 2026 · rebuilt from the live site</div>
+  </div>
+
+  <!-- ROW 1 -->
+  <div class="row r1">
+    <div class="cell">
+      <div class="label"><b>01</b> Primary logo</div>
+      <div class="primary">
+        <img src="../assets/hopper-hero.png" alt="Hopper">
+        <div class="lockup">
+          <div class="orn">
+            <div class="pair" style="align-items:flex-end"><i style="width:150px"></i><i style="width:120px"></i></div>
+            <span data-star="46" data-fill="#B23A27"></span>
+            <div class="pair"><i style="width:150px"></i><i style="width:120px"></i></div>
+          </div>
+          <div class="display david">David</div>
+          <div class="display craft">Craft Ale</div>
+          <div class="tag"><i></i><span>Small batch. Big personality.</span><i></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="label"><b>02</b> On colour</div>
+      <div class="oncolor">
+        <div class="panel honey">
+          <img src="../assets/hopper-hero.png" alt="">
+          <div><div class="display d">David</div><div class="display c">Craft Ale</div></div>
+          <span class="cap">Hero band · honey</span>
+        </div>
+        <div class="panel cocoa">
+          <span data-star="40" data-fill="#FDEEDF"></span>
+          <div class="wordmark"><div class="big">DAVID</div><div class="small">CRAFT ALE</div></div>
+          <span class="cap">Splash mark · Archivo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="row r2">
+    <div class="cell">
+      <div class="label"><b>03</b> Seal</div>
+      <div class="center"><div class="badge" id="badge"></div></div>
+      <div class="note" style="text-align:center"><strong>Rotating seal</strong> — honey disc, cocoa star.<br>Spins once every 16s, 64–104px on site.</div>
+    </div>
+    <div class="cell">
+      <div class="label"><b>04</b> Logomark</div>
+      <div class="center"><span data-star="150" data-fill="#572010"></span></div>
+      <div class="marks">
+        <div class="tile"><div class="sq"><span data-star="26" data-fill="#572010"></span></div><span class="cap2" style="margin:0">Favicon</span></div>
+        <div class="tile"><div class="sq"><img src="../assets/hopper-hero.png" alt=""></div><span class="cap2" style="margin:0">Header</span></div>
+        <div class="tile"><div class="sq" style="background:var(--cocoa)"><span data-star="26" data-fill="#FDEEDF"></span></div><span class="cap2" style="margin:0">Reversed</span></div>
+      </div>
+      <div class="note" style="text-align:center;margin-top:14px"><strong>8-point star</strong> — identity. Cocoa;<br>cream only on dark grounds.</div>
+    </div>
+    <div class="cell">
+      <div class="label"><b>05</b> Mascot — Hopper</div>
+      <div class="mascot">
+        <img class="fly a" src="../assets/hopper-up.png" alt="">
+        <img class="fly b" src="../assets/hopper-down.png" alt="">
+        <img class="hero" src="../assets/hopper-hero.png" alt="Hopper">
+        <div class="floor"></div>
+        <img class="plush" src="../assets/Plushie_nobg.png" alt="">
+      </div>
+      <div class="mname"><i></i><span class="display">Hopper</span><i></i></div>
+      <p class="mline">The winged hop. Good beer. Good company.</p>
+      <div class="scales"><span><em>Anchor</em> 96–190px · one per page</span><span><em>Ambient</em> 24–56px · drifting</span></div>
+    </div>
+    <div class="cell">
+      <div class="label"><b>06</b> Colour palette</div>
+      <div class="palette">
+        <div class="core">
+          <div class="sw"><div class="dot" style="background:#FCE4CD"></div><div class="n">Cream</div><div class="h">#FCE4CD</div><div class="u">Canvas</div></div>
+          <div class="sw"><div class="dot" style="background:#FFF6EA"></div><div class="n">Paper</div><div class="h">#FFF6EA</div><div class="u">Cards</div></div>
+          <div class="sw"><div class="dot" style="background:#FFC24B"></div><div class="n">Honey</div><div class="h">#FFC24B</div><div class="u">Hero band</div></div>
+          <div class="sw"><div class="dot" style="background:#572010"></div><div class="n">Cocoa</div><div class="h">#572010</div><div class="u">Wordmark · CTA</div></div>
+          <div class="sw"><div class="dot" style="background:#2E1A0E"></div><div class="n">Ink</div><div class="h">#2E1A0E</div><div class="u">Body text</div></div>
+        </div>
+        <div class="beers">
+          <div class="bsw" style="background:#D9A126;color:#2E1808"><span class="display">Blonde</span><span class="hx"><span>#D9A126</span><span>ink #A87409</span></span></div>
+          <div class="bsw" style="background:#B23A27"><span class="display">Amber</span><span class="hx"><span>#B23A27</span><span>ink #A33322</span></span></div>
+          <div class="bsw" style="background:#2F8577"><span class="display">IPA</span><span class="hx"><span>#2F8577</span><span>ink #25655A</span></span></div>
+          <div class="bsw" style="background:#2C2925"><span class="display">Dark</span><span class="hx"><span>#2C2925</span><span>Lager</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3 -->
+  <div class="row r3">
+    <div class="cell">
+      <div class="label"><b>07</b> Typography</div>
+      <div class="type">
+        <div class="spec">
+          <div class="display d1">David</div>
+          <div class="display d2">Craft Ale</div>
+          <div class="k"><i></i><span>Good beer. Good company.</span><i></i></div>
+          <div class="pop"><em>New Age</em> of Beer</div>
+        </div>
+        <div class="faces">
+          <div class="face">
+            <div class="role">Display</div>
+            <div class="nm alfa">Alfa Slab One</div>
+            <div class="rule">Headings, beer names, quotes · always uppercase · line-height ≤ 1.1</div>
+          </div>
+          <div class="face">
+            <div class="role">Text / UI</div>
+            <div class="nm">Hanken Grotesk · 400–800</div>
+            <div class="rule">Body 15.5px / 1.55 · kickers 13px 800, tracked .26em</div>
+            <div class="alpha">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 · 330 ML · 5.4% VOL</div>
+          </div>
+          <div class="face">
+            <div class="role">Wordmark</div>
+            <div class="nm arch">DAVID<small>CRAFT ALE</small></div>
+            <div class="rule">Archivo 900 + 600 tracked — splash mark only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="label"><b>08</b> Graphic elements</div>
+      <div class="gfx">
+        <div class="gorn">
+          <div class="pair l"><i></i><i></i></div>
+          <span data-star="52" data-fill="#B23A27"></span>
+          <div class="pair r"><i></i><i></i></div>
+        </div>
+        <div class="glyphs">
+          <div class="glyph"><div class="g"><span data-star="44" data-fill="#572010"></span></div><div class="t">Identity<br>star</div></div>
+          <div class="glyph"><div class="g"><span data-star="16" data-fill="#D9A126"></span><span data-star="16" data-fill="#B23A27"></span><span data-star="16" data-fill="#2F8577"></span></div><div class="t">Bullet<br>10–16px</div></div>
+          <div class="glyph"><div class="g"><span data-star="22" data-fill="#2F8577"></span><span data-star="22" data-fill="#2E1A0E"></span><span data-star="22" data-fill="#2E1A0E"></span><span data-star="22" data-fill="#2E1A0E"></span></div><div class="t">Rating<br>row</div></div>
+          <div class="glyph"><div class="g"><span data-sparkle="40" data-fill="#B23A27"></span><span data-sparkle="26" data-fill="#E8A81E"></span></div><div class="t">Sparkle<br>one per band</div></div>
+        </div>
+        <div class="dots"></div>
+        <div class="ui">
+          <span class="btn">Meet the four <span aria-hidden="true">→</span></span>
+          <span class="chip plain">330 ML</span><span class="chip plain">4.8% VOL</span><span class="chip plain">IBU 18</span>
+        </div>
+        <div class="ui">
+          <span class="chip"><span data-star="10" data-fill="#B23A27"></span>Shelf hero</span>
+          <span class="chip"><span data-star="10" data-fill="#2F8577"></span>Limited edition</span>
+          <span class="chip"><span data-star="10" data-fill="#E8A81E"></span>Gift-worthy</span>
+        </div>
+        <span class="toast"><span data-star="14" data-fill="#FFC24B"></span>The bottle shop opens soon. First round's on us!</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="label"><b>09</b> Product line — the four</div>
+      <div class="shelf">
+        <div class="card" style="--tone:#D9A126"><span class="sp" data-sparkle="24" data-fill="#B23A27"></span><img src="../assets/bottle-blonde.png" alt=""><div class="lab"><strong>Blonde</strong><small><span>Ale · 01</span><span>4.8% · IBU 18</span></small></div></div>
+        <div class="card" style="--tone:#B23A27"><span class="sp" data-sparkle="24" data-fill="#FDEEDF"></span><img src="../assets/bottle-amber.png" alt=""><div class="lab"><strong>Amber</strong><small><span>Pale Ale · 02</span><span>5.4% · IBU 28</span></small></div></div>
+        <div class="card" style="--tone:#2F8577"><span class="sp" data-sparkle="24" data-fill="#FDEEDF"></span><img src="../assets/bottle-ipa.png" alt=""><div class="lab"><strong>IPA</strong><small><span>India Pale Ale · 03</span><span>6.5% · IBU 55</span></small></div></div>
+        <div class="card dark" style="--tone:#2C2925"><span class="sp" data-sparkle="24" data-fill="#FFC24B"></span><img src="../assets/bottle-dark.png" alt=""><div class="lab"><strong>Dark</strong><small><span>Lager · 04</span><span>5.0% · IBU 22</span></small></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="strip" id="strip"></div>
+<div class="foot">
+  <span class="resp"><span data-star="14" data-fill="#572010"></span>Drink responsibly · 18+</span>
+  <span>Tokens: css/index.css · Faces: css/fonts.css · Art: /assets</span>
+</div>
+
+<script>
+/* same generator the site ships in js/index.js */
+function starPath(cx, cy, R, points = 8, innerRatio = 0.42){
+  const r = R * innerRatio, step = Math.PI / points;
+  let d = '';
+  for(let i = 0; i < points * 2; i++){
+    const rad = i % 2 === 0 ? R : r;
+    const a = i * step - Math.PI / 2;
+    d += (i === 0 ? 'M' : 'L') + (cx + rad * Math.cos(a)).toFixed(2) + ' ' + (cy + rad * Math.sin(a)).toFixed(2);
+  }
+  return d + 'Z';
+}
+const starSVG = (s, f) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path fill="${f}" d="${starPath(12,12,11)}"/></svg>`;
+const sparkleSVG = (s, f) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path fill="${f}" d="${starPath(12,12,11,4,0.2)}"/></svg>`;
+document.querySelectorAll('[data-star]').forEach(el => el.innerHTML = starSVG(+el.dataset.star, el.dataset.fill));
+document.querySelectorAll('[data-sparkle]').forEach(el => el.innerHTML = sparkleSVG(+el.dataset.sparkle, el.dataset.fill));
+
+/* rotating seal, same geometry as #badge-spin */
+(function(){
+  const R = 34, C = 46;
+  document.getElementById('badge').innerHTML = `
+  <svg viewBox="0 0 92 92" width="236" height="236">
+    <defs><path id="arc" d="M ${C} ${C} m -${R},0 a ${R},${R} 0 1,1 ${R*2},0 a ${R},${R} 0 1,1 -${R*2},0"/></defs>
+    <circle cx="${C}" cy="${C}" r="45" fill="#FFC24B"/>
+    <path d="${starPath(C, C, 13)}" fill="#572010"/>
+    <text font-family="'Hanken Grotesk'" font-weight="800" font-size="10.5" letter-spacing="2.4" fill="#572010">
+      <textPath href="#arc" textLength="${(2*Math.PI*R-3).toFixed(1)}" lengthAdjust="spacing">DAVID CRAFT ALE · EST 2023 ·</textPath>
+    </text>
+  </svg>`;
+})();
+
+/* marquee copy, verbatim from the site */
+(function(){
+  const items = ['Brewed in small batches','Drink David Craft Ale','Est. 2023','One for everyone','Chill for best results'];
+  const star = starSVG(15,'#FFC24B');
+  document.getElementById('strip').innerHTML = items.map(t => `<span>${t}</span>`).join(star) ;
+})();
+</script>
+</body>
+</html>

@@ -588,7 +588,7 @@ a{
   flex-direction:column;
   gap:var(--hp-grid-gap);
   padding:var(--hp-grid-pad) clamp(20px,4vw,54px);
-  background:var(--paper);
+  background:var(--peach);
 }
 
 .hp-grid__title{

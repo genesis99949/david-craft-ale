@@ -57,22 +57,6 @@ html{
   scroll-behavior:smooth
 }
 
-/* Lenis drives scroll itself via many small per-frame writes — native CSS
-   smooth-scroll tries to animate each one individually, and the two fight,
-   which is what "broken"/frozen-then-jumpy scrolling was. Once Lenis is
-   active (it stamps this class on <html>), let it own scrolling outright. */
-html.lenis{
-  scroll-behavior:auto!important
-}
-
-html.lenis,html.lenis body{
-  height:auto
-}
-
-.lenis.lenis-stopped{
-  overflow:hidden
-}
-
 body{
   font-family:var(--font-body);
   background:var(--cream);
@@ -276,7 +260,7 @@ a{
   color:var(--cream-soft);
   text-align:center;
   font-weight:800;
-  font-size:11.5px;
+  font-size:12px;
   letter-spacing:.2em;
   text-transform:uppercase;
   padding:8px 12px;
@@ -475,7 +459,7 @@ a{
   display:block;
   margin-top:6px;
   color:var(--cocoa-soft);
-  font-size:9px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.14em;
   text-transform:uppercase
@@ -583,7 +567,7 @@ main{
   margin-top:10px;
   text-align:center;
   color:var(--cocoa-soft);
-  font-size:10px;
+  font-size:12px;
   letter-spacing:.08em
 }
 
@@ -778,7 +762,7 @@ main{
 }
 
 .quick-view-kicker{
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.22em;
   text-transform:uppercase;
@@ -819,7 +803,7 @@ main{
 }
 
 .quick-view-package{
-  font-size:10px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.16em;
   color:rgba(253,238,223,.78)
@@ -920,7 +904,7 @@ main{
     padding:0 8px 16px
   }
   .quick-view-kicker{
-    font-size:10px
+    font-size:11px
   }
   .quick-view-title{
     font-size:clamp(34px,11vw,54px)
@@ -968,7 +952,7 @@ main{
   align-items:center;
   padding:0 clamp(14px,3vw,36px) 8px;
   font-weight:800;
-  font-size:11px;
+  font-size:12px;
   letter-spacing:.22em;
   text-transform:uppercase;
   color:var(--cocoa);
@@ -1457,7 +1441,7 @@ section[id]{
 }
 
 .beer-tab .tstyle{
-  font-size:11.5px;
+  font-size:12px;
   font-weight:700;
   opacity:.7;
   letter-spacing:.04em;
@@ -1879,7 +1863,7 @@ section[id]{
 }
 
 .plushie-badge-new .kicker{
-  font-size:10px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.18em;
   text-transform:uppercase;
@@ -2337,7 +2321,7 @@ section[id]{
   }
   .plushie-chip{
     padding:9px 12px;
-    font-size:10px;
+    font-size:11px;
     letter-spacing:.1em
   }
   .plushie-chip.a{
@@ -2591,7 +2575,7 @@ section[id]{
   align-items:center;
   gap:8px;
   margin-top:12px;
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.11em;
   text-transform:uppercase;
@@ -2657,7 +2641,7 @@ section[id]{
 }
 
 .shop-promises strong{
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.13em;
   text-transform:uppercase
@@ -2704,13 +2688,13 @@ section[id]{
   }
   .shop-promises strong{
     display:block;
-    font-size:8px;
+    font-size:11px;
     line-height:1.25
   }
   .shop-promises span{
     display:block;
     margin-top:3px;
-    font-size:9px;
+    font-size:11px;
     line-height:1.25
   }
 }
@@ -2845,7 +2829,7 @@ section[id]{
 .prod-card-price small{
   display:block;
   margin-top:3px;
-  font-size:9px;
+  font-size:11px;
   letter-spacing:.16em;
   color:rgba(253,238,223,.68)
 }
@@ -2875,7 +2859,7 @@ section[id]{
   place-items:center;
   background:var(--brick);
   color:var(--cream-soft);
-  font-size:10px;
+  font-size:11px;
   font-weight:900;
   line-height:1;
 }
@@ -2934,7 +2918,7 @@ section[id]{
 }
 
 .lineup-view-caption{
-  font-size:10px;
+  font-size:11px;
   font-weight:850;
   letter-spacing:.16em;
   text-transform:uppercase;
@@ -2947,7 +2931,7 @@ section[id]{
   align-items:center;
   gap:7px;
   color:var(--cream-soft);
-  font-size:9px;
+  font-size:11px;
   font-weight:850;
   letter-spacing:.1em;
   text-transform:uppercase;
@@ -3473,15 +3457,15 @@ section[id]{
 
 .full-lineup-section.is-grid-view .prod-card-price small{
   margin-top:3px;
-  font-size:8px
+  font-size:10px
 }
 
 .full-lineup-section.is-grid-view .prod-card .btn{
   width:100%;
   min-height:40px;
-  padding:9px 8px;
-  font-size:9px;
-  letter-spacing:.08em
+  padding:10px 8px;
+  font-size:11px;
+  letter-spacing:.06em
 }
 
 .full-lineup-section.is-grid-view .prod-card .btn.on-dark{
@@ -3513,8 +3497,8 @@ section[id]{
   .full-lineup-section.is-grid-view .full-lineup-grid .prod-card{padding:9px;border-radius:15px;gap:9px}
   .full-lineup-section.is-grid-view .prod-card-photo{aspect-ratio:4/3;border-radius:10px}
   .full-lineup-section.is-grid-view .lineup-group-title{font-size:clamp(28px,8.5vw,40px)}
-  .full-lineup-section.is-grid-view .prod-card-name{font-size:10px}
-  .full-lineup-section.is-grid-view .prod-card .btn{min-height:38px;font-size:8px}
+  .full-lineup-section.is-grid-view .prod-card-name{font-size:11px}
+  .full-lineup-section.is-grid-view .prod-card .btn{min-height:40px;font-size:10px;letter-spacing:.04em}
 }
 
 .retail-band{
@@ -3573,7 +3557,7 @@ section[id]{
 .locator-search label{
   display:block;
   margin:0 0 8px 4px;
-  font-size:10px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.16em;
   text-transform:uppercase
@@ -3608,7 +3592,7 @@ section[id]{
   border-radius:999px;
   background:var(--cocoa);
   color:var(--cream-soft);
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.1em;
   text-transform:uppercase
@@ -3627,7 +3611,7 @@ section[id]{
   border:1.5px solid rgba(253,238,223,.46);
   border-radius:999px;
   color:var(--cream-soft);
-  font-size:10px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.1em;
   text-transform:uppercase
@@ -3730,7 +3714,7 @@ section[id]{
 .map-label{
   position:absolute;
   color:rgba(87,32,16,.42);
-  font-size:9px;
+  font-size:10px;
   font-weight:900;
   letter-spacing:.16em
 }
@@ -3806,7 +3790,7 @@ section[id]{
 }
 
 .locator-results-head span{
-  font-size:9px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.13em;
   text-transform:uppercase;
@@ -3849,7 +3833,7 @@ section[id]{
   border-radius:50%;
   background:var(--cocoa);
   color:var(--cream-soft);
-  font-size:11px;
+  font-size:12px;
   font-weight:900
 }
 
@@ -3867,7 +3851,7 @@ section[id]{
   display:block;
   margin-top:3px;
   color:var(--cocoa-soft);
-  font-size:10px;
+  font-size:12px;
   line-height:1.35
 }
 
@@ -4006,7 +3990,7 @@ section[id]{
 
 .review-card .who{
   font-weight:800;
-  font-size:11px;
+  font-size:12px;
   letter-spacing:.22em;
   text-transform:uppercase
 }

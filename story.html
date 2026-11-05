@@ -6,14 +6,17 @@
   <title>Our Story | David Craft Ale</title>
   <meta name="description" content="David Craft Ale began around a crowded table and grew into bold beer for the good parts nobody planned.">
   <link rel="stylesheet" href="css/fonts.css">
-  <link rel="stylesheet" href="css/story-page.css">
+  <link rel="stylesheet" href="css/story-page.css?v=brewery-route-12">
   <link rel="stylesheet" href="css/story-motion.css">
   <script src="js/story-motion.js" defer></script>
   <script src="js/hopper-flight.js" defer></script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23572010' d='M12 0l2.3 7.2L21 4.6l-4.4 6 7.4 1.4-7.4 1.4 4.4 6-6.7-2.6L12 24l-2.3-7.2L3 19.4l4.4-6L0 12l7.4-1.4-4.4-6 6.7 2.6z'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/site-chrome.css">
   <script src="js/site-chrome.js" defer></script>
-<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><link rel="stylesheet" href="css/site-footer.css"><link rel="stylesheet" href="css/hopper-flight.css"><script src="js/shop.js" defer></script></head>
+<link rel="stylesheet" href="css/pour.css"><script src="js/pour-guard.js"></script><script src="js/pour.js" defer></script><link rel="stylesheet" href="css/shop.css"><link rel="stylesheet" href="css/site-footer.css"><link rel="stylesheet" href="css/hopper-flight.css"><script src="js/shop.js" defer></script><link rel="stylesheet" href="css/site-scroll.css">
+<script src="js/vendor/lenis.js" defer></script>
+<script src="js/site-scroll.js" defer></script>
+</head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="page-head" aria-label="Fallback navigation"><a href="index.html">David Craft Ale</a></header>
@@ -62,6 +65,50 @@
         </ol>
       </div>
       <figure class="story-way-intro__art"><div class="story-label-frame" data-story-reveal="iris"><img src="assets/story/labeling-v3-800.webp" srcset="assets/story/labeling-v3-480.webp 480w, assets/story/labeling-v3-800.webp 800w, assets/story/labeling-v3-1200.webp 1200w" sizes="(max-width: 820px) calc(100vw - 40px), 46vw" width="1254" height="1254" decoding="async" alt="Hands applying a David Craft Ale label to an amber bottle beside pencil sketches of Hopper" loading="lazy"></div><figcaption>From the first pencil line to the finishing touch.</figcaption></figure>
+    </section>
+    <section class="story-brewery story-band story-band--cream" id="brewery-journey" aria-labelledby="brewery-journey-title">
+      <header class="story-brewery__head">
+        <p class="story-kicker">From grain to good company</p>
+        <h2 id="brewery-journey-title">The brewery<br>journey.</h2>
+        <p>Seven steps. A little science. Plenty of character. <br>Follow the thread from the first grain to the last cheers.</p>
+      </header>
+      <ol class="brew-journey" aria-label="The seven stages of our beer">
+        <li class="brew-journey__step" id="brew-malt">
+          <figure class="brew-journey__art"><img src="assets/story/brewery-cutouts/malt.webp" width="1456" height="1088" alt="A brewer pouring malted barley into a grain mill" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>01</span> Milling</p><h3>It starts<br>with malt.</h3><p class="brew-journey__description">Malted barley is gently milled to open the grain. Inside are the starches that will become the foundation of every beer.</p><p class="brew-journey__note">Malted barley → crushed grain</p></div>
+          <svg class="brew-journey__link" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0 C230 112 770 48 770 160"/><path class="brew-journey__arrow" d="m760 146 10 14 10-14"/></svg>
+        </li>
+        <li class="brew-journey__step" id="brew-mash">
+          <figure class="brew-journey__art"><img src="assets/story/brewery-cutouts/mash.webp" width="1456" height="1088" alt="Copper mash tun with a wooden paddle, grain sack and barley" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>02</span> Mashing</p><h3>Warm water.<br>Sweet beginnings.</h3><p class="brew-journey__description">The crushed malt meets warm water in the mash tun. Natural enzymes turn starches into sugars, creating the sweet liquid we call wort.</p><p class="brew-journey__note">Crushed grain → sweet wort</p></div>
+          <svg class="brew-journey__link" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0 C230 112 770 48 770 160"/><path class="brew-journey__arrow" d="m760 146 10 14 10-14"/></svg>
+        </li>
+        <li class="brew-journey__step" id="brew-boil">
+          <figure class="brew-journey__art brew-journey__art--motion" data-boil-study aria-label="Copper brewing kettle with gently rising steam and bubbling wort"><img src="assets/story/brewery-cutouts/boil.webp" width="1448" height="1086" alt="Steaming copper brewing kettle beside a basket of hops" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>03</span> Boiling</p><h3>A little heat.<br>A lot of character.</h3><p class="brew-journey__description">The wort comes to a boil and hops join the mix. Their bitterness and aroma help shape the character of the beer to come.</p><p class="brew-journey__note">Sweet wort + hops</p></div>
+          <svg class="brew-journey__link" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0 C230 112 770 48 770 160"/><path class="brew-journey__arrow" d="m760 146 10 14 10-14"/></svg>
+        </li>
+        <li class="brew-journey__step" id="brew-ferment">
+          <figure class="brew-journey__art"><img src="assets/story/brewery-cutouts/ferment.webp" width="1456" height="1088" alt="Two conical fermentation tanks with pipes and pressure gauges" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>04</span> Fermentation</p><h3>Let yeast<br>do its thing.</h3><p class="brew-journey__description">Once the wort has cooled, yeast gets to work. It transforms the sugars into alcohol and carbon dioxide, bringing the beer to life.</p><p class="brew-journey__note">Wort + yeast → young beer</p></div>
+          <svg class="brew-journey__link" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0 C230 112 770 48 770 160"/><path class="brew-journey__arrow" d="m760 146 10 14 10-14"/></svg>
+        </li>
+        <li class="brew-journey__step" id="brew-condition">
+          <figure class="brew-journey__art"><img src="assets/story/brewery-cutouts/condition.webp" width="1456" height="1088" alt="Conditioning tank and three stainless steel kegs" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>05</span> Conditioning</p><h3>Good things<br>take a moment.</h3><p class="brew-journey__description">The beer gets time to settle and develop. Flavours come together, rough edges soften, and each batch finds its balance.</p><p class="brew-journey__note">Time, patience & balance</p></div>
+          <svg class="brew-journey__link" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0 C230 112 770 48 770 160"/><path class="brew-journey__arrow" d="m760 146 10 14 10-14"/></svg>
+        </li>
+        <li class="brew-journey__step" id="brew-bottling">
+          <figure class="brew-journey__art"><img src="assets/story/brewery-cutouts/bottling.webp" width="1456" height="1088" alt="A brewer capping amber bottles beside a wooden beer crate" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>06</span> Bottling</p><h3>All dressed up.<br>Ready to go.</h3><p class="brew-journey__description">The finished beer is filled, capped and labelled. Then it is packed for the journey from our brewery to your next gathering.</p><p class="brew-journey__note">Fill. Cap. Label. Pack.</p></div>
+          <svg class="brew-journey__link" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0 C230 112 770 48 770 160"/><path class="brew-journey__arrow" d="m760 146 10 14 10-14"/></svg>
+        </li>
+        <li class="brew-journey__step" id="brew-taproom">
+          <figure class="brew-journey__art"><img src="assets/story/brewery-cutouts/taproom.webp" width="1456" height="1088" alt="Three adult friends sharing beer around a small table" loading="lazy" decoding="async"></figure>
+          <div class="brew-journey__copy"><p class="brew-journey__label"><span>07</span> Good company</p><h3>From our place.<br>To your table.</h3><p class="brew-journey__description">Every step leads here: a glass poured, a chair pulled up, and something worth sharing. The rest of the story is yours.</p><p class="brew-journey__note">Grain → glass → good company</p><a class="story-pill" href="products.html">Meet the beers <span aria-hidden="true">↗</span></a></div>
+          
+        </li>
+      </ol>
     </section>
     <section class="story-courtyard story-band--honey" aria-labelledby="courtyard-title">
       <div class="story-courtyard__caption">
@@ -121,6 +168,8 @@
   <p class="foot-credit-line">Fictional portfolio concept by <a class="foot-credit" href="https://www.behance.net/ramonbugariu" target="_blank" rel="noopener noreferrer">Ramon Bugariu</a></p>
 </footer>
 
-  <script src="js/story.js"></script>
+  <script src="js/story.js?v=brewery-remotion-7"></script>
+  <script src="js/boil-study-loader.js?v=2" defer></script>
+  <script src="js/brewery-route.js?v=5" defer></script>
 </body>
 </html>

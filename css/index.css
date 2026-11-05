@@ -57,22 +57,6 @@ html{
   scroll-behavior:smooth
 }
 
-/* Lenis drives scroll itself via many small per-frame writes — native CSS
-   smooth-scroll tries to animate each one individually, and the two fight,
-   which is what "broken"/frozen-then-jumpy scrolling was. Once Lenis is
-   active (it stamps this class on <html>), let it own scrolling outright. */
-html.lenis{
-  scroll-behavior:auto!important
-}
-
-html.lenis,html.lenis body{
-  height:auto
-}
-
-.lenis.lenis-stopped{
-  overflow:hidden
-}
-
 body{
   font-family:var(--font-body);
   background:var(--cream);
@@ -400,7 +384,7 @@ a{
   color:var(--cream-soft);
   text-align:center;
   font-weight:800;
-  font-size:11.5px;
+  font-size:12px;
   letter-spacing:.2em;
   text-transform:uppercase;
   padding:8px 12px;
@@ -968,7 +952,7 @@ section[id]{
 }
 
 .beer-tab .tstyle{
-  font-size:11.5px;
+  font-size:12px;
   font-weight:700;
   opacity:.7;
   letter-spacing:.04em;
@@ -1346,7 +1330,7 @@ section[id]{
 }
 
 .brew-card-label small{
-  font-size:10px;
+  font-size:11px;
   font-weight:800;
   letter-spacing:.12em;
   text-transform:uppercase;
@@ -1506,7 +1490,7 @@ section[id]{
     font-size:15px
   }
   .brew-concept-head .kicker{
-    font-size:10px;
+    font-size:11px;
     letter-spacing:.2em
   }
   .brew-shelf-wrap{
@@ -1590,7 +1574,7 @@ section[id]{
     padding:0 4px 15px
   }
   .brew-mobile-nav>span{
-    font-size:10px;
+    font-size:11px;
     font-weight:800;
     letter-spacing:.12em;
     text-transform:uppercase;
@@ -1732,7 +1716,7 @@ section[id]{
 
 .review-card .who{
   font-weight:800;
-  font-size:11px;
+  font-size:12px;
   letter-spacing:.22em;
   text-transform:uppercase
 }
@@ -1993,7 +1977,7 @@ section[id]{
 }
 
 .plushie-badge-new .kicker{
-  font-size:10px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.18em;
   text-transform:uppercase;
@@ -2477,7 +2461,7 @@ section[id]{
   }
   .plushie-chip{
     padding:9px 12px;
-    font-size:10px;
+    font-size:11px;
     letter-spacing:.1em
   }
   .plushie-chip.a{

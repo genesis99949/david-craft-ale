@@ -157,7 +157,7 @@
   display:block;
   margin-top:6px;
   color:var(--shop-cocoa-soft);
-  font-size:9px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.14em;
   text-transform:uppercase
@@ -303,7 +303,7 @@
   margin:10px 0 0;
   text-align:center;
   color:var(--shop-cocoa-soft);
-  font-size:10px;
+  font-size:12px;
   letter-spacing:.08em
 }
 
@@ -460,7 +460,7 @@
 
 .search-meta{
   margin:14px 0 0;
-  font-size:10px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.22em;
   text-transform:uppercase;

@@ -1,0 +1,212 @@
+/* Account uses the index palette and the shared site chrome. */
+.account-page{
+  --cream:#fce4cd;
+  --account-green:#1f5a50;
+  --account-space-xs:8px;
+  --account-space-sm:16px;
+  --account-space-md:24px;
+  --account-space-lg:32px;
+  --account-space-xl:48px;
+  --account-space-2xl:64px;
+  --account-width:1120px;
+  --account-radius:16px;
+  --account-pill:999px;
+}
+
+.account-page :focus-visible{
+  outline:3px solid var(--cocoa);
+  outline-offset:5px;
+}
+
+.account-page .skip{z-index:200}
+.account-page .site-footer :focus-visible{outline-color:var(--cream-soft)}
+.account-page .site-header a[href="account.html"]{background:var(--honey)}
+.account-page .site-announce{position:relative;z-index:2}
+
+.account-hero{
+  position:relative;
+  overflow:hidden;
+  padding:var(--account-space-xl) var(--account-space-md) var(--account-space-2xl);
+  background:var(--honey);
+  text-align:center;
+}
+
+.account-hero__inner{
+  position:relative;
+  max-width:var(--account-width);
+  margin-inline:auto;
+}
+
+.account-mascot{
+  width:112px;
+  height:auto;
+  margin:0 auto var(--account-space-sm);
+  animation:account-hover 4s ease-in-out infinite;
+}
+
+.account-eyebrow{
+  margin:0 0 var(--account-space-sm);
+  color:var(--cocoa);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.5;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+.account-title{
+  margin:0;
+  font:400 clamp(28px,7.8vw,84px)/1.06 var(--display);
+  color:var(--cocoa);
+  text-transform:uppercase;
+  overflow-wrap:break-word;
+}
+
+.account-title span{display:block}
+.account-title__accent{color:var(--account-green)}
+
+.account-intro{
+  max-width:46ch;
+  margin:var(--account-space-md) auto 0;
+  font-size:clamp(16px,1.7vw,19px);
+  line-height:1.6;
+  text-wrap:pretty;
+}
+
+.account-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+  gap:var(--account-space-sm);
+  max-width:360px;
+  margin:var(--account-space-lg) auto 0;
+}
+
+.account-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--account-space-sm);
+  min-height:52px;
+  padding:var(--account-space-sm) var(--account-space-md);
+  border:2px solid var(--cocoa);
+  border-radius:var(--account-pill);
+  background:var(--cocoa);
+  color:var(--cream-soft);
+  font:800 14px/1.2 var(--body);
+  letter-spacing:.04em;
+  text-decoration:none;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:transform .2s var(--ease),background .2s,color .2s;
+}
+
+.account-button--secondary{background:transparent;color:var(--cocoa)}
+.account-button:hover{background:var(--ink);transform:translateY(-2px)}
+.account-button--secondary:hover{background:var(--cocoa);color:var(--cream-soft)}
+.account-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.account-note{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:var(--account-space-xs);
+  margin:var(--account-space-md) 0 0;
+  color:var(--cocoa);
+  font-size:14px;
+}
+
+.account-note svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.account-explore{
+  max-width:var(--account-width);
+  margin-inline:auto;
+  padding:var(--account-space-2xl) var(--account-space-md);
+  text-align:center;
+}
+
+.account-section-title{
+  margin:0;
+  font:400 clamp(28px,4vw,44px)/1.1 var(--display);
+  text-transform:uppercase;
+  color:var(--cocoa);
+}
+
+.account-section-intro{margin:var(--account-space-sm) 0 0;font-size:16px}
+
+.account-links{
+  display:grid;
+  gap:var(--account-space-sm);
+  margin:var(--account-space-lg) 0 0;
+  padding:0;
+  list-style:none;
+}
+
+.account-card{
+  display:flex;
+  height:100%;
+  align-items:center;
+  gap:var(--account-space-sm);
+  padding:var(--account-space-md);
+  border:1px solid var(--cocoa-soft);
+  border-radius:var(--account-radius);
+  background:var(--paper);
+  text-align:left;
+  text-decoration:none;
+  transition:transform .2s var(--ease),background .2s;
+}
+
+.account-card:hover{background:var(--cream-soft);transform:translateY(-4px)}
+.account-card__icon{display:grid;place-items:center;flex:none;width:48px;height:48px;border-radius:50%;background:var(--honey);color:var(--cocoa)}
+.account-card__icon svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.account-card__copy{flex:1;min-width:0}
+.account-card__title{display:block;font-size:18px;font-weight:800;line-height:1.3;color:var(--cocoa)}
+.account-card__description{display:block;margin-top:var(--account-space-xs);font-size:15px;line-height:1.5}
+.account-card__arrow{align-self:center;color:var(--cocoa);font-size:24px}
+
+.account-about{
+  max-width:720px;
+  margin:var(--account-space-xl) auto 0;
+  border-top:1px solid var(--cocoa-soft);
+  border-bottom:1px solid var(--cocoa-soft);
+  text-align:left;
+}
+
+.account-about summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--account-space-sm);
+  min-height:60px;
+  padding:var(--account-space-sm) 0;
+  color:var(--cocoa);
+  font-weight:800;
+  list-style:none;
+  cursor:pointer;
+}
+
+.account-about summary::-webkit-details-marker{display:none}
+.account-about summary::after{content:"+";font-size:24px;font-weight:400}
+.account-about[open] summary::after{content:"−"}
+.account-about summary:hover{text-decoration:underline;text-underline-offset:4px}
+.account-about p{margin:0 0 var(--account-space-md);font-size:16px;line-height:1.6}
+.account-about a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-underline-offset:4px}
+
+@keyframes account-hover{50%{transform:translateY(-6px) rotate(-3deg)}}
+
+@media(min-width:600px){
+  .account-actions{flex-direction:row;max-width:none}
+}
+
+@media(min-width:900px){
+  .account-links{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .account-card{align-items:flex-start;flex-direction:column;position:relative;padding:var(--account-space-lg)}
+  .account-card__arrow{position:absolute;right:var(--account-space-md);top:var(--account-space-md)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .account-mascot{animation:none}
+  .account-button,.account-card{transition:none}
+  .account-button:hover,.account-card:hover{transform:none}
+}

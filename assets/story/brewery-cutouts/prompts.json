@@ -1,0 +1,31 @@
+{
+  "mode": "Built-in image_gen; transparent generation",
+  "common": "Premium editorial magazine cutout illustration for David Craft Ale website. Single isolated vignette on genuinely transparent alpha background. SUBJECT. Full subject visible with generous clear margins, balanced 4:3 composition. Richly detailed hand painted vintage print illustration, realistic proportions but expressive painted shapes, tactile screenprint grain, stippled shadows, warm amber copper highlights, cream paper details, dark cocoa #572010 and deep teal #1F5A50. Warm illustrated craft beer magazine feature. Irregular organic silhouette cut from a magazine, no white border, no backdrop, no floor rectangle, no text or logos. NOT 3D, NOT flat clipart.",
+  "subjects": [
+    [
+      "mash",
+      "Wide open copper mash tun with long wooden stirring paddle resting across the rim, pale grain mash visible, cream grain sack and small scoop beside the vessel. No people, hands or faces."
+    ],
+    [
+      "boil",
+      "Elegant copper brewing kettle with swan neck vent, green hop cones in a small basket beside it, gentle curling wisps of steam and round gauge. No people, hands or faces."
+    ],
+    [
+      "ferment",
+      "Two stainless steel conical fermentation tanks with dark teal reflections, copper pipes, round pressure gauges and sample valve, small graduated sample glass beside them. No people, hands or faces."
+    ],
+    [
+      "condition",
+      "Three stainless brewery conditioning kegs beside a small horizontal maturation tank with a round gauge and copper fittings. Quiet balanced arrangement. No people, hands or faces."
+    ],
+    [
+      "bottling",
+      "An adult woman brewer at a small waist-high bottling workbench using a tabletop bottle capper, a row of amber beer bottles with plain cream labels and a wooden six-bottle crate at her feet. Whole person and bench, natural hands."
+    ],
+    [
+      "taproom",
+      "Three adult friends seated around a small round cafe table clinking glasses of amber craft beer, relaxed conversation, ochre shirts, teal jacket, cream blouse, a wooden beer crate beside the table. Whole bodies and all furniture visible, natural hands."
+    ]
+  ],
+  "maltPrompt": "Create a premium editorial magazine cutout illustration for David Craft Ale brewery website. Single isolated vignette on genuinely transparent alpha background, no scene background or rectangular panel: adult craft brewer in ochre work shirt and dark teal apron pouring a sack of golden malted barley into a compact vintage grain mill, small sack and barley stalks at feet. Whole person and equipment visible, tight coherent balanced composition, 4:3 landscape. Beautiful richly detailed hand painted vintage print illustration, realistic proportions but expressive painted shapes, tactile screenprint grain, stippled shadows, warm amber and copper highlights, cream paper details, dark cocoa #572010 and deep teal #1F5A50. Inspired by a warmly illustrated courtyard craft beer magazine feature. Irregular organic silhouette cut from a magazine, no white border, no backdrop, no floor rectangle, no text, no logos. Legible large forms with detailed craftsmanship, NOT 3D render, NOT flat vector clipart."
+}

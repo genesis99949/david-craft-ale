@@ -1,0 +1,18 @@
+/* Native CSS smoothing must not animate Lenis' per-frame scroll writes. */
+html.lenis{
+  scroll-behavior:auto!important
+}
+
+html.lenis,html.lenis body{
+  height:auto
+}
+
+.lenis.lenis-stopped{
+  overflow:hidden
+}
+
+@media(prefers-reduced-motion:reduce){
+  html,body{
+    scroll-behavior:auto!important
+  }
+}

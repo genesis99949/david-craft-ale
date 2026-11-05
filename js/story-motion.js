@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const frames = [...document.querySelectorAll('[data-story-reveal]')];
-  if (!frames.length || !('IntersectionObserver' in window) || typeof Element.prototype.animate !== 'function') return;
+  if (!frames.length || typeof Element.prototype.animate !== 'function') return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const ease = 'cubic-bezier(.22,1,.36,1)';
   const states = new Map();
@@ -16,7 +16,7 @@
     state.curtain?.remove();
     frame.dataset.revealState = 'done';
     state.done = true;
-    observer.unobserve(frame);
+    pending.delete(frame);
   }
 
   function reveal(frame) {
@@ -46,21 +46,31 @@
     } catch (_) { finish(frame); }
   }
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const state = states.get(entry.target);
-      if (!state || state.done) return;
-      if (state.image && !state.image.complete) {
-        if (state.waiting) return;
-        state.waiting = true;
-        state.loaded = () => reveal(entry.target);
-        state.image.addEventListener('load', state.loaded, {once:true});
-        state.image.addEventListener('error', state.loaded, {once:true});
-        state.timer = setTimeout(state.loaded, 1500);
-      } else reveal(entry.target);
+  // Geometry, not IntersectionObserver: a frame clipped to nothing by its own
+  // pending clip-path is reported as never intersecting, so it would never open.
+  const pending = new Set();
+  function arrive(frame) {
+    const state = states.get(frame);
+    if (!state || state.done || state.waiting) return;
+    if (state.image && !state.image.complete) {
+      state.waiting = true;
+      state.loaded = () => reveal(frame);
+      state.image.addEventListener('load', state.loaded, {once:true});
+      state.image.addEventListener('error', state.loaded, {once:true});
+      state.timer = setTimeout(state.loaded, 1500);
+    } else reveal(frame);
+  }
+
+  let queued = false;
+  function check() {
+    queued = false;
+    const line = innerHeight * 0.88;
+    pending.forEach(frame => {
+      const rect = frame.getBoundingClientRect();
+      if (rect.top < line && rect.bottom > 0) { pending.delete(frame); arrive(frame); }
     });
-  }, {threshold:0, rootMargin:'0px 0px -12% 0px'});
+  }
+  function queue() { if (!queued && pending.size) { queued = true; requestAnimationFrame(check); } }
 
   frames.forEach(frame => {
     const state = {image:frame.querySelector('img'),animations:[],done:false,running:false};
@@ -74,9 +84,13 @@
       frame.appendChild(state.curtain);
     }
     frame.dataset.revealState = 'pending';
-    observer.observe(frame);
+    pending.add(frame);
   });
 
+  addEventListener('scroll', queue, {passive:true});
+  addEventListener('resize', queue);
+  addEventListener('load', queue);
+  queue();
   reduced.addEventListener('change', () => { if (reduced.matches) frames.forEach(finish); });
   window.addEventListener('pageshow', event => { if (event.persisted) frames.forEach(finish); });
 })();

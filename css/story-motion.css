@@ -218,7 +218,7 @@ html.story-page .pour__layer::before{
     flex-direction:column;
     gap:4px;
     text-align:center;
-    font-size:11px
+    font-size:12px
   }
   .story-label-frame{
     border-radius:32% 32% 8% 8%

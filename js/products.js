@@ -63,7 +63,8 @@ document.querySelectorAll('.shop-jump-nav a[href^="#"]').forEach(link=>{
     if(!target || !rail) return;
     event.preventDefault();
     history.pushState(null,'',link.getAttribute('href'));
-    target.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start',inline:'nearest'});
+    if(window.DCBScroll) window.DCBScroll.scrollTo(target);
+    else target.scrollIntoView({behavior:reduceMotion?'instant':'smooth',block:'start',inline:'nearest'});
     const gutter = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
     rail.scrollTo({left:Math.max(0,target.offsetLeft-gutter),behavior:reduceMotion?'auto':'smooth'});
   });
@@ -99,13 +100,7 @@ document.addEventListener('click', e=>{
 });
 
 
-/* ================= SMOOTH SCROLL (Lenis) ================= */
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let lenis = null;
-if(!reduceMotion && window.Lenis){
-  lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
-  (function raf(time){ lenis.raf(time); requestAnimationFrame(raf); })();
-}
 
 /* ================= PRODUCT QUICK VIEW ================= */
 const quickView = $('#quick-view');
@@ -152,6 +147,7 @@ const beerDetailKeys = {
 };
 
 function beerDetailHref(slug=''){
+  if(slug==='hopper-plushie') return 'hopper.html';
   const beerBase=Object.keys(beerDetailKeys).find(base=>slug===`${base}-bottle`||slug===`${base}-can`||slug===`${base}-bottle-six-pack`||slug===`${base}-can-six-pack`);
   if(!beerBase) return '';
   const container=slug.includes('-can')?'can':'bottle';

@@ -295,7 +295,7 @@
   min-height:44px;
   margin-bottom:18px;
   color:inherit;
-  font-size:10px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.14em;
   text-transform:uppercase;
@@ -330,7 +330,7 @@
   padding:8px 13px;
   border:1px solid rgba(253,238,223,.4);
   border-radius:999px;
-  font-size:11px;
+  font-size:12px;
   font-weight:800;
   text-transform:uppercase;
   letter-spacing:.06em;
@@ -366,7 +366,7 @@
 }
 
 .bp-meta dt{
-  font-size:10px;
+  font-size:11px;
   font-weight:800;
   letter-spacing:.16em;
   text-transform:uppercase;
@@ -395,7 +395,7 @@
 .bp-variant-option>span{
   display:block;
   margin:0 0 7px 4px;
-  font-size:10px;
+  font-size:11px;
   font-weight:900;
   letter-spacing:.16em;
   text-transform:uppercase;
@@ -419,7 +419,7 @@
   background:transparent;
   color:inherit;
   font:inherit;
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -452,7 +452,7 @@
 }
 
 .beer-page .hp-price span{
-  font-size:11px
+  font-size:12px
 }
 
 .beer-page .hp-hero__media{
@@ -505,7 +505,7 @@
   z-index:1;
   top:24px;
   left:24px;
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.14em;
   text-transform:uppercase;
@@ -560,7 +560,7 @@
 
 .bp-facts dt{
   margin-bottom:8px;
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.16em;
   text-transform:uppercase;
@@ -609,7 +609,7 @@
   }
   .bp-selector a{
     padding:8px 11px;
-    font-size:10px
+    font-size:11px
   }
   .bp-gallery .bp-photo{
     padding:44px 52px 60px
@@ -623,7 +623,7 @@
   .bp-gallery figcaption{
     top:16px;
     left:16px;
-    font-size:10px;
+    font-size:12px;
     padding:7px 11px
   }
   .bp-meta{
